@@ -1,4 +1,4 @@
-# Turma de Computação Aplicada 2025-2 (UFPI)
+# Turma de Computação Aplicada 2026-1 (UFPI)
 
 O objetivo deste curso é capacitar os alunos a conceber, arquitetar e implementar projetos de aplicações de IA Generativa em ambiente de computação em nuvem. Partindo dos fundamentos de Machine Learning, os alunos explorarão modelos generativos de mais recentes (como Large Language Models - LLMs) e seus padrões de aplicação. A disciplina aborda o ciclo de vida básico dessas soluções, priorizando o desenvolvimento, deployment e o monitoramento, de tais aplicações, utilizando serviços de cloud computing para hospedar a solução. Ao final, o aluno terá o embasamento necessário para entender e criar os principais componentes de uma solução de IA generativa robusta e escalável em um ambiente de nuvem.
 
