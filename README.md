@@ -22,7 +22,7 @@ Exemplo de Aplicação de Visão Computacional usando Deep Learning
 **IA Generativa** é um ramo da Inteligência Artificial que se concentra na criação de conteúdo novo e original, em vez de apenas analisar ou classificar informações existentes. Diferente de outros sistemas que fazem previsões, seu objetivo é gerar dados semelhantes aos que foi treinado. Utilizando modelos complexos, como Redes Adversariais Generativas (GANs) e Transformers, ela pode produzir textos, imagens, músicas, códigos e vídeos a partir de um comando (prompt). A base desse processo é aprender a distribuição de probabilidade subjacente a um conjunto de dados de treinamento para, então, amostrar novos elementos plausíveis a partir dela. Essa tecnologia é a força motriz por trás de ferramentas como ChatGPT, DALL-E e Midjourney, representando um avanço significativo na capacidade criativa das máquinas e abrindo novas fronteiras para a inovação em diversas indústrias.
 
 - [Exemplo de pipeline de transcrição e tradução de música](notebooks/pipeline_traduz_musica_ingles_para_portugues.ipynb)
-- [Exemplo simplificado de Chatbot integrado a API do Google Gemini](https://github.com/topicos-computacao-aplicada/2025-2/tree/main/gemini_chatbot)
+- [Exemplo simplificado de Chatbot integrado a API do Google Gemini](https://github.com/topicos-computacao-aplicada/chatbot_cli_gemini)
 - [Exemplo de Chatbot usando o Langchain](https://github.com/topicos-computacao-aplicada/2025-2/tree/main/gemini_chatbot_lm)
 
 ### Prompt Engineering
