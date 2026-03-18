@@ -6,22 +6,22 @@ O objetivo deste curso é capacitar os alunos a conceber, arquitetar e implement
 
 **Machine Learning (Aprendizado de Máquina)** é um subcampo da Inteligência Artificial que confere aos computadores a capacidade de aprender padrões a partir de dados, sem serem explicitamente programados para cada tarefa. Em vez de seguir regras fixas, os algoritmos de ML identificam estruturas e relações em conjuntos de dados históricos para construir um **modelo**. Este modelo treinado é então capaz de generalizar seu conhecimento, realizando previsões, classificações ou tomando decisões inteligentes quando apresentado a informações novas e nunca vistas. Dessa forma, o foco muda da programação tradicional para o "treinamento" de sistemas, permitindo que eles melhorem seu desempenho automaticamente com a experiência fornecida pelos dados.
 
-- [Modelo de Regressão Linear](notebooks/ML_Linear_Regressionn.ipynb)
-- [Modelo de Clusterização](notebooks/ML_K_Means.ipynb)
+- [Modelo de Regressão Linear](notebooks/ML_Linear_Regressionn.ipynb) | [Paper Técnico](https://github.com/topicos-computacao-aplicada/2026-1/blob/a67805e140de0a256fd3ec037787ed5175fcc640/docs/paper_tecnico_analise_imoveis.md)
+- [Modelo de Clusterização](notebooks/ML_K_Means.ipynb) | [Paper Técnico](https://github.com/topicos-computacao-aplicada/2026-1/blob/main/docs/paper_tecnico_analise_mercadologica.md)
   
 ## Deep Learning
 
 **Deep Learning (Aprendizado Profundo)** é um subcampo especializado do Machine Learning inspirado na estrutura e função do cérebro humano, conhecida como redes neurais artificiais. O que o caracteriza é o uso de redes com muitas camadas intermediárias (daí o termo "profundo") entre a entrada e a saída de dados. Essas camadas permitem que o modelo aprenda hierarquias de características de forma automatizada e progressivamente mais abstrata. Por exemplo, em uma imagem, as primeiras camadas podem detectar bordas, as seguintes combinam essas bordas em formas, e as camadas finais identificam objetos complexos. Essa capacidade de aprender representações diretamente dos dados brutos (como pixels, texto ou áudio) torna o Deep Learning extremamente poderoso para tarefas complexas, sendo a base para os mais avançados modelos de IA Generativa, reconhecimento de imagem, processamento de linguagem natural e veículos autônomos.
 
 Exemplo de Aplicação de Visão Computacional usando Deep Learning
-- [Reconhecimento de imagens de cães e gatos](https://github.com/topicos-computacao-aplicada/2025-2/tree/main/cat_dog)
+- [Reconhecimento de imagens de cães e gatos](https://github.com/topicos-computacao-aplicada/2025-2/tree/main/cat_dog) | [Paper Técnico](https://github.com/topicos-computacao-aplicada/2026-1/blob/main/cat_dog/paper_tecnico.md)
 - [API de Manipulação do modelo cat_dogs_recognition](https://github.com/topicos-computacao-aplicada/2025-2/tree/main/api/api_cat_dog)
 
 ## IA Generativa
 
 **IA Generativa** é um ramo da Inteligência Artificial que se concentra na criação de conteúdo novo e original, em vez de apenas analisar ou classificar informações existentes. Diferente de outros sistemas que fazem previsões, seu objetivo é gerar dados semelhantes aos que foi treinado. Utilizando modelos complexos, como Redes Adversariais Generativas (GANs) e Transformers, ela pode produzir textos, imagens, músicas, códigos e vídeos a partir de um comando (prompt). A base desse processo é aprender a distribuição de probabilidade subjacente a um conjunto de dados de treinamento para, então, amostrar novos elementos plausíveis a partir dela. Essa tecnologia é a força motriz por trás de ferramentas como ChatGPT, DALL-E e Midjourney, representando um avanço significativo na capacidade criativa das máquinas e abrindo novas fronteiras para a inovação em diversas indústrias.
 
-- [Exemplo de pipeline de transcrição e tradução de música](notebooks/pipeline_traduz_musica_ingles_para_portugues.ipynb)
+- [Exemplo de pipeline de transcrição e tradução de música](notebooks/pipeline_traduz_musica_ingles_para_portugues.ipynb) | [Paper Técnico](https://github.com/topicos-computacao-aplicada/2026-1/blob/main/docs/paper_tecnico_truducao_musicas.md)
 - [Exemplo simplificado de Chatbot integrado a API do Google Gemini](https://github.com/topicos-computacao-aplicada/chatbot_cli_gemini)
 - [Exemplo de Chatbot usando o Langchain](https://github.com/topicos-computacao-aplicada/2025-2/tree/main/gemini_chatbot_lm)
 
