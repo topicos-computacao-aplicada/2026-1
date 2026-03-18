@@ -115,16 +115,16 @@ Este trabalho apresentou a implementação detalhada de um classificador de imag
 
 ## Referências
 
-[1] Y. LeCun, Y. Bengio, e G. Hinton, "Deep learning," *Nature*, vol. 521, no. 7553, pp. 436–444, 2015.
+[1] Y. LeCun, Y. Bengio, and G. Hinton, “Deep learning,” Nature, vol. 521, no. 7553, pp. 436–444, 2015. DOI: 10.1038/nature14539. Disponível em  [https://www.nature.com/articles/nature14539](https://www.nature.com/articles/nature14539)
 
-[2] S. J. Pan e Q. Yang, "A survey on transfer learning," *IEEE Transactions on Knowledge and Data Engineering*, vol. 22, no. 10, pp. 1345–1359, 2010.
+[2] S. J. Pan and Q. Yang, “A survey on transfer learning,” IEEE Transactions on Knowledge and Data Engineering, vol. 22, no. 10, pp. 1345–1359, 2010. DOI: 10.1109/TKDE.2009.191. Disponível em [https://home.cse.ust.hk/~qyang/Docs/2009/tkde_transfer_learning.pdf](https://home.cse.ust.hk/~qyang/Docs/2009/tkde_transfer_learning.pdf)
 
-[3] A. Krizhevsky, I. Sutskever, e G. E. Hinton, "ImageNet classification with deep convolutional neural networks," in *Advances in Neural Information Processing Systems*, 2012, pp. 1097–1105.
+[3] A. Krizhevsky, I. Sutskever, and G. E. Hinton, “ImageNet classification with deep convolutional neural networks,” in Advances in Neural Information Processing Systems (NeurIPS), 2012, pp. 1097–1105. Disponível em [https://proceedings.neurips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks](https://proceedings.neurips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks)
 
-[4] J. Yosinski et al., "How transferable are features in deep neural networks?," in *Advances in Neural Information Processing Systems*, 2014, pp. 3320–3328.
+[4] J. Yosinski et al., “How transferable are features in deep neural networks?,” in Advances in Neural Information Processing Systems (NeurIPS), 2014, pp. 3320–3328. Disponível em [https://papers.nips.cc/paper/5347-how-transferable-are-features-in-deep-neural-networks](https://papers.nips.cc/paper/5347-how-transferable-are-features-in-deep-neural-networks)
 
-[5] K. He, X. Zhang, S. Ren, e J. Sun, "Deep residual learning for image recognition," in *Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR)*, 2016, pp. 770–778.
+[5] K. He, X. Zhang, S. Ren, and J. Sun, “Deep residual learning for image recognition,” in Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 2016, pp. 770–778. DOI: 10.1109/CVPR.2016.90. Disponível em [https://www.cv-foundation.org/openaccess/content_cvpr_2016/html/He_Deep_Residual_Learning_CVPR_2016_paper.html](https://www.cv-foundation.org/openaccess/content_cvpr_2016/html/He_Deep_Residual_Learning_CVPR_2016_paper.html)
 
-[6] A. Paszke et al., "PyTorch: An imperative style, high-performance deep learning library," in *Advances in Neural Information Processing Systems*, vol. 32, 2019, pp. 8024–8035.
+[6] A. Paszke et al., “PyTorch: An imperative style, high-performance deep learning library,” in Advances in Neural Information Processing Systems, vol. 32, 2019, pp. 8024–8035. Disponível em [https://papers.neurips.cc/paper/9015-pytorch-an-imperative-style-high-performance-deep-learning-library](https://papers.neurips.cc/paper/9015-pytorch-an-imperative-style-high-performance-deep-learning-library)
 
-[7] O. Russakovsky et al., "ImageNet Large Scale Visual Recognition Challenge," *International Journal of Computer Vision*, vol. 115, no. 3, pp. 211–252, 2015.
+[7] O. Russakovsky et al., “ImageNet Large Scale Visual Recognition Challenge,” International Journal of Computer Vision, vol. 115, no. 3, pp. 211–252, 2015. DOI: 10.1007/s11263-015-0816-y. Disponível em ([preprint](https://arxiv.org/abs/1409.0575)) 
