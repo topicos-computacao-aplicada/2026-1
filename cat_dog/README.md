@@ -35,3 +35,7 @@ Arquivos gerados após a execução:
 O log do resultado da 1a. execução do main.py pode ser visualizado em [Resultados da Execução](resultado_execucao.md)
 
 Detalhes do arquivo classificador (cat_dog_classifier.pth) de imagens de cães e gatos disponível em [cat_dog_classifier](classificador_gerado.md)
+
+## Mais detalhes
+
+Mais detalhes no [paper técnico](https://github.com/topicos-computacao-aplicada/2026-1/blob/main/cat_dog/paper_tecnico.md) do protótipo.
