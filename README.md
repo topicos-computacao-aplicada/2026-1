@@ -33,6 +33,7 @@ Exemplo de Aplicação de Visão Computacional usando Deep Learning
 - [Prompt de Sistema e Prompt de Usuário](https://github.com/topicos-computacao-aplicada/2025-2/blob/main/docs/system_prompt_user_prompt.md)
 - [Segurança em Prompt Engineering](https://github.com/topicos-computacao-aplicada/2025-2/blob/main/docs/prompt.md)
 - [Paper Técnico sobre Segurança de Prompt](https://github.com/topicos-computacao-aplicada/2025-2/blob/main/docs/paper_seguranca_prompt.md)
+- [Resumo sobre Engenharia de Prompt](https://htmlpreview.github.io/?https://github.com/topicos-computacao-aplicada/2026-1/blob/main/html/prompt_engineering.html)
 
 ### RAG (Retrieval-Augmented Generation)
 
