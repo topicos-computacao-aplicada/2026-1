@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guia do Iniciante para Agentes de IA</title>
+  <meta name="description" content="Infográfico responsivo sobre Agentes de IA: conceitos, funcionamento, blocos fundamentais, ferramentas, projetos e roadmap de aprendizagem." />
+  <style>
+    :root {
+      --navy: #061541;
+      --navy-2: #08215f;
+      --blue: #0d63c7;
+      --cyan: #5ed7ff;
+      --green: #177a3a;
+      --green-soft: #e8f7ee;
+      --purple: #6535b5;
+      --purple-soft: #f0eafd;
+      --orange: #f6a623;
+      --red: #d63a3a;
+      --red-soft: #fff0f0;
+      --yellow-soft: #fff7d7;
+      --text: #1f2a44;
+      --muted: #5d6b82;
+      --bg: #f5f8fc;
+      --card: #ffffff;
+      --line: #d8e3f1;
+      --shadow: 0 16px 35px rgba(7, 26, 70, 0.10);
+      --radius: 22px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(94, 215, 255, 0.20), transparent 30%),
+        linear-gradient(180deg, #f8fbff 0%, #eef4fb 100%);
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    .page {
+      width: min(1220px, 100%);
+      margin: 0 auto;
+      padding: 22px;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      border-radius: 30px;
+      padding: clamp(28px, 5vw, 58px);
+      color: white;
+      background:
+        radial-gradient(circle at 82% 18%, rgba(94, 215, 255, 0.32), transparent 28%),
+        linear-gradient(135deg, #07133f 0%, #0a2e78 60%, #351572 100%);
+      box-shadow: var(--shadow);
+      min-height: 330px;
+      display: grid;
+      grid-template-columns: 1.3fr 0.7fr;
+      gap: 28px;
+      align-items: center;
+    }
+
+    .hero::before,
+    .hero::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .hero::before {
+      width: 360px;
+      height: 360px;
+      right: -150px;
+      top: -100px;
+    }
+
+    .hero::after {
+      width: 240px;
+      height: 240px;
+      left: -90px;
+      bottom: -130px;
+    }
+
+    .hero-content,
+    .robot-wrap {
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow {
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-size: clamp(0.85rem, 1.4vw, 1.15rem);
+      color: #ffffff;
+      opacity: 0.94;
+    }
+
+    h1 {
+      margin: 8px 0 14px;
+      font-size: clamp(3rem, 8vw, 6.7rem);
+      line-height: 0.88;
+      letter-spacing: -0.06em;
+      color: var(--cyan);
+      text-transform: uppercase;
+      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.20);
+    }
+
+    .subtitle {
+      display: inline-block;
+      padding: 12px 20px;
+      border-radius: 12px;
+      background: linear-gradient(90deg, #5c42c7, #8269ee);
+      font-size: clamp(1rem, 2vw, 1.4rem);
+      font-weight: 800;
+      margin-bottom: 18px;
+    }
+
+    .intro {
+      max-width: 710px;
+      font-size: clamp(1rem, 1.9vw, 1.3rem);
+      color: #eaf6ff;
+      margin: 0;
+    }
+
+    .robot {
+      width: min(350px, 100%);
+      margin-inline: auto;
+      aspect-ratio: 1 / 1;
+      position: relative;
+      display: grid;
+      place-items: center;
+    }
+
+    .robot-head {
+      width: 165px;
+      height: 118px;
+      background: linear-gradient(145deg, #ffffff, #dcecff);
+      border-radius: 42px;
+      position: relative;
+      box-shadow: inset -10px -12px 18px rgba(11, 64, 148, 0.10), 0 22px 45px rgba(0, 0, 0, 0.25);
+      border: 4px solid rgba(255, 255, 255, 0.5);
+    }
+
+    .robot-head::before {
+      content: "";
+      width: 72px;
+      height: 42px;
+      background: #07133f;
+      border-radius: 22px;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -45%);
+      box-shadow: 0 0 0 5px rgba(24, 110, 210, 0.18);
+    }
+
+    .robot-head::after {
+      content: "•  •";
+      color: var(--cyan);
+      font-size: 46px;
+      letter-spacing: 8px;
+      position: absolute;
+      left: 50%;
+      top: 35px;
+      transform: translateX(-50%);
+    }
+
+    .antenna {
+      position: absolute;
+      width: 8px;
+      height: 58px;
+      background: #dbeafe;
+      top: 4px;
+      left: 50%;
+      transform: translateX(-50%) rotate(8deg);
+      border-radius: 20px;
+    }
+
+    .antenna::after {
+      content: "";
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #ffffff;
+      position: absolute;
+      left: -7px;
+      top: -16px;
+      box-shadow: 0 0 18px rgba(255, 255, 255, 0.9);
+    }
+
+    .bot-body {
+      position: absolute;
+      width: 195px;
+      height: 138px;
+      background: linear-gradient(145deg, #ffffff, #d8ebff);
+      border-radius: 54px 54px 38px 38px;
+      top: 162px;
+      box-shadow: inset -12px -16px 18px rgba(11, 64, 148, 0.10);
+    }
+
+    .float-icon {
+      position: absolute;
+      display: grid;
+      place-items: center;
+      width: 58px;
+      height: 58px;
+      border-radius: 16px;
+      font-size: 1.7rem;
+      color: white;
+      box-shadow: 0 12px 22px rgba(0, 0, 0, 0.24);
+    }
+
+    .f1 { background: #5c42c7; top: 12px; left: 12px; }
+    .f2 { background: #15a4d8; top: 122px; left: 0; }
+    .f3 { background: #2aa76f; right: 18px; top: 55px; }
+    .f4 { background: #f3a51f; right: 6px; bottom: 78px; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 22px;
+      margin-top: 22px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .span-4 { grid-column: span 4; }
+    .span-5 { grid-column: span 5; }
+    .span-6 { grid-column: span 6; }
+    .span-7 { grid-column: span 7; }
+    .span-12 { grid-column: span 12; }
+
+    .card-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 18px;
+      color: white;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      font-size: 1rem;
+    }
+
+    .card-title.blue { background: linear-gradient(90deg, #0b57b8, #0973d8); }
+    .card-title.green { background: linear-gradient(90deg, #11733a, #21854a); }
+    .card-title.purple { background: linear-gradient(90deg, #5631a9, #743ecb); }
+    .card-title.red { background: linear-gradient(90deg, #c92d2d, #e14b4b); }
+
+    .num {
+      flex: 0 0 auto;
+      display: inline-grid;
+      place-items: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.24);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      font-weight: 900;
+    }
+
+    .card-body {
+      padding: 22px;
+    }
+
+    .compare {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: start;
+      gap: 16px;
+      text-align: center;
+    }
+
+    .compare h3 {
+      margin: 0 0 10px;
+      font-size: 1.35rem;
+    }
+
+    .big-icon {
+      font-size: 3.4rem;
+      margin: 8px 0;
+    }
+
+    .vs {
+      width: 48px;
+      height: 48px;
+      margin-top: 60px;
+      border-radius: 50%;
+      background: var(--blue);
+      color: white;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+    }
+
+    .example {
+      margin-top: 18px;
+      background: #edf7ff;
+      border: 1px solid #b8dbff;
+      border-radius: 14px;
+      padding: 14px 16px;
+      color: #203250;
+    }
+
+    .example strong {
+      color: #0b57b8;
+    }
+
+    .icon-list {
+      display: grid;
+      gap: 16px;
+    }
+
+    .icon-item {
+      display: grid;
+      grid-template-columns: 46px 1fr;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .icon-item .ico {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: #eef5ff;
+      font-size: 1.65rem;
+    }
+
+    .icon-item p {
+      margin: 0;
+    }
+
+    .icon-item strong {
+      color: #0d376d;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    .step {
+      position: relative;
+      text-align: center;
+      padding: 14px 8px;
+      border-radius: 16px;
+      background: #f8fbff;
+      border: 1px solid #e2eaf5;
+      min-height: 145px;
+    }
+
+    .step:not(:last-child)::after {
+      content: "→";
+      position: absolute;
+      right: -14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--blue);
+      font-weight: 900;
+      font-size: 1.5rem;
+      z-index: 2;
+    }
+
+    .step-num {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      background: var(--blue);
+      color: white;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 8px;
+      font-weight: 900;
+    }
+
+    .step .ico {
+      font-size: 2rem;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .step p {
+      margin: 0;
+      font-weight: 700;
+    }
+
+    .two-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .mini-card {
+      border: 1px solid #e3eaf4;
+      border-radius: 18px;
+      padding: 18px;
+      background: #fbfdff;
+      text-align: center;
+    }
+
+    .mini-card h3 {
+      margin: 0 0 8px;
+      color: #0d376d;
+    }
+
+    .pill {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-weight: 800;
+      background: var(--purple-soft);
+      color: var(--purple);
+    }
+
+    .pill.green {
+      background: var(--green-soft);
+      color: var(--green);
+    }
+
+    .note {
+      margin-top: 16px;
+      text-align: center;
+      font-weight: 800;
+      padding: 12px;
+      border-radius: 14px;
+      background: #f4f0ff;
+      color: #321b6d;
+    }
+
+    .workflow,
+    .ideas {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+    }
+
+    .ideas {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .tile {
+      padding: 16px 10px;
+      text-align: center;
+      background: #f8fbff;
+      border: 1px solid #e2eaf5;
+      border-radius: 16px;
+    }
+
+    .tile .ico {
+      display: block;
+      font-size: 2.5rem;
+      margin-bottom: 8px;
+    }
+
+    .tile strong {
+      display: block;
+      color: #0d376d;
+      margin-bottom: 4px;
+    }
+
+    .tile small {
+      color: var(--muted);
+    }
+
+    .tools {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      border: 1px solid #dfe9f5;
+      border-radius: 18px;
+      overflow: hidden;
+    }
+
+    .tool-col {
+      padding: 20px;
+      background: #fbfffc;
+    }
+
+    .tool-col + .tool-col {
+      border-left: 1px dashed #b8cbdc;
+      background: #fbfdff;
+    }
+
+    .tool-col h3 {
+      margin: 0 0 12px;
+      color: var(--green);
+    }
+
+    ul {
+      margin: 10px 0 0 20px;
+      padding: 0;
+    }
+
+    li {
+      margin: 8px 0;
+    }
+
+    .soft-label {
+      margin-top: 14px;
+      background: var(--green-soft);
+      color: var(--green);
+      border-radius: 12px;
+      padding: 10px;
+      text-align: center;
+      font-weight: 900;
+    }
+
+    .pipeline {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      align-items: stretch;
+    }
+
+    .pipeline .tile {
+      position: relative;
+      min-height: 145px;
+      display: grid;
+      place-items: center;
+    }
+
+    .pipeline .tile:not(:last-child)::after {
+      content: "→";
+      position: absolute;
+      right: -19px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--purple);
+      font-size: 1.7rem;
+      font-weight: 900;
+      z-index: 3;
+    }
+
+    .roadmap {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+    }
+
+    .road-step {
+      text-align: center;
+      padding: 16px 10px;
+      border-radius: 16px;
+      background: #f8fbff;
+      border: 1px solid #e2eaf5;
+      position: relative;
+    }
+
+    .road-step:not(:last-child)::after {
+      content: "→";
+      position: absolute;
+      right: -14px;
+      top: 36px;
+      color: var(--blue);
+      font-weight: 900;
+      font-size: 1.35rem;
+    }
+
+    .road-step .ico {
+      font-size: 2.2rem;
+      display: block;
+      margin: 8px 0;
+    }
+
+    .road-step h3 {
+      font-size: 1rem;
+      margin: 4px 0 8px;
+      color: #0d376d;
+    }
+
+    .road-step p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .highlight {
+      margin-top: 16px;
+      background: var(--yellow-soft);
+      border: 1px solid #f3d372;
+      color: #725100;
+      border-radius: 14px;
+      padding: 12px;
+      font-weight: 900;
+      text-align: center;
+    }
+
+    .mistakes {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .mistakes li {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 10px;
+      align-items: start;
+      margin: 12px 0;
+    }
+
+    .x {
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--red);
+      color: white;
+      font-weight: 900;
+      font-size: 0.86rem;
+      line-height: 1;
+    }
+
+    .warning-note {
+      margin-top: 18px;
+      border-radius: 16px;
+      background: #fff2e8;
+      border: 1px solid #ffc7a3;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-weight: 900;
+      color: #7d3814;
+    }
+
+    .footer {
+      margin-top: 22px;
+      padding: 24px;
+      border-radius: 24px;
+      background: linear-gradient(90deg, #061541, #082d6f);
+      color: white;
+      text-align: center;
+      box-shadow: var(--shadow);
+      font-weight: 800;
+      font-size: clamp(1rem, 2vw, 1.35rem);
+    }
+
+    .footer span {
+      color: var(--cyan);
+      display: block;
+      margin-top: 4px;
+    }
+
+    @media (max-width: 1050px) {
+      .span-4,
+      .span-5,
+      .span-6,
+      .span-7 {
+        grid-column: span 12;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .robot {
+        max-width: 260px;
+      }
+
+      .steps,
+      .workflow,
+      .roadmap {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .step:not(:last-child)::after,
+      .road-step:not(:last-child)::after {
+        display: none;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        padding: 12px;
+      }
+
+      .hero {
+        border-radius: 22px;
+        padding: 28px 20px;
+      }
+
+      h1 {
+        font-size: clamp(2.5rem, 14vw, 4rem);
+      }
+
+      .compare,
+      .two-cols,
+      .tools,
+      .pipeline,
+      .ideas {
+        grid-template-columns: 1fr;
+      }
+
+      .vs {
+        margin: 0 auto;
+      }
+
+      .steps,
+      .workflow,
+      .roadmap {
+        grid-template-columns: 1fr;
+      }
+
+      .pipeline .tile:not(:last-child)::after {
+        content: "↓";
+        right: 50%;
+        top: auto;
+        bottom: -26px;
+        transform: translateX(50%);
+      }
+
+      .tool-col + .tool-col {
+        border-left: 0;
+        border-top: 1px dashed #b8cbdc;
+      }
+
+      .card-body {
+        padding: 18px;
+      }
+
+      .card-title {
+        font-size: 0.92rem;
+      }
+    }
+
+    @media print {
+      body {
+        background: white;
+      }
+
+      .page {
+        width: 100%;
+        padding: 0;
+      }
+
+      .card,
+      .hero,
+      .footer {
+        box-shadow: none;
+        break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <section class="hero" aria-label="Cabeçalho do infográfico">
+      <div class="hero-content">
+        <div class="eyebrow">Guia do iniciante para</div>
+        <h1>Agentes de IA</h1>
+        <div class="subtitle">Do zero ao seu primeiro agente inteligente</div>
+        <p class="intro">
+          Agentes de IA são sistemas capazes de perseguir objetivos, planejar etapas, usar ferramentas,
+          lembrar contexto e executar ações para concluir tarefas.
+        </p>
+      </div>
+
+      <div class="robot-wrap" aria-hidden="true">
+        <div class="robot">
+          <div class="float-icon f1">💬</div>
+          <div class="float-icon f2">🌐</div>
+          <div class="float-icon f3">✅</div>
+          <div class="float-icon f4">✉️</div>
+          <div class="antenna"></div>
+          <div class="robot-head"></div>
+          <div class="bot-body"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <article class="card span-5">
+        <div class="card-title blue"><span class="num">1</span> O que são agentes de IA?</div>
+        <div class="card-body">
+          <div class="compare">
+            <div>
+              <h3>Chatbot</h3>
+              <div class="big-icon">💬</div>
+              <p>Responde perguntas e gera texto.</p>
+            </div>
+            <div class="vs">VS</div>
+            <div>
+              <h3>Agente de IA</h3>
+              <div class="big-icon">🤖</div>
+              <p>Planeja, usa ferramentas, toma decisões e executa tarefas.</p>
+            </div>
+          </div>
+          <div class="example">
+            <strong>Exemplo:</strong> em uma viagem, um chatbot sugere o que levar. Um agente monta checklist,
+            pesquisa destinos, organiza o roteiro e acompanha as próximas etapas.
+          </div>
+        </div>
+      </article>
+
+      <article class="card span-3">
+        <div class="card-title green"><span class="num">2</span> Por que importam?</div>
+        <div class="card-body">
+          <div class="icon-list">
+            <div class="icon-item">
+              <div class="ico">⚙️</div>
+              <p>Ajudam na automação, no planejamento e na tomada de decisão.</p>
+            </div>
+            <div class="icon-item">
+              <div class="ico">🎯</div>
+              <p>São úteis em suporte, pesquisa, agendamento e fluxos de trabalho.</p>
+            </div>
+            <div class="icon-item">
+              <div class="ico">💡</div>
+              <p>São uma competência importante para o futuro da IA.</p>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card span-4">
+        <div class="card-title purple"><span class="num">3</span> Blocos fundamentais do agente</div>
+        <div class="card-body">
+          <div class="icon-list">
+            <div class="icon-item"><div class="ico">🚩</div><p><strong>Objetivos</strong> — o que o agente precisa alcançar.</p></div>
+            <div class="icon-item"><div class="ico">📋</div><p><strong>Planejamento</strong> — definição das etapas.</p></div>
+            <div class="icon-item"><div class="ico">🔧</div><p><strong>Uso de ferramentas</strong> — busca, arquivos, APIs e outros recursos.</p></div>
+            <div class="icon-item"><div class="ico">🗄️</div><p><strong>Memória</strong> — contexto e histórico.</p></div>
+            <div class="icon-item"><div class="ico">🧠</div><p><strong>Tomada de decisão</strong> — escolher a próxima ação.</p></div>
+            <div class="icon-item"><div class="ico">▶️</div><p><strong>Execução de tarefas</strong> — realizar a ação.</p></div>
+            <div class="icon-item"><div class="ico">👤</div><p><strong>Humano no circuito</strong> — validação, revisão ou aprovação.</p></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card span-7">
+        <div class="card-title blue"><span class="num">4</span> Como um agente funciona: passo a passo</div>
+        <div class="card-body">
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><span class="ico">📝</span><p>Recebe uma tarefa</p></div>
+            <div class="step"><div class="step-num">2</div><span class="ico">☑️</span><p>Divide em subtarefas</p></div>
+            <div class="step"><div class="step-num">3</div><span class="ico">🔧</span><p>Escolhe ferramenta ou ação</p></div>
+            <div class="step"><div class="step-num">4</div><span class="ico">▶️</span><p>Executa</p></div>
+            <div class="step"><div class="step-num">5</div><span class="ico">🔎</span><p>Verifica o resultado</p></div>
+            <div class="step"><div class="step-num">6</div><span class="ico">📈</span><p>Melhora com feedback</p></div>
+          </div>
+          <div class="example">
+            <strong>Exemplo:</strong> agente de pesquisa → busca fontes → extrai pontos-chave → resume → refina com feedback.
+          </div>
+        </div>
+      </article>
+
+      <article class="card span-5">
+        <div class="card-title purple"><span class="num">5</span> LLMs x Agentes de IA</div>
+        <div class="card-body">
+          <div class="two-cols">
+            <div class="mini-card">
+              <div class="big-icon">🧠</div>
+              <h3>LLM</h3>
+              <p>Entende e gera linguagem.</p>
+              <span class="pill">Pode sugerir</span>
+            </div>
+            <div class="mini-card">
+              <div class="big-icon">🤖</div>
+              <h3>Agente de IA</h3>
+              <p>Usa LLM + ferramentas + memória + planejamento + ação.</p>
+              <span class="pill green">Pode sugerir e agir</span>
+            </div>
+          </div>
+          <div class="note">Os LLMs são o cérebro; os agentes são os executores.</div>
+        </div>
+      </article>
+
+      <article class="card span-6">
+        <div class="card-title blue"><span class="num">6</span> Fluxos comuns em agentes</div>
+        <div class="card-body">
+          <div class="workflow">
+            <div class="tile"><span class="ico">🧭</span><strong>Planejador</strong><small>Cria a estratégia e as etapas.</small></div>
+            <div class="tile"><span class="ico">▶️</span><strong>Executor</strong><small>Realiza as ações previstas.</small></div>
+            <div class="tile"><span class="ico">🔁</span><strong>Loop de reflexão</strong><small>Revisa o resultado e melhora.</small></div>
+            <div class="tile"><span class="ico">🧠</span><strong>ReAct</strong><small>Raciocínio e ação em conjunto.</small></div>
+            <div class="tile"><span class="ico">🧩</span><strong>Tarefas multi-etapas</strong><small>Resolve problemas em partes menores.</small></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card span-6">
+        <div class="card-title green"><span class="num">7</span> Ferramentas para começar</div>
+        <div class="card-body">
+          <div class="tools">
+            <div class="tool-col">
+              <h3>🧩 A. No-code / Low-code</h3>
+              <ul>
+                <li>Construtores visuais</li>
+                <li>Plataformas drag-and-drop</li>
+                <li>Fáceis de aprender e testar</li>
+              </ul>
+              <div class="soft-label">Melhor para aprender e criar demos rápidas</div>
+            </div>
+            <div class="tool-col">
+              <h3>💻 B. Baseadas em código</h3>
+              <ul>
+                <li>Maior personalização</li>
+                <li>Conexão com APIs</li>
+                <li>Projetos mais flexíveis e escaláveis</li>
+              </ul>
+              <div class="soft-label">Melhor para soluções avançadas</div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card span-5">
+        <div class="card-title blue"><span class="num">8</span> Ideias de primeiros projetos</div>
+        <div class="card-body">
+          <div class="ideas">
+            <div class="tile"><span class="ico">❓</span><strong>Assistente de FAQ</strong></div>
+            <div class="tile"><span class="ico">🧳</span><strong>Planejador de viagens</strong></div>
+            <div class="tile"><span class="ico">✅</span><strong>Assistente de tarefas</strong></div>
+            <div class="tile"><span class="ico">🔍</span><strong>Agente de pesquisa</strong></div>
+            <div class="tile"><span class="ico">⚡</span><strong>Bot de produtividade</strong></div>
+            <div class="tile"><span class="ico">🎧</span><strong>Agente de suporte</strong></div>
+          </div>
+          <div class="highlight">⭐ Comece pequeno. Resolva um problema simples. Aprenda construindo!</div>
+        </div>
+      </article>
+
+      <article class="card span-7">
+        <div class="card-title purple"><span class="num">9</span> Exemplo: agente planejador de viagens</div>
+        <div class="card-body">
+          <div class="pipeline">
+            <div class="tile"><span class="ico">🌐</span><strong>Sugere destinos</strong></div>
+            <div class="tile"><span class="ico">🗓️</span><strong>Cria roteiro</strong></div>
+            <div class="tile"><span class="ico">🧳</span><strong>Sugere lista de bagagem</strong></div>
+            <div class="tile"><span class="ico">💰</span><strong>Estima orçamento e dicas</strong></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card span-7">
+        <div class="card-title blue"><span class="num">10</span> Roteiro de aprendizado: iniciante</div>
+        <div class="card-body">
+          <div class="roadmap">
+            <div class="road-step">
+              <div class="step-num">1</div><span class="ico">📖</span>
+              <h3>Aprenda o básico</h3>
+              <p>Conceitos de IA, LLMs, prompts e ferramentas.</p>
+            </div>
+            <div class="road-step">
+              <div class="step-num">2</div><span class="ico">🧩</span>
+              <h3>Explore no-code</h3>
+              <p>Crie agentes simples e entenda fluxos.</p>
+            </div>
+            <div class="road-step">
+              <div class="step-num">3</div><span class="ico">💻</span>
+              <h3>Construa projetos</h3>
+              <p>Teste ideias e aprenda com a prática.</p>
+            </div>
+            <div class="road-step">
+              <div class="step-num">4</div><span class="ico">⌨️</span>
+              <h3>Passe para código</h3>
+              <p>Customize, conecte APIs e evolua.</p>
+            </div>
+            <div class="road-step">
+              <div class="step-num">5</div><span class="ico">📈</span>
+              <h3>Continue melhorando</h3>
+              <p>Aprenda padrões avançados e casos reais.</p>
+            </div>
+          </div>
+          <div class="highlight">⭐ Consistência + prática = domínio</div>
+        </div>
+      </article>
+
+      <article class="card span-5">
+        <div class="card-title red"><span class="num">11</span> Erros comuns a evitar</div>
+        <div class="card-body">
+          <ul class="mistakes">
+            <li><span class="x">×</span><span>Tentar criar agentes complexos cedo demais.</span></li>
+            <li><span class="x">×</span><span>Ignorar bons prompts e instruções claras.</span></li>
+            <li><span class="x">×</span><span>Não testar nem revisar as saídas.</span></li>
+            <li><span class="x">×</span><span>Pular os fundamentos de IA e fluxos de trabalho.</span></li>
+            <li><span class="x">×</span><span>Não usar humano no circuito quando necessário.</span></li>
+          </ul>
+          <div class="warning-note">
+            <span style="font-size: 2rem;">💡</span>
+            <span>Comece simples, teste com frequência e melhore continuamente.</span>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <footer class="footer">
+      🚀 Agentes de IA são uma tendência importante.
+      <span>Comece sua jornada hoje e construa sistemas que pensam, agem e entregam resultados. 🏆</span>
+    </footer>
+  </main>
+</body>
+</html>
