@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Infográfico Responsivo — RAG com LLMs</title>
+  <meta name="description" content="Infográfico responsivo sobre Retrieval-Augmented Generation (RAG) com LLMs para aplicações institucionais, corporativas e acadêmicas." />
+  <style>
+    :root {
+      --navy: #08234a;
+      --blue: #155bd5;
+      --blue-2: #2f80ed;
+      --teal: #078f8f;
+      --green: #1d8f51;
+      --purple: #7a3fe0;
+      --orange: #e46d1a;
+      --red: #cf3c3c;
+      --ink: #152238;
+      --muted: #5f6f86;
+      --line: #d9e3f0;
+      --soft: #f4f8fd;
+      --card: #ffffff;
+      --shadow: 0 12px 30px rgba(8, 35, 74, 0.09);
+      --radius: 22px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 8% 4%, rgba(21, 91, 213, 0.12), transparent 24rem),
+        radial-gradient(circle at 95% 2%, rgba(7, 143, 143, 0.13), transparent 22rem),
+        linear-gradient(180deg, #f7fbff 0%, #eef4fb 100%);
+      line-height: 1.55;
+    }
+
+    .page {
+      width: min(1480px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 56px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.35fr 0.65fr;
+      gap: 22px;
+      align-items: stretch;
+      background: rgba(255,255,255,0.88);
+      border: 1px solid rgba(217, 227, 240, 0.9);
+      border-radius: 30px;
+      padding: clamp(24px, 4vw, 48px);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -120px;
+      top: -120px;
+      width: 320px;
+      height: 320px;
+      background: rgba(21, 91, 213, 0.08);
+      border-radius: 50%;
+      z-index: 0;
+    }
+
+    .hero > * { position: relative; z-index: 1; }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--teal);
+      font-size: 0.95rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-size: clamp(3.2rem, 7vw, 7rem);
+      line-height: 0.9;
+      margin: 0 0 14px;
+      color: var(--navy);
+      letter-spacing: -0.06em;
+    }
+
+    .subtitle {
+      font-size: clamp(1.3rem, 2.3vw, 2.2rem);
+      color: var(--blue);
+      font-weight: 800;
+      line-height: 1.12;
+      max-width: 980px;
+      margin: 0 0 16px;
+    }
+
+    .lead {
+      font-size: clamp(1rem, 1.3vw, 1.25rem);
+      color: var(--muted);
+      max-width: 980px;
+      margin: 0;
+    }
+
+    .hero-visual {
+      min-height: 260px;
+      display: grid;
+      place-items: center;
+      border-radius: 26px;
+      background:
+        linear-gradient(135deg, rgba(21,91,213,0.10), rgba(7,143,143,0.12)),
+        #f7fbff;
+      border: 1px solid var(--line);
+      padding: 20px;
+    }
+
+    .rag-chain {
+      width: min(100%, 360px);
+      aspect-ratio: 1;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      align-items: center;
+    }
+
+    .node {
+      min-height: 88px;
+      border-radius: 24px;
+      background: white;
+      border: 1px solid var(--line);
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 10px;
+      box-shadow: 0 8px 18px rgba(8,35,74,.08);
+      font-weight: 800;
+      color: var(--navy);
+    }
+
+    .node.big {
+      grid-column: span 3;
+      min-height: 96px;
+      background: var(--navy);
+      color: white;
+      font-size: 1.1rem;
+    }
+
+    .node .icon { font-size: 2rem; display:block; margin-bottom: 4px; }
+
+    .section {
+      margin-top: 24px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .section-title {
+      background: var(--navy);
+      color: #fff;
+      padding: 15px 22px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: clamp(1.05rem, 1.4vw, 1.35rem);
+      font-weight: 900;
+      letter-spacing: .02em;
+      text-transform: uppercase;
+    }
+
+    .section-title .num {
+      display: inline-grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.16);
+      border: 1px solid rgba(255,255,255,.35);
+      flex: 0 0 auto;
+    }
+
+    .section-body { padding: clamp(18px, 2.5vw, 30px); }
+
+    .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
+    .grid-auto { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 18px; }
+
+    .card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px;
+      min-height: 100%;
+      box-shadow: 0 6px 16px rgba(8,35,74,.05);
+    }
+
+    .card.soft { background: var(--soft); }
+    .card.red { background: #fff6f6; border-color: #f0c9c9; }
+    .card.green { background: #f3fbf6; border-color: #bfdfcc; }
+    .card.blue { background: #f4f8ff; border-color: #cbdcfb; }
+    .card.orange { background: #fff7ef; border-color: #f5d4bb; }
+    .card.purple { background: #f8f4ff; border-color: #dac8ff; }
+    .card.teal { background: #f2fbfb; border-color: #c0e1e1; }
+
+    h2, h3, h4 { margin-top: 0; color: var(--navy); }
+    h3 { font-size: 1.25rem; margin-bottom: 10px; }
+    h4 { font-size: 1.05rem; margin-bottom: 8px; }
+    p { margin: 0 0 12px; }
+    p:last-child { margin-bottom: 0; }
+
+    ul { margin: 0; padding-left: 1.15rem; }
+    li { margin: 0.4rem 0; }
+
+    .icon-title {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .icon-badge {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      color: white;
+      font-size: 1.35rem;
+      font-weight: 900;
+      flex: 0 0 auto;
+      background: var(--blue);
+    }
+
+    .icon-badge.teal { background: var(--teal); }
+    .icon-badge.green { background: var(--green); }
+    .icon-badge.purple { background: var(--purple); }
+    .icon-badge.orange { background: var(--orange); }
+    .icon-badge.red { background: var(--red); }
+    .icon-badge.navy { background: var(--navy); }
+
+    .highlight {
+      border-left: 6px solid var(--teal);
+      background: #f0fbfb;
+      padding: 16px 18px;
+      border-radius: 16px;
+      color: #12314a;
+      font-weight: 750;
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 13px;
+      align-items: stretch;
+    }
+
+    .flow-item {
+      position: relative;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
+      text-align: center;
+      min-height: 126px;
+      display: grid;
+      align-content: center;
+      gap: 8px;
+    }
+
+    .flow-item:not(:last-child)::after {
+      content: "→";
+      position: absolute;
+      right: -14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--blue);
+      font-weight: 900;
+      font-size: 1.25rem;
+      z-index: 2;
+    }
+
+    .flow-icon { font-size: 2.2rem; line-height: 1; }
+    .flow-title { color: var(--navy); font-weight: 900; line-height: 1.15; }
+    .flow-text { color: var(--muted); font-size: .92rem; }
+
+    .pipeline-wide .flow-item:nth-child(1) { border-top: 5px solid var(--blue); }
+    .pipeline-wide .flow-item:nth-child(2) { border-top: 5px solid var(--teal); }
+    .pipeline-wide .flow-item:nth-child(3) { border-top: 5px solid var(--green); }
+    .pipeline-wide .flow-item:nth-child(4) { border-top: 5px solid var(--purple); }
+    .pipeline-wide .flow-item:nth-child(5) { border-top: 5px solid var(--orange); }
+    .pipeline-wide .flow-item:nth-child(6) { border-top: 5px solid var(--blue-2); }
+
+    .diagram {
+      border-radius: 20px;
+      padding: 20px;
+      background: #f8fbff;
+      border: 1px solid var(--line);
+    }
+
+    .rag-flow {
+      display: grid;
+      gap: 12px;
+    }
+
+    .rag-flow .step {
+      display: grid;
+      grid-template-columns: 58px 1fr;
+      gap: 12px;
+      align-items: center;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: white;
+      padding: 12px;
+    }
+
+    .step-number {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: white;
+      font-weight: 900;
+      background: var(--blue);
+    }
+
+    .step:nth-child(2) .step-number { background: var(--teal); }
+    .step:nth-child(3) .step-number { background: var(--green); }
+    .step:nth-child(4) .step-number { background: var(--purple); }
+    .step:nth-child(5) .step-number { background: var(--orange); }
+    .step:nth-child(6) .step-number { background: var(--navy); }
+
+    .code {
+      background: #071832;
+      color: #e8f1ff;
+      border-radius: 16px;
+      padding: 16px;
+      overflow-x: auto;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: clamp(.78rem, .95vw, .95rem);
+      line-height: 1.6;
+      white-space: pre;
+      border: 1px solid #1d3b6b;
+    }
+
+    .mini-table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      font-size: .95rem;
+    }
+
+    .mini-table th,
+    .mini-table td {
+      text-align: left;
+      padding: 13px 14px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+
+    .mini-table th { background: #eff5ff; color: var(--navy); }
+    .mini-table tr:last-child td { border-bottom: 0; }
+
+    .vector-space {
+      height: 270px;
+      border-radius: 20px;
+      background:
+        linear-gradient(#dfe9f6 1px, transparent 1px),
+        linear-gradient(90deg, #dfe9f6 1px, transparent 1px),
+        #ffffff;
+      background-size: 36px 36px;
+      border: 1px solid var(--line);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .axis-x, .axis-y {
+      position: absolute;
+      background: #8ea4bd;
+    }
+    .axis-x { left: 28px; right: 20px; bottom: 34px; height: 2px; }
+    .axis-y { left: 34px; top: 20px; bottom: 28px; width: 2px; }
+
+    .dot {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      box-shadow: 0 0 0 6px rgba(21,91,213,.08);
+    }
+    .dot.blue { background: var(--blue); }
+    .dot.green { background: var(--green); }
+    .dot.orange { background: var(--orange); }
+    .dot.purple { background: var(--purple); }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 16px;
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: .94rem;
+    }
+    .legend span::before {
+      content: "";
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-right: 7px;
+      vertical-align: middle;
+      background: var(--blue);
+    }
+    .legend span:nth-child(2)::before { background: var(--green); }
+    .legend span:nth-child(3)::before { background: var(--orange); }
+    .legend span:nth-child(4)::before { background: var(--purple); }
+
+    .tag-row { display: flex; flex-wrap: wrap; gap: 10px; }
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 13px;
+      border-radius: 999px;
+      background: #eef5ff;
+      color: var(--navy);
+      border: 1px solid #cadcf6;
+      font-weight: 750;
+      font-size: .92rem;
+    }
+
+    .k-card {
+      display: grid;
+      gap: 7px;
+      border-radius: 18px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      background: white;
+    }
+    .k-card strong { font-size: 1.4rem; color: var(--navy); }
+    .k-card.top3 { border-left: 7px solid var(--blue); }
+    .k-card.top5 { border-left: 7px solid var(--green); }
+    .k-card.top10 { border-left: 7px solid var(--orange); }
+
+    .vs {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 12px;
+      align-items: stretch;
+    }
+    .vs-badge {
+      align-self: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--navy);
+      color: white;
+      font-weight: 900;
+    }
+
+    .prompt-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(280px, .8fr);
+      gap: 22px;
+    }
+
+    .metrics .card { text-align: center; }
+    .metric-icon { font-size: 2.2rem; margin-bottom: 8px; }
+
+    .case-flow {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(150px, 1fr)) minmax(250px, 1.3fr);
+      gap: 14px;
+    }
+
+    .case-step {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
+      background: white;
+      position: relative;
+    }
+    .case-step:not(:last-child)::after {
+      content: "→";
+      position: absolute;
+      right: -12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--blue);
+      font-weight: 900;
+      font-size: 1.1rem;
+    }
+    .case-step .small-num {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: inline-grid;
+      place-items: center;
+      color: #fff;
+      background: var(--blue);
+      font-weight: 900;
+      margin-bottom: 8px;
+    }
+    .case-step:nth-child(2) .small-num { background: var(--teal); }
+    .case-step:nth-child(3) .small-num { background: var(--green); }
+    .case-step:nth-child(4) .small-num { background: var(--purple); }
+    .case-step:nth-child(5) .small-num { background: var(--orange); }
+
+    .footer {
+      margin-top: 24px;
+      background: var(--navy);
+      color: #fff;
+      border-radius: 24px;
+      padding: 26px;
+      text-align: center;
+      font-size: clamp(1.05rem, 2vw, 1.8rem);
+      font-weight: 900;
+      letter-spacing: .06em;
+      box-shadow: var(--shadow);
+    }
+
+    .print-note {
+      margin-top: 12px;
+      text-align: center;
+      color: var(--muted);
+      font-size: .9rem;
+    }
+
+    @media (max-width: 1120px) {
+      .hero, .grid-2, .prompt-grid { grid-template-columns: 1fr; }
+      .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .case-flow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .flow-item:not(:last-child)::after,
+      .case-step:not(:last-child)::after { display: none; }
+    }
+
+    @media (max-width: 720px) {
+      .page { width: min(100% - 20px, 1480px); padding-top: 10px; }
+      .hero { padding: 22px; border-radius: 22px; }
+      h1 { font-size: 3.15rem; }
+      .grid-3, .grid-4, .case-flow, .vs { grid-template-columns: 1fr; }
+      .section-title { align-items: flex-start; }
+      .flow { grid-template-columns: 1fr; }
+      .mini-table { font-size: .86rem; }
+      .vector-space { height: 220px; }
+    }
+
+    @media print {
+      body { background: white; }
+      .page { width: 100%; padding: 0; }
+      .section, .hero, .footer { box-shadow: none; break-inside: avoid; }
+      .section { margin-top: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <div>
+        <div class="eyebrow">✦ Infográfico técnico</div>
+        <h1>RAG com LLMs</h1>
+        <p class="subtitle">Retrieval-Augmented Generation para aplicações institucionais, corporativas e acadêmicas</p>
+        <p class="lead">Como combinar recuperação semântica e geração de linguagem para criar respostas contextualizadas, auditáveis e com menos alucinações.</p>
+      </div>
+      <div class="hero-visual" aria-label="Diagrama visual de RAG">
+        <div class="rag-chain">
+          <div class="node"><span class="icon">📄</span>Dados</div>
+          <div class="node"><span class="icon">🔎</span>Busca</div>
+          <div class="node"><span class="icon">🧠</span>LLM</div>
+          <div class="node big">Resposta com evidência</div>
+        </div>
+      </div>
+    </header>
+
+    <section class="section">
+      <div class="section-title"><span class="num">1</span>Por que RAG?</div>
+      <div class="section-body">
+        <div class="grid-3">
+          <div class="card red">
+            <h3>Problemas dos LLMs puros</h3>
+            <div class="icon-title"><span class="icon-badge red">📅</span><div><strong>Conhecimento estático</strong><br><span class="muted">LLMs não sabem de eventos após o treinamento.</span></div></div>
+            <div class="icon-title"><span class="icon-badge red">📕</span><div><strong>Sem acesso a documentos internos</strong><br>Políticas, normas e relatórios ficam fora do modelo.</div></div>
+            <div class="icon-title"><span class="icon-badge red">⚠️</span><div><strong>Alucinações</strong><br>Podem gerar respostas plausíveis, mas incorretas.</div></div>
+            <div class="icon-title"><span class="icon-badge red">📋</span><div><strong>Pouca rastreabilidade</strong><br>Dificuldade para citar fontes e justificar respostas.</div></div>
+          </div>
+
+          <div class="card teal">
+            <h3>A solução: RAG</h3>
+            <p>O RAG conecta o LLM a documentos e bases atualizadas, trazendo contexto relevante para gerar respostas mais precisas, verificáveis e alinhadas ao domínio.</p>
+            <div style="font-size: 5rem; text-align:center; margin: 14px 0; color: var(--teal);">🔗</div>
+            <div class="highlight">RAG transforma o modelo em uma interface inteligente para consultar conhecimento real, atualizado e auditável.</div>
+          </div>
+
+          <div class="card blue">
+            <h3>Quando usar?</h3>
+            <ul>
+              <li><strong>Chatbot de normas internas:</strong> atendimento a colaboradores sobre políticas e procedimentos.</li>
+              <li><strong>Assistente de regimento acadêmico:</strong> dúvidas sobre cursos, avaliações e regras acadêmicas.</li>
+              <li><strong>Suporte administrativo:</strong> orientação sobre processos, fluxos e documentos.</li>
+              <li><strong>Busca em políticas e procedimentos:</strong> localização de trechos relevantes em documentos extensos.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title"><span class="num">2</span>O que é RAG?</div>
+      <div class="section-body grid-2">
+        <div class="card soft">
+          <h3>RAG = Recuperação + Geração</h3>
+          <p>Um sistema RAG recupera informações relevantes de uma base externa e fornece esses trechos como contexto para que um LLM produza uma resposta mais precisa.</p>
+          <div class="highlight">RAG não é só colocar PDFs em um chatbot. É um pipeline de engenharia de dados, busca semântica, prompting, avaliação e governança.</div>
+        </div>
+        <div class="diagram">
+          <div class="rag-flow">
+            <div class="step"><span class="step-number">1</span><div><strong>Usuário</strong><br>Pergunta em linguagem natural.</div></div>
+            <div class="step"><span class="step-number">2</span><div><strong>Retriever / Busca vetorial</strong><br>Localiza trechos semanticamente relacionados.</div></div>
+            <div class="step"><span class="step-number">3</span><div><strong>Chunks relevantes</strong><br>Seleciona evidências para responder.</div></div>
+            <div class="step"><span class="step-number">4</span><div><strong>Prompt enriquecido</strong><br>Combina contexto + pergunta + instruções.</div></div>
+            <div class="step"><span class="step-number">5</span><div><strong>LLM</strong><br>Gera a resposta com base no contexto.</div></div>
+            <div class="step"><span class="step-number">6</span><div><strong>Resposta com fontes</strong><br>Resposta citada, auditável e verificável.</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title"><span class="num">3</span>Arquitetura geral do sistema</div>
+      <div class="section-body">
+        <div class="flow pipeline-wide">
+          <div class="flow-item"><div class="flow-icon">📁</div><div class="flow-title">Base documental</div><div class="flow-text">PDFs, normas, manuais, políticas, relatórios e websites.</div></div>
+          <div class="flow-item"><div class="flow-icon">⚙️</div><div class="flow-title">Pipeline de ingestão</div><div class="flow-text">Extração, limpeza, chunking, embeddings e indexação.</div></div>
+          <div class="flow-item"><div class="flow-icon">🛢️</div><div class="flow-title">Base vetorial</div><div class="flow-text">Armazena vetores para busca semântica eficiente.</div></div>
+          <div class="flow-item"><div class="flow-icon">🔎</div><div class="flow-title">Retriever</div><div class="flow-text">Recupera os trechos mais relevantes para a pergunta.</div></div>
+          <div class="flow-item"><div class="flow-icon">🧠</div><div class="flow-title">LLM</div><div class="flow-text">Gera resposta usando o contexto recuperado.</div></div>
+          <div class="flow-item"><div class="flow-icon">💬</div><div class="flow-title">Aplicação / Chatbot</div><div class="flow-text">Interface do usuário, resposta e referências.</div></div>
+        </div>
+
+        <div style="margin-top: 20px;" class="grid-4">
+          <div class="card blue"><h4>Governança e Compliance</h4><p>Políticas de uso, LGPD, controle de acesso e regras de retenção.</p></div>
+          <div class="card teal"><h4>Segurança</h4><p>Isolamento, criptografia, permissões e proteção de dados sensíveis.</p></div>
+          <div class="card purple"><h4>Observabilidade</h4><p>Logs, métricas, tracing, qualidade da busca e comportamento do modelo.</p></div>
+          <div class="card green"><h4>Avaliação contínua</h4><p>Testes, métricas, feedback humano e regressão de qualidade.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title"><span class="num">4</span>Embeddings e similaridade vetorial</div>
+      <div class="section-body grid-2">
+        <div>
+          <div class="card soft">
+            <h3>Como transformar texto em espaço matemático?</h3>
+            <p>Embeddings são vetores numéricos densos que representam o significado semântico de um texto. Textos com sentidos próximos tendem a ficar próximos no espaço vetorial.</p>
+            <div class="vector-space" aria-label="Espaço vetorial ilustrativo">
+              <div class="axis-x"></div><div class="axis-y"></div>
+              <span class="dot blue" style="left: 20%; top: 24%;"></span>
+              <span class="dot blue" style="left: 26%; top: 31%;"></span>
+              <span class="dot blue" style="left: 23%; top: 43%;"></span>
+              <span class="dot green" style="left: 53%; top: 33%;"></span>
+              <span class="dot green" style="left: 60%; top: 42%;"></span>
+              <span class="dot green" style="left: 47%; top: 50%;"></span>
+              <span class="dot orange" style="left: 76%; top: 52%;"></span>
+              <span class="dot orange" style="left: 82%; top: 61%;"></span>
+              <span class="dot purple" style="left: 30%; top: 71%;"></span>
+              <span class="dot purple" style="left: 40%; top: 76%;"></span>
+            </div>
+            <div class="legend">
+              <span>Acadêmico</span><span>Políticas e normas</span><span>Financeiro</span><span>TI e infraestrutura</span>
+            </div>
+          </div>
+        </div>
+        <div class="grid-auto">
+          <div class="card blue">
+            <h3>Métricas comuns</h3>
+            <table class="mini-table">
+              <tr><th>Métrica</th><th>Uso</th></tr>
+              <tr><td>Similaridade do cosseno</td><td>Mais usada em RAG; mede a proximidade angular entre vetores.</td></tr>
+              <tr><td>Distância euclidiana</td><td>Útil, mas mais sensível à escala dos vetores.</td></tr>
+              <tr><td>Produto interno</td><td>Rápido e comum em índices com vetores normalizados.</td></tr>
+            </table>
+          </div>
+          <div class="highlight">A qualidade dos embeddings impacta fortemente a qualidade do RAG. A escolha deve considerar idioma, domínio, desempenho e custo.</div>
+        </div>
+        <div>
+          <div class="card soft">
+            <h3>Exemplo em Python</h3>
+            <pre class="code">from sentence_transformers import SentenceTransformer
+
+model = SentenceTransformer("all-MiniLM-L6-v2")
+embeddings = model.encode([
+    "normas acadêmicas da universidade",
+    "regulamento interno da instituição"
+])</pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title"><span class="num">5</span>Ingestão e indexação</div>
+      <div class="section-body">
+        <div class="flow pipeline-wide">
+          <div class="flow-item"><div class="flow-icon">📄</div><div class="flow-title">Documento</div><div class="flow-text">PDF, DOCX, HTML, TXT e planilhas.</div></div>
+          <div class="flow-item"><div class="flow-icon">🔍</div><div class="flow-title">Extração</div><div class="flow-text">Texto, tabelas e metadados.</div></div>
+          <div class="flow-item"><div class="flow-icon">🧹</div><div class="flow-title">Limpeza</div><div class="flow-text">Remover ruídos, espaços e normalizar.</div></div>
+          <div class="flow-item"><div class="flow-icon">🧩</div><div class="flow-title">Chunking</div><div class="flow-text">Dividir em blocos coerentes com overlap.</div></div>
+          <div class="flow-item"><div class="flow-icon">📐</div><div class="flow-title">Embeddings</div><div class="flow-text">Converter chunks em vetores.</div></div>
+          <div class="flow-item"><div class="flow-icon">🛢️</div><div class="flow-title">Indexação</div><div class="flow-text">Salvar vetores em índice como FAISS.</div></div>
+        </div>
+        <div class="grid-3" style="margin-top: 22px;">
+          <div class="card blue">
+            <h3>Chunking: boas práticas</h3>
+            <ul>
+              <li>Chunks muito grandes geram ruído e diluem o foco.</li>
+              <li>Chunks muito pequenos perdem contexto.</li>
+              <li>Overlap de 10% a 20% ajuda a preservar continuidade.</li>
+              <li>Tamanho típico: 300 a 800 tokens, dependendo do caso.</li>
+            </ul>
+          </div>
+          <div class="card soft">
+            <h3>Exemplo de metadata</h3>
+            <pre class="code">{
+  "text": "O prazo para trancamento é de 30 dias.",
+  "metadata": {
+    "documento": "Regimento Geral",
+    "pagina": 12,
+    "secao": "Avaliação Acadêmica"
+  }
+}</pre>
+          </div>
+          <div class="card green">
+            <h3>Indexação com FAISS</h3>
+            <p>FAISS ou soluções equivalentes permitem busca aproximada rápida e escalável em vetores. O índice deve ser persistido para reutilização e atualizações incrementais.</p>
+            <pre class="code">index.add(embeddings)
+faiss.write_index(index, "index.faiss")</pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title"><span class="num">6</span>Recuperação de contexto relevante</div>
+      <div class="section-body grid-2">
+        <div>
+          <h3>Ajuste de quantidade: top-k</h3>
+          <div class="grid-3">
+            <div class="k-card top3"><strong>top-3</strong><span>Contexto mais enxuto e preciso.</span></div>
+            <div class="k-card top5"><strong>top-5</strong><span>Equilíbrio entre cobertura e foco.</span></div>
+            <div class="k-card top10"><strong>top-10</strong><span>Mais cobertura, porém mais ruído.</span></div>
+          </div>
+          <div class="card soft" style="margin-top: 18px;">
+            <h3>Filtros por metadata</h3>
+            <div class="tag-row">
+              <span class="tag">📅 Ano / período</span>
+              <span class="tag">📘 Documento</span>
+              <span class="tag">📑 Seção / capítulo</span>
+              <span class="tag">👤 Autor / área</span>
+              <span class="tag">🗂️ Tipo de documento</span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="card purple">
+            <h3>Re-ranking com cross-encoder</h3>
+            <p>Reordena os resultados iniciais usando um modelo mais preciso, considerando a interação entre pergunta e contexto.</p>
+            <div class="vs">
+              <div class="card green"><h4>+ Qualidade</h4><p>Melhores resultados, mais alinhados à pergunta.</p></div>
+              <div class="vs-badge">VS</div>
+              <div class="card orange"><h4>– Custo/Latência</h4><p>Mais processamento, maior tempo e maior custo.</p></div>
+            </div>
+          </div>
+          <div class="diagram" style="margin-top: 18px;">
+            <h3>Fluxo de recuperação</h3>
+            <div class="rag-flow">
+              <div class="step"><span class="step-number">1</span><div>Pergunta do usuário</div></div>
+              <div class="step"><span class="step-number">2</span><div>Busca inicial no índice</div></div>
+              <div class="step"><span class="step-number">3</span><div>Re-ranking opcional</div></div>
+              <div class="step"><span class="step-number">4</span><div>Top final usado no prompt</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title"><span class="num">7</span>Integração com o LLM</div>
+      <div class="section-body prompt-grid">
+        <div class="card soft">
+          <h3>Estrutura de um prompt RAG</h3>
+          <pre class="code">Você é um assistente institucional.
+Use apenas as informações abaixo para responder.
+
+Contexto:
+[Documento 1]
+"... trecho relevante ..."
+Fonte: Regimento Geral (p. 12)
+
+[Documento 2]
+"... outro trecho relevante ..."
+Fonte: Norma Acadêmica (p. 7)
+
+Pergunta:
+Qual o prazo para trancamento de disciplina?
+
+Resposta:</pre>
+        </div>
+        <div class="grid-auto">
+          <div class="card green">
+            <h3>Boas instruções</h3>
+            <ul>
+              <li>Responder apenas com base no contexto.</li>
+              <li>Citar fontes quando possível.</li>
+              <li>Se não encontrar, dizer explicitamente que não encontrou.</li>
+              <li>Não inventar ou inferir além do contexto.</li>
+            </ul>
+          </div>
+          <div class="card orange">
+            <h3>Janela de contexto</h3>
+            <p>Contexto + prompt + resposta competem pelo mesmo limite de tokens. Mais contexto nem sempre é melhor: selecione o que é realmente relevante.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title"><span class="num">8</span>Avaliação, limitações e riscos</div>
+      <div class="section-body">
+        <div class="grid-4 metrics">
+          <div class="card blue"><div class="metric-icon">🎯</div><h3>Relevância</h3><p>O contexto recuperado é pertinente à pergunta?</p></div>
+          <div class="card green"><div class="metric-icon">✅</div><h3>Correção factual</h3><p>A resposta está correta de acordo com as fontes?</p></div>
+          <div class="card purple"><div class="metric-icon">🔗</div><h3>Aderência ao contexto</h3><p>A resposta se mantém fiel ao conteúdo fornecido?</p></div>
+          <div class="card orange"><div class="metric-icon">🧩</div><h3>Completude</h3><p>A resposta cobre todos os pontos da pergunta?</p></div>
+        </div>
+        <div class="grid-2" style="margin-top: 22px;">
+          <div class="card red">
+            <h3>Problemas comuns e riscos</h3>
+            <ul>
+              <li><strong>Contexto irrelevante:</strong> ruído na busca.</li>
+              <li><strong>Chunking ruim:</strong> quebra de sentido ou perda de contexto.</li>
+              <li><strong>Recuperação incompleta:</strong> informação relevante não foi recuperada.</li>
+              <li><strong>Alucinação induzida:</strong> contexto insuficiente ou prompt ambíguo.</li>
+              <li><strong>Prompt injection documental:</strong> instruções maliciosas dentro dos documentos.</li>
+              <li><strong>Exposição de dados sensíveis:</strong> vazamento de informações internas.</li>
+            </ul>
+          </div>
+          <div class="card green">
+            <h3>Boas práticas</h3>
+            <ul>
+              <li>Permitir resposta “não encontrado”.</li>
+              <li>Registrar logs de busca e resposta.</li>
+              <li>Rastrear e citar fontes sempre que possível.</li>
+              <li>Revisão humana em casos críticos.</li>
+              <li>Aplicar filtros e governança de dados.</li>
+              <li>Executar testes de qualidade contínuos.</li>
+              <li>Monitorar latência, custo e qualidade.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title"><span class="num">9</span>Estudo de caso: chatbot de normas acadêmicas</div>
+      <div class="section-body">
+        <div class="case-flow">
+          <div class="case-step"><span class="small-num">1</span><h4>Pergunta do aluno</h4><p>“Qual o prazo para trancamento de disciplina?”</p></div>
+          <div class="case-step"><span class="small-num">2</span><h4>Busca no regimento</h4><p>O retriever consulta o índice vetorial com a pergunta.</p></div>
+          <div class="case-step"><span class="small-num">3</span><h4>Filtragem / Re-ranking</h4><p>Aplica filtro por “Regimento Geral” e reordena os trechos.</p></div>
+          <div class="case-step"><span class="small-num">4</span><h4>Prompt com fontes</h4><p>O contexto relevante é enviado ao LLM com instruções.</p></div>
+          <div class="case-step"><span class="small-num">5</span><h4>Resposta ao aluno</h4><p>O LLM responde com base no contexto e cita a fonte.</p></div>
+          <div class="case-step card green"><h4>Exemplo de resposta</h4><p>“Segundo o Regimento Geral, seção de Avaliação Acadêmica, o prazo para trancamento é de 30 dias.”</p><p><strong>Fonte:</strong> Regimento Geral, p. 12.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title"><span class="num">10</span>Resumo</div>
+      <div class="section-body">
+        <div class="grid-auto">
+          <div class="card blue"><div class="icon-title"><span class="icon-badge blue">🎯</span><h3>Arquitetura</h3></div><p>RAG é uma arquitetura, não apenas uma técnica de prompt.</p></div>
+          <div class="card teal"><div class="icon-title"><span class="icon-badge teal">⚙️</span><h3>Engenharia</h3></div><p>O desempenho depende de dados, chunking, embeddings, recuperação e prompt.</p></div>
+          <div class="card orange"><div class="icon-title"><span class="icon-badge orange">⚖️</span><h3>Contexto</h3></div><p>Mais contexto nem sempre significa melhor resposta.</p></div>
+          <div class="card green"><div class="icon-title"><span class="icon-badge green">🛡️</span><h3>Responsabilidade</h3></div><p>Sistemas RAG precisam de avaliação, governança e supervisão humana.</p></div>
+          <div class="card purple"><div class="icon-title"><span class="icon-badge purple">🎓</span><h3>Competência</h3></div><p>Saber construir RAG é importante em IA aplicada e engenharia de software.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">RAG profissional = evidência + linguagem + responsabilidade</footer>
+    <p class="print-note">Arquivo HTML responsivo: adequado para navegador, apresentação em tela e impressão em PDF.</p>
+  </main>
+</body>
+</html>

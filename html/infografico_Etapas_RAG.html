@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Etapas do RAG — Infográfico Responsivo</title>
+  <meta name="description" content="Infográfico responsivo explicando as etapas do RAG (Retrieval-Augmented Generation)." />
+  <style>
+    :root {
+      --navy: #0d3b82;
+      --navy-dark: #0a2d63;
+      --teal: #0f8b8d;
+      --teal-soft: #e8f7f7;
+      --green: #2e9d65;
+      --green-soft: #edf9f2;
+      --purple: #7a4dd8;
+      --purple-soft: #f2ecff;
+      --orange: #e6851f;
+      --orange-soft: #fff3e7;
+      --red: #c63e3e;
+      --red-soft: #fff0f0;
+      --gray-900: #1f2937;
+      --gray-700: #475569;
+      --gray-600: #64748b;
+      --gray-500: #94a3b8;
+      --gray-300: #d8e0ea;
+      --gray-200: #e8edf3;
+      --gray-100: #f6f8fb;
+      --white: #ffffff;
+      --shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+      --radius: 18px;
+      --radius-sm: 12px;
+      --maxw: 1400px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--gray-900);
+      background: linear-gradient(180deg, #f8fbff 0%, #f4f8fc 100%);
+      line-height: 1.55;
+    }
+
+    .container {
+      width: min(calc(100% - 32px), var(--maxw));
+      margin: 0 auto;
+    }
+
+    .hero {
+      padding: 38px 0 24px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(2.4rem, 5vw, 4.6rem);
+      line-height: 0.98;
+      letter-spacing: 1px;
+      font-weight: 900;
+      color: var(--navy);
+      text-transform: uppercase;
+    }
+
+    .hero p.lead {
+      max-width: 980px;
+      margin: 14px auto 0;
+      font-size: clamp(1rem, 2vw, 1.35rem);
+      color: var(--gray-700);
+      font-weight: 600;
+    }
+
+    .info-banner {
+      margin: 22px auto 0;
+      max-width: 1080px;
+      background: var(--white);
+      border: 2px solid #c9dff5;
+      border-radius: 16px;
+      padding: 18px 22px;
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      box-shadow: var(--shadow);
+      text-align: left;
+    }
+
+    .info-icon {
+      flex: 0 0 46px;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: var(--navy);
+      color: var(--white);
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 1.4rem;
+    }
+
+    .section {
+      margin: 22px 0;
+      background: var(--white);
+      border: 1px solid var(--gray-300);
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .section-header {
+      padding: 16px 22px;
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      font-weight: 800;
+      letter-spacing: 0.2px;
+    }
+
+    .section-header h2 {
+      margin: 0;
+      font-size: clamp(1.15rem, 2vw, 1.8rem);
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+
+    .section-body { padding: 22px; }
+    .bg-navy { background: linear-gradient(90deg, var(--navy) 0%, var(--navy-dark) 100%); }
+    .bg-teal { background: linear-gradient(90deg, #0d8b90 0%, #096d77 100%); }
+
+    .steps-grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .steps-grid.offline { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+    .steps-grid.online { grid-template-columns: repeat(7, minmax(0, 1fr)); }
+
+    .step {
+      border: 2px solid var(--gray-200);
+      border-radius: var(--radius);
+      padding: 16px;
+      background: linear-gradient(180deg, #fff 0%, #fbfdff 100%);
+      min-height: 100%;
+      position: relative;
+    }
+
+    .step.blue { border-color: #cfe1ff; }
+    .step.teal { border-color: #c8ecec; }
+    .step.green { border-color: #ccefdc; }
+    .step.purple { border-color: #dbcdfb; }
+    .step.orange { border-color: #ffd9b0; }
+
+    .step-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .step-number {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: var(--white);
+      font-weight: 900;
+      font-size: 1.1rem;
+      flex: 0 0 40px;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.10);
+    }
+
+    .step.blue .step-number { background: #1f6fe5; }
+    .step.teal .step-number { background: #0f8b8d; }
+    .step.green .step-number { background: #2e9d65; }
+    .step.purple .step-number { background: #7a4dd8; }
+    .step.orange .step-number { background: #e6851f; }
+
+    .step h3 {
+      margin: 2px 0 0;
+      font-size: 1.2rem;
+      line-height: 1.2;
+      color: var(--navy-dark);
+    }
+
+    .step .icon {
+      font-size: 2rem;
+      margin: 6px 0 10px;
+    }
+
+    .step ul {
+      margin: 10px 0 0 18px;
+      padding: 0;
+    }
+
+    .step li { margin-bottom: 8px; }
+
+    .mini-note {
+      margin-top: 14px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      border: 1.5px dashed var(--gray-500);
+      background: var(--gray-100);
+    }
+
+    .mini-note.warning { background: #fff8ea; border-color: #f1c46b; }
+    .mini-note.teal { background: #edf9f8; border-color: #7ccfc2; }
+    .mini-note.purple { background: #f5f0ff; border-color: #b8a1f0; }
+    .mini-note.orange { background: #fff4eb; border-color: #f0b37b; }
+    .mini-note.green { background: #eef9f2; border-color: #9bd4af; }
+
+    .index-card {
+      margin-top: 18px;
+      border: 2px solid #d9d0fa;
+      border-radius: 18px;
+      background: linear-gradient(180deg, #ffffff 0%, #faf7ff 100%);
+      padding: 18px;
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .index-visual {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      padding: 8px 10px;
+      border-radius: 14px;
+      background: #fff;
+      border: 1px solid #eadfff;
+    }
+
+    .db-icon {
+      font-size: 3rem;
+      line-height: 1;
+    }
+
+    .index-visual strong {
+      display: block;
+      font-size: 1.5rem;
+      line-height: 1.15;
+      color: var(--navy-dark);
+    }
+
+    .pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .pill {
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 0.95rem;
+      background: var(--gray-100);
+      border: 1px solid var(--gray-300);
+    }
+
+    .cross-title {
+      text-align: center;
+      margin: 30px 0 16px;
+      font-size: clamp(1.5rem, 2.2vw, 2rem);
+      color: var(--navy);
+      text-transform: uppercase;
+      font-weight: 900;
+      letter-spacing: 0.4px;
+    }
+
+    .cards-4,
+    .cards-5,
+    .cards-2 {
+      display: grid;
+      gap: 16px;
+    }
+
+    .cards-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .cards-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+    .cards-2 { grid-template-columns: 1.2fr 1fr; }
+
+    .info-card {
+      background: var(--white);
+      border-radius: 18px;
+      padding: 18px;
+      border: 1px solid var(--gray-300);
+      box-shadow: var(--shadow);
+    }
+
+    .info-card h3,
+    .info-card h4 {
+      margin: 0 0 8px;
+      line-height: 1.2;
+      color: var(--navy-dark);
+    }
+
+    .info-card .card-icon {
+      font-size: 2rem;
+      margin-bottom: 8px;
+    }
+
+    .risk-section {
+      margin-top: 18px;
+    }
+
+    .danger-box {
+      border-top: 5px solid var(--red);
+      background: var(--white);
+    }
+
+    .danger-head,
+    .notes-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .danger-head h3 { color: var(--red); }
+    .notes-head h3 { color: var(--green); }
+
+    .risk-card {
+      background: var(--red-soft);
+      border: 1px solid #f3c6c6;
+    }
+
+    .notes-box {
+      border-top: 5px solid var(--green);
+      background: var(--white);
+    }
+
+    .key-message {
+      margin: 22px 0 0;
+      background: linear-gradient(90deg, var(--navy-dark), var(--navy));
+      color: var(--white);
+      border-radius: 22px;
+      padding: 24px;
+      display: grid;
+      grid-template-columns: 110px 1fr 110px;
+      gap: 16px;
+      align-items: center;
+      box-shadow: var(--shadow);
+    }
+
+    .key-message .emoji {
+      font-size: 3rem;
+      text-align: center;
+    }
+
+    .key-message h3 {
+      margin: 0 0 8px;
+      color: #ffd84d;
+      text-transform: uppercase;
+      font-size: clamp(1.5rem, 3vw, 2.4rem);
+      line-height: 1;
+    }
+
+    .key-message p {
+      margin: 0;
+      font-size: clamp(1rem, 1.7vw, 1.25rem);
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .legend {
+      margin: 16px 0 36px;
+      background: var(--white);
+      border: 1px solid var(--gray-300);
+      border-radius: 16px;
+      padding: 14px 18px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 14px 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .legend strong {
+      color: var(--navy-dark);
+      margin-right: 8px;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--gray-700);
+      font-size: 0.95rem;
+    }
+
+    .legend-symbol {
+      width: 26px;
+      height: 26px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      background: var(--gray-100);
+      border: 1px solid var(--gray-300);
+      font-size: 0.9rem;
+    }
+
+    .muted { color: var(--gray-600); }
+    .tight { margin-top: 6px; }
+    .center { text-align: center; }
+
+    @media (max-width: 1200px) {
+      .steps-grid.offline { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .steps-grid.online { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .cards-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .cards-5 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .cards-2 { grid-template-columns: 1fr; }
+      .index-card { grid-template-columns: 1fr; }
+      .key-message { grid-template-columns: 88px 1fr 88px; }
+    }
+
+    @media (max-width: 780px) {
+      .container { width: min(calc(100% - 20px), var(--maxw)); }
+      .hero { padding-top: 24px; }
+      .info-banner {
+        padding: 14px 16px;
+        align-items: flex-start;
+      }
+      .steps-grid.offline,
+      .steps-grid.online,
+      .cards-4,
+      .cards-5 { grid-template-columns: 1fr; }
+      .section-body { padding: 16px; }
+      .key-message {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      .key-message .emoji:last-child { display: none; }
+      .legend { padding: 12px 14px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="container">
+      <h1>Etapas do RAG</h1>
+      <p class="lead">Como funciona um pipeline de Retrieval-Augmented Generation, da ingestão de documentos até a resposta final com fontes.</p>
+      <div class="info-banner">
+        <div class="info-icon">i</div>
+        <div>
+          <strong>RAG combina busca semântica e geração de linguagem</strong> para produzir respostas contextualizadas, rastreáveis e com menos alucinações.
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="section">
+      <div class="section-header bg-navy">
+        <h2>1. Fase Offline / Preparação do Conhecimento</h2>
+        <div aria-hidden="true">🗂️</div>
+      </div>
+      <div class="section-body">
+        <div class="steps-grid offline">
+          <article class="step blue">
+            <div class="step-top">
+              <div class="step-number">1</div>
+              <h3>Coleta de documentos</h3>
+            </div>
+            <div class="icon">📄📘📊🌐🗃️</div>
+            <p><strong>Fontes:</strong> PDFs, DOCX, páginas HTML, planilhas, bases internas, normas e manuais.</p>
+            <p>O sistema começa reunindo documentos que servirão de base de conhecimento.</p>
+          </article>
+
+          <article class="step blue">
+            <div class="step-top">
+              <div class="step-number">2</div>
+              <h3>Extração e limpeza</h3>
+            </div>
+            <div class="icon">🧾🧹</div>
+            <ul>
+              <li>Extrair texto e metadados.</li>
+              <li>Corrigir ruídos, espaços, quebras e inconsistências.</li>
+            </ul>
+            <div class="mini-note warning"><strong>Atenção:</strong> <em>garbage in, garbage out</em>. Se a entrada for ruim, a recuperação e a resposta também serão.</div>
+          </article>
+
+          <article class="step teal">
+            <div class="step-top">
+              <div class="step-number">3</div>
+              <h3>Chunking</h3>
+            </div>
+            <div class="icon">📃↔️📑</div>
+            <ul>
+              <li>Dividir documentos em trechos menores e coerentes.</li>
+              <li>Aplicar <em>overlap</em> entre chunks para manter contexto.</li>
+            </ul>
+            <div class="mini-note teal"><strong>Trade-off:</strong> chunks grandes preservam mais contexto; chunks pequenos aumentam precisão de recuperação.</div>
+          </article>
+
+          <article class="step green">
+            <div class="step-top">
+              <div class="step-number">4</div>
+              <h3>Geração de embeddings</h3>
+            </div>
+            <div class="icon">🧠➡️#️⃣</div>
+            <ul>
+              <li>Transformar cada chunk em vetor numérico semântico.</li>
+              <li>Textos parecidos ficam próximos no espaço vetorial.</li>
+            </ul>
+          </article>
+
+          <article class="step purple">
+            <div class="step-top">
+              <div class="step-number">5</div>
+              <h3>Indexação em base vetorial</h3>
+            </div>
+            <div class="icon">🗄️🔢</div>
+            <ul>
+              <li>Armazenar embeddings e metadados em um índice vetorial.</li>
+              <li>Exemplos: FAISS e Vector DB.</li>
+              <li>Permitir busca rápida por similaridade.</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="index-card">
+          <div class="index-visual">
+            <div class="db-icon">🗄️</div>
+            <div>
+              <strong>Base Vetorial<br>(Índice)</strong>
+              <p class="tight muted">O coração da recuperação semântica.</p>
+            </div>
+          </div>
+          <div>
+            <div class="pills">
+              <span class="pill">Embeddings dos chunks</span>
+              <span class="pill">Metadados: fonte, página, seção, ano, área...</span>
+              <span class="pill">Otimizado para busca por similaridade</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header bg-teal">
+        <h2>2. Fase Online / Resposta à Pergunta do Usuário</h2>
+        <div aria-hidden="true">👤</div>
+      </div>
+      <div class="section-body">
+        <div class="steps-grid online">
+          <article class="step green">
+            <div class="step-top">
+              <div class="step-number">6</div>
+              <h3>Pergunta do usuário</h3>
+            </div>
+            <div class="icon">💬</div>
+            <p><strong>Exemplo:</strong> “Qual é o prazo para trancamento de disciplina?”</p>
+            <p>A pergunta é o ponto de partida do ciclo de recuperação e geração.</p>
+          </article>
+
+          <article class="step green">
+            <div class="step-top">
+              <div class="step-number">7</div>
+              <h3>Embedding da consulta</h3>
+            </div>
+            <div class="icon">🧠📐</div>
+            <p>Converter a pergunta em vetor semântico no mesmo espaço da base vetorial.</p>
+          </article>
+
+          <article class="step blue">
+            <div class="step-top">
+              <div class="step-number">8</div>
+              <h3>Recuperação top-k</h3>
+            </div>
+            <div class="icon">🔎</div>
+            <p>Buscar os <em>chunks</em> mais similares na base vetorial.</p>
+            <ul>
+              <li><strong>top-3</strong> → mais preciso</li>
+              <li><strong>top-5</strong> → equilíbrio</li>
+              <li><strong>top-10</strong> → mais cobertura</li>
+            </ul>
+          </article>
+
+          <article class="step teal">
+            <div class="step-top">
+              <div class="step-number">9</div>
+              <h3>Filtragem e re-ranking</h3>
+            </div>
+            <div class="icon">🧪📋</div>
+            <ul>
+              <li>Aplicar filtros por metadados: ano, seção, documento, área, tipo, idioma.</li>
+              <li>Reordenar resultados com modelo de <em>re-rank</em> para melhorar relevância.</li>
+            </ul>
+            <div class="mini-note teal"><strong>Custo vs qualidade:</strong> mais filtros e re-ranking aumentam custo e latência, mas podem elevar a precisão.</div>
+          </article>
+
+          <article class="step purple">
+            <div class="step-top">
+              <div class="step-number">10</div>
+              <h3>Montagem do prompt</h3>
+            </div>
+            <div class="icon">🧾🧩</div>
+            <p>Combinar instruções, pergunta, contexto recuperado e fontes.</p>
+            <div class="mini-note purple">
+              <strong>Estrutura do prompt RAG:</strong><br>
+              1. Instruções (<em>system</em>)<br>
+              2. Pergunta do usuário<br>
+              3. Contexto (chunks)<br>
+              4. Fontes / metadados<br>
+              5. Regras (ex.: se não souber, informar)
+            </div>
+          </article>
+
+          <article class="step orange">
+            <div class="step-top">
+              <div class="step-number">11</div>
+              <h3>Geração pelo LLM</h3>
+            </div>
+            <div class="icon">🤖🧠</div>
+            <p>O modelo responde com base no contexto fornecido.</p>
+            <div class="mini-note orange"><strong>Regra importante:</strong> se a informação não estiver no contexto, o sistema deve informar que não encontrou.</div>
+          </article>
+
+          <article class="step green">
+            <div class="step-top">
+              <div class="step-number">12</div>
+              <h3>Resposta final com referências</h3>
+            </div>
+            <div class="icon">✅📚</div>
+            <p>Saída com resposta resumida e citações das fontes utilizadas.</p>
+            <div class="mini-note green">
+              <strong>Exemplo de saída:</strong><br>
+              Segundo o Regimento Geral, o prazo é de 30 dias.<br><br>
+              <strong>Fonte:</strong> Regimento Geral, p. 12.
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <h2 class="cross-title">Camadas Transversais</h2>
+    <section class="cards-4">
+      <article class="info-card">
+        <div class="card-icon">🔒</div>
+        <h3>Governança e segurança</h3>
+        <p>Controle de acesso, LGPD, criptografia, mascaramento e políticas de retenção.</p>
+      </article>
+      <article class="info-card">
+        <div class="card-icon">📈</div>
+        <h3>Observabilidade e logs</h3>
+        <p>Métricas de latência, custo, taxa de acerto, logs de consultas e respostas.</p>
+      </article>
+      <article class="info-card">
+        <div class="card-icon">🏅</div>
+        <h3>Avaliação de qualidade</h3>
+        <p>Testes automáticos, relevância da recuperação, factualidade e satisfação do usuário.</p>
+      </article>
+      <article class="info-card">
+        <div class="card-icon">👥</div>
+        <h3>Supervisão humana</h3>
+        <p>Revisão de respostas críticas, feedback contínuo e melhoria do sistema.</p>
+      </article>
+    </section>
+
+    <section class="risk-section cards-2">
+      <article class="info-card danger-box">
+        <div class="danger-head">
+          <span style="font-size:1.8rem;">⚠️</span>
+          <h3>Principais riscos</h3>
+        </div>
+        <div class="cards-5">
+          <div class="info-card risk-card">
+            <div class="card-icon">🧩</div>
+            <h4>Chunking ruim</h4>
+            <p>Perda de contexto ou excesso de fragmentação.</p>
+          </div>
+          <div class="info-card risk-card">
+            <div class="card-icon">❌</div>
+            <h4>Contexto irrelevante</h4>
+            <p>Recuperar trechos pouco úteis polui o prompt.</p>
+          </div>
+          <div class="info-card risk-card">
+            <div class="card-icon">🗃️</div>
+            <h4>Recuperação incompleta</h4>
+            <p>Top-k insuficiente pode omitir informações cruciais.</p>
+          </div>
+          <div class="info-card risk-card">
+            <div class="card-icon">☁️</div>
+            <h4>Alucinação induzida</h4>
+            <p>O modelo inventa informações fora do contexto.</p>
+          </div>
+          <div class="info-card risk-card">
+            <div class="card-icon">🔓</div>
+            <h4>Vazamento de dados sensíveis</h4>
+            <p>Exposição de dados confidenciais por falhas de acesso.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="info-card notes-box">
+        <div class="notes-head">
+          <span style="font-size:1.8rem;">⚙️</span>
+          <h3>Notas técnicas</h3>
+        </div>
+        <ul>
+          <li><strong>Escolha do modelo de embedding:</strong> tamanho do vetor e qualidade impactam diretamente a recuperação.</li>
+          <li><strong>Chunking inteligente:</strong> preserve estruturas como tabelas, títulos e listas; ajuste o <em>overlap</em> conforme o domínio.</li>
+          <li><strong>Re-ranking:</strong> modelos <em>cross-encoder</em> elevam precisão, mas custam mais.</li>
+          <li><strong>Prompting claro:</strong> instruções e regras reduzem alucinações.</li>
+          <li><strong>Atualização da base:</strong> versionamento e reindexação periódica.</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="key-message">
+      <div class="emoji">💡</div>
+      <div>
+        <h3>Mensagem-chave</h3>
+        <p>RAG não é apenas “colocar documentos no chatbot”.<br>
+        É uma arquitetura que integra engenharia de dados, recuperação semântica, prompting, avaliação e governança.</p>
+      </div>
+      <div class="emoji">🎯</div>
+    </section>
+
+    <section class="legend" aria-label="Legenda do infográfico">
+      <strong>Legenda</strong>
+      <span class="legend-item"><span class="legend-symbol">→</span>Fluxo principal</span>
+      <span class="legend-item"><span class="legend-symbol">⇄</span>Dependência / conexão</span>
+      <span class="legend-item"><span class="legend-symbol">🗄️</span>Armazenamento / índice</span>
+      <span class="legend-item"><span class="legend-symbol">🧪</span>Filtragem</span>
+      <span class="legend-item"><span class="legend-symbol">⚙️</span>Processamento / IA</span>
+    </section>
+  </main>
+</body>
+</html>
