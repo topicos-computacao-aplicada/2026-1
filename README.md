@@ -66,6 +66,14 @@ Exemplo de Aplicação de Visão Computacional usando Deep Learning
 - [Exemplo de uso do Langchain para uma aplicação de IA Generativa](https://github.com/topicos-computacao-aplicada/2025-2/blob/main/docs/my_langchain.md)
 - [Exemplo de resumo de pdf](https://github.com/topicos-computacao-aplicada/2025-2/tree/main/pdf_summarizer)
 
+## Hospedagem de Modelos LLM (Open Source e/ou Open Weight)
+
+**Ollama** e **vLLM** são duas abordagens complementares para hospedar LLMs open source como Llama, Mistral ou Gemma localmente, mas atendendo a propósitos distintos: enquanto o Ollama foca na simplicidade e no controle local para experimentação, aprendizado e prototipação rápida, com baixa complexidade e execução mesmo em CPU, o vLLM é projetado para alto desempenho e escalabilidade em produção, utilizando técnicas como PagedAttention e oferecendo API compatível com OpenAI, monitoramento com Prometheus/Grafana e suporte a múltiplos usuários simultâneos em GPUs dedicadas. Na prática, essas ferramentas representam etapas de uma mesma jornada: começa-se com o Ollama para explorar modelos e validar ideias com baixo custo e baixa barreira de entrada; depois, migra-se para o vLLM quando a aplicação exige maior eficiência, concorrência e observabilidade, cobrindo assim todo o ciclo que vai da experimentação à quase-produção.
+
+- Hospedagem em ambiente local usando o Ollama - disponível neste [link](https://github.com/llmfromzerotohero/ollama)
+- Hospedagem de altodesempenho usando o vLLM - disponível em [link](https://github.com/llmfromzerotohero/vLLM)
+
+Mais detahes em [x](y)
 
 ## Site da disciplina
 
