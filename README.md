@@ -73,7 +73,7 @@ Exemplo de Aplicação de Visão Computacional usando Deep Learning
 - Hospedagem em ambiente local usando o Ollama - disponível neste [link](https://github.com/llmfromzerotohero/ollama)
 - Hospedagem de altodesempenho usando o vLLM - disponível em [link](https://github.com/llmfromzerotohero/vLLM)
 
-Mais detahes em [x](y)
+Mais detahes neste [link](hospedagem_local.md)
 
 ## Site da disciplina
 
