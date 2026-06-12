@@ -83,6 +83,10 @@ Mais detahes neste [link](hospedagem_local.md)
 - Conceitos de LLM neste [link](https://htmlpreview.github.io/?https://github.com/topicos-computacao-aplicada/2026-1/blob/main/html/infografico_llm_ai_engineering.html)
 - Conceitos, Técnicas e Ferramentas neste [link](https://htmlpreview.github.io/?https://github.com/topicos-computacao-aplicada/2026-1/blob/main/html/infografico_20_conceitos_ia_developers.html)
 
+## Extra
+
+- [O Eco da Inteligência Artificial](https://github.com/topicos-computacao-aplicada/2026-1/blob/main/docs/eco-ia.png)
+  
 ## Site da disciplina
 
 Disponível em https://topicos-computacao-aplicada.github.io/github.io
