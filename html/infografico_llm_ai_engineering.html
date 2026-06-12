@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="pt-BR" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LLM Concepts Deep Dive — AI Engineer Essentials</title>
+  <meta name="description" content="Infográfico responsivo sobre conceitos de LLM, Java, Python e engenharia de aplicações de IA Generativa.">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#050814;
+      --panel:#0b1020;
+      --panel2:#0e1630;
+      --text:#eef5ff;
+      --muted:#a7b7d4;
+      --cyan:#18d7ff;
+      --blue:#5586ff;
+      --green:#8df04a;
+      --yellow:#ffd23c;
+      --orange:#ff8b3d;
+      --pink:#ff4fa3;
+      --purple:#a46bff;
+      --red:#ff4d5d;
+      --border:rgba(255,255,255,.12);
+      --shadow:0 12px 45px rgba(0,0,0,.45);
+    }
+    *{box-sizing:border-box}
+    body{
+      font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(circle at 20% 10%, rgba(84, 63, 255,.20), transparent 28rem),
+        radial-gradient(circle at 80% 5%, rgba(24, 215, 255,.14), transparent 25rem),
+        radial-gradient(circle at 75% 75%, rgba(255, 79, 163,.12), transparent 32rem),
+        var(--bg);
+      color:var(--text);
+    }
+    .navbar{backdrop-filter: blur(16px); background:rgba(5,8,20,.76)!important; border-bottom:1px solid var(--border)}
+    .brand-badge{font-weight:900; letter-spacing:.04em; color:var(--green)}
+    .hero{
+      min-height:78vh;
+      display:grid;
+      align-items:center;
+      padding:7.5rem 0 4rem;
+      position:relative;
+      overflow:hidden;
+    }
+    .hero::after{
+      content:"";
+      position:absolute;
+      inset:auto -10% -20% -10%;
+      height:22rem;
+      background:linear-gradient(180deg, transparent, rgba(24,215,255,.06));
+      pointer-events:none;
+    }
+    .eyebrow{color:var(--cyan); font-weight:800; text-transform:uppercase; letter-spacing:.18em; font-size:.85rem}
+    .display-title{font-size:clamp(3rem, 9vw, 8.2rem); font-weight:950; line-height:.88; letter-spacing:-.07em; text-transform:uppercase}
+    .display-title .concepts{color:var(--yellow); text-shadow:0 0 22px rgba(255,210,60,.18)}
+    .gradient-text{background:linear-gradient(90deg,var(--cyan),var(--green)); -webkit-background-clip:text; color:transparent}
+    .cardx{
+      background:linear-gradient(180deg, rgba(15,22,45,.92), rgba(7,12,28,.92));
+      border:1px solid var(--border);
+      border-radius:1.25rem;
+      box-shadow:var(--shadow);
+    }
+    .neon-border{border-color:rgba(24,215,255,.35); box-shadow:0 0 0 1px rgba(24,215,255,.08), 0 18px 55px rgba(0,0,0,.45)}
+    .section{padding:5rem 0}
+    .section-title{font-weight:900; letter-spacing:-.04em; font-size:clamp(2rem,4vw,3.6rem)}
+    .section-kicker{color:var(--cyan); text-transform:uppercase; letter-spacing:.16em; font-size:.8rem; font-weight:800}
+    .icon-circle{width:3rem; height:3rem; border-radius:1rem; display:inline-flex; align-items:center; justify-content:center; font-size:1.45rem; border:1px solid var(--border); background:rgba(255,255,255,.05)}
+    .pill{border:1px solid var(--border); background:rgba(255,255,255,.06); border-radius:999px; padding:.38rem .7rem; color:var(--muted); display:inline-flex; gap:.4rem; align-items:center; font-size:.86rem}
+    .flow-step{position:relative; min-height:100%;}
+    .flow-step::after{content:"→"; position:absolute; right:-1.05rem; top:50%; transform:translateY(-50%); color:var(--cyan); font-size:2rem; opacity:.8}
+    .flow-step:last-child::after{display:none}
+    @media(max-width:991px){.flow-step::after{display:none}.hero{padding-top:6.5rem}}
+    .term-card{transition:.18s ease; height:100%}
+    .term-card:hover{transform:translateY(-4px); border-color:rgba(24,215,255,.42)}
+    .small-muted{color:var(--muted); font-size:.95rem}
+    pre{
+      background:#060a16;
+      color:#dce9ff;
+      border:1px solid var(--border);
+      border-radius:1rem;
+      padding:1rem;
+      overflow:auto;
+      font-family:"JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size:.86rem;
+    }
+    code{font-family:"JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color:#dff7ff}
+    .copy-btn{position:absolute; right:.75rem; top:.75rem; z-index:2}
+    .code-wrap{position:relative}
+    .table-dark{--bs-table-bg:transparent; --bs-table-border-color:var(--border)}
+    .timeline{position:relative; padding-left:1.5rem}
+    .timeline::before{content:""; position:absolute; left:.35rem; top:.2rem; bottom:.2rem; width:2px; background:linear-gradient(var(--cyan), var(--pink))}
+    .timeline-item{position:relative; margin-bottom:1.15rem}
+    .timeline-item::before{content:""; position:absolute; left:-1.45rem; top:.25rem; width:.8rem; height:.8rem; background:var(--cyan); border-radius:50%; box-shadow:0 0 0 .25rem rgba(24,215,255,.15)}
+    .tool-logo{font-weight:900; width:2.6rem; height:2.6rem; border-radius:.8rem; display:inline-grid; place-items:center; background:rgba(255,255,255,.07); border:1px solid var(--border)}
+    .searchbox{background:rgba(255,255,255,.06)!important; border-color:var(--border)!important; color:var(--text)!important}
+    .filter-btn.active{background:var(--cyan)!important; color:#03101a!important; border-color:var(--cyan)!important}
+    .quiz-option{cursor:pointer; border:1px solid var(--border); border-radius:.9rem; padding:.8rem; background:rgba(255,255,255,.04)}
+    .quiz-option.correct{border-color:var(--green); background:rgba(141,240,74,.12)}
+    .quiz-option.wrong{border-color:var(--red); background:rgba(255,77,93,.12)}
+    .sticky-toc{position:sticky; top:5rem}
+    a{color:#7ae8ff}
+    .img-preview{border-radius:1.25rem; border:1px solid var(--border); box-shadow:var(--shadow)}
+    .footer{border-top:1px solid var(--border); background:rgba(5,8,20,.55)}
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="#top">
+        <span class="brand-badge">{AI}</span>
+        <span class="fw-bold">LLM Concepts Deep Dive</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav"><span class="navbar-toggler-icon"></span></button>
+      <div class="collapse navbar-collapse" id="nav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="#funcionamento">Como funciona</a></li>
+          <li class="nav-item"><a class="nav-link" href="#conceitos">Conceitos</a></li>
+          <li class="nav-item"><a class="nav-link" href="#java-python">Java & Python</a></li>
+          <li class="nav-item"><a class="nav-link" href="#demos">Demos</a></li>
+          <li class="nav-item"><a class="nav-link" href="#boas-praticas">Boas práticas</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <header id="top" class="hero">
+    <div class="container position-relative">
+      <div class="row g-4 align-items-center">
+        <div class="col-lg-7">
+          <div class="eyebrow mb-3">AI Engineer Essentials</div>
+          <h1 class="display-title mb-4"><span>LLM</span><br><span class="concepts">Concepts</span><br><span>A Deep Dive</span></h1>
+          <p class="lead text-light-emphasis mb-4">Um infográfico interativo e responsivo para entender como Modelos de Linguagem funcionam, por que alucinam, como controlar respostas e como construir aplicações de IA Generativa com Java, Spring Boot, Python e frameworks modernos.</p>
+          <div class="d-flex flex-wrap gap-2 mb-4">
+            <span class="pill">🧠 LLMs</span><span class="pill">⚙️ Transformers</span><span class="pill">📚 RAG</span><span class="pill">☕ Java</span><span class="pill">🐍 Python</span><span class="pill">🚀 Deploy</span>
+          </div>
+          <a href="#funcionamento" class="btn btn-info fw-bold me-2">Começar trilha</a>
+          <a href="#demos" class="btn btn-outline-light">Ver exemplos práticos</a>
+        </div>
+        <div class="col-lg-5">
+          <div class="cardx neon-border p-3">
+            <img src="a_high_resolution_infographic_poster_style_image_w.png" class="img-fluid img-preview" alt="Infográfico LLM Concepts Deep Dive">
+            <p class="small-muted mt-3 mb-0">Base visual: infográfico sobre conceitos essenciais de LLM e trilhas Java/Python para engenharia de IA.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="funcionamento" class="section">
+      <div class="container">
+        <div class="row mb-4 align-items-end">
+          <div class="col-lg-8">
+            <div class="section-kicker">Fundamentos</div>
+            <h2 class="section-title">Como um LLM transforma texto em resposta</h2>
+            <p class="small-muted">Um LLM não “entende” como uma pessoa. Ele calcula probabilidades para prever o próximo token com base no contexto, nos padrões aprendidos durante o treinamento e nos parâmetros configurados na inferência.</p>
+          </div>
+        </div>
+        <div class="row g-3">
+          <div class="col-lg-3 col-md-6"><div class="cardx p-4 flow-step"><div class="icon-circle mb-3">💬</div><h5>1. Entrada</h5><p class="small-muted">O usuário envia uma pergunta, instrução, texto ou documentos.</p><pre>Explique RAG com um exemplo simples.</pre></div></div>
+          <div class="col-lg-3 col-md-6"><div class="cardx p-4 flow-step"><div class="icon-circle mb-3">🔤</div><h5>2. Tokenização</h5><p class="small-muted">O texto é quebrado em unidades menores chamadas tokens.</p><pre>"inteligência" → ["int", "elig", "ência"]</pre></div></div>
+          <div class="col-lg-3 col-md-6"><div class="cardx p-4 flow-step"><div class="icon-circle mb-3">🧠</div><h5>3. Transformer</h5><p class="small-muted">Camadas de atenção calculam quais partes do contexto são mais relevantes.</p><pre>Atenção: pergunta ↔ contexto ↔ histórico</pre></div></div>
+          <div class="col-lg-3 col-md-6"><div class="cardx p-4"><div class="icon-circle mb-3">✨</div><h5>4. Próximo token</h5><p class="small-muted">O modelo gera tokens um a um até formar a resposta final.</p><pre>RAG é uma técnica que...</pre></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="conceitos" class="section bg-black bg-opacity-25">
+      <div class="container">
+        <div class="row g-4">
+          <div class="col-lg-3">
+            <div class="sticky-toc cardx p-3">
+              <h6 class="text-info fw-bold">Pesquisar conceitos</h6>
+              <input id="search" class="form-control searchbox mb-3" placeholder="Ex.: RAG, temperatura, tokens...">
+              <div class="d-grid gap-2">
+                <button class="btn btn-sm btn-outline-info filter-btn active" data-filter="all">Todos</button>
+                <button class="btn btn-sm btn-outline-info filter-btn" data-filter="fundamento">Fundamentos</button>
+                <button class="btn btn-sm btn-outline-info filter-btn" data-filter="controle">Controle</button>
+                <button class="btn btn-sm btn-outline-info filter-btn" data-filter="arquitetura">Arquitetura</button>
+                <button class="btn btn-sm btn-outline-info filter-btn" data-filter="operacao">Operação</button>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-9">
+            <div class="section-kicker">Glossário aplicado</div>
+            <h2 class="section-title">Conceitos, técnicas e exemplos</h2>
+            <div class="row g-3 mt-2" id="conceptGrid">
+              <div class="col-md-6 concept" data-tags="fundamento tokenizacao tokens"><div class="cardx p-4 term-card"><div class="icon-circle mb-3">🔤</div><h4>Tokens</h4><p class="small-muted">Unidades de texto processadas pelo modelo. Podem representar palavras, partes de palavras, pontuação ou espaços.</p><strong>Exemplo:</strong><p class="mb-0">Um prompt longo com muitos documentos consome mais tokens, aumenta custo e pode elevar a latência.</p></div></div>
+              <div class="col-md-6 concept" data-tags="fundamento atencao transformer"><div class="cardx p-4 term-card"><div class="icon-circle mb-3">🎯</div><h4>Atenção</h4><p class="small-muted">Mecanismo que ajuda o modelo a ponderar partes relevantes do contexto ao gerar cada token.</p><strong>Exemplo:</strong><p class="mb-0">Ao responder sobre “Maria”, o modelo pode dar mais peso às frases que mencionam Maria do que a outras partes do prompt.</p></div></div>
+              <div class="col-md-6 concept" data-tags="controle temperatura sampling"><div class="cardx p-4 term-card"><div class="icon-circle mb-3">🌡️</div><h4>Temperatura</h4><p class="small-muted">Controla a aleatoriedade da geração. Valores baixos favorecem respostas previsíveis; valores altos geram variedade.</p><strong>Exemplo:</strong><p class="mb-0"><code>temperature=0.2</code> para respostas técnicas; <code>temperature=0.8</code> para brainstorming.</p></div></div>
+              <div class="col-md-6 concept" data-tags="controle topk topp sampling"><div class="cardx p-4 term-card"><div class="icon-circle mb-3">🎲</div><h4>Top-K e Top-P</h4><p class="small-muted">Limitam o conjunto de tokens candidatos para tornar a resposta mais controlada.</p><strong>Exemplo:</strong><p class="mb-0"><code>top_p=0.9</code> usa apenas tokens cuja probabilidade acumulada alcance 90%.</p></div></div>
+              <div class="col-md-6 concept" data-tags="fundamento contexto context window"><div class="cardx p-4 term-card"><div class="icon-circle mb-3">🪟</div><h4>Janela de contexto</h4><p class="small-muted">Quantidade máxima de tokens que o modelo consegue considerar de uma vez.</p><strong>Exemplo:</strong><p class="mb-0">Em RAG, documentos precisam ser divididos em chunks para caber dentro da janela de contexto.</p></div></div>
+              <div class="col-md-6 concept" data-tags="operacao inferencia deploy"><div class="cardx p-4 term-card"><div class="icon-circle mb-3">⚡</div><h4>Inferência</h4><p class="small-muted">Processo de executar o modelo para gerar uma resposta a partir do prompt.</p><strong>Exemplo:</strong><p class="mb-0">Servir um modelo com vLLM ou Ollama e expor uma API compatível com OpenAI.</p></div></div>
+              <div class="col-md-6 concept" data-tags="controle hallucination alucinacao guardrails"><div class="cardx p-4 term-card"><div class="icon-circle mb-3">⚠️</div><h4>Alucinação</h4><p class="small-muted">Quando o modelo gera informação plausível, mas incorreta, sem base confiável no contexto.</p><strong>Mitigação:</strong><p class="mb-0">RAG, checagem de fontes, resposta “não sei”, validação por regras e guardrails.</p></div></div>
+              <div class="col-md-6 concept" data-tags="arquitetura rag retrieval"><div class="cardx p-4 term-card"><div class="icon-circle mb-3">📚</div><h4>RAG</h4><p class="small-muted">Retrieval-Augmented Generation: busca informações em uma base externa e injeta trechos relevantes no prompt.</p><strong>Exemplo:</strong><p class="mb-0">Chatbot que responde perguntas sobre normas da UFPI usando PDFs indexados em ChromaDB.</p></div></div>
+              <div class="col-md-6 concept" data-tags="arquitetura embeddings vetores"><div class="cardx p-4 term-card"><div class="icon-circle mb-3">🧬</div><h4>Embeddings</h4><p class="small-muted">Representações vetoriais que capturam similaridade semântica entre textos.</p><strong>Exemplo:</strong><p class="mb-0">Transformar perguntas e parágrafos em vetores para fazer busca semântica em um banco vetorial.</p></div></div>
+              <div class="col-md-6 concept" data-tags="operacao parametros pesos"><div class="cardx p-4 term-card"><div class="icon-circle mb-3">⚙️</div><h4>Parâmetros do modelo</h4><p class="small-muted">Pesos aprendidos durante o treinamento. Armazenam padrões estatísticos da linguagem e do conhecimento visto nos dados.</p><strong>Exemplo:</strong><p class="mb-0">Um modelo 7B tem cerca de 7 bilhões de parâmetros.</p></div></div>
+              <div class="col-md-6 concept" data-tags="arquitetura agents agentes"><div class="cardx p-4 term-card"><div class="icon-circle mb-3">🤖</div><h4>Agentes</h4><p class="small-muted">Aplicações que usam LLMs para planejar ações, chamar ferramentas e executar tarefas em etapas.</p><strong>Exemplo:</strong><p class="mb-0">Agente que recebe uma solicitação, consulta uma API, gera relatório e salva um arquivo.</p></div></div>
+              <div class="col-md-6 concept" data-tags="operacao observabilidade metricas"><div class="cardx p-4 term-card"><div class="icon-circle mb-3">📈</div><h4>Observabilidade</h4><p class="small-muted">Monitoramento de latência, tokens, custo, erros, qualidade e segurança das respostas.</p><strong>Exemplo:</strong><p class="mb-0">Prometheus coleta métricas; Grafana mostra dashboards; LangSmith rastreia prompts e cadeias.</p></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="java-python" class="section">
+      <div class="container">
+        <div class="section-kicker">Trilhas de desenvolvimento</div>
+        <h2 class="section-title">Java + Spring Boot e Python para IA Generativa</h2>
+        <p class="small-muted mb-4">Java é forte em ambientes corporativos, integração, segurança e escalabilidade. Python domina prototipação, ciência de dados, machine learning, RAG e ecossistemas de LLMs. Em projetos reais, os dois ambientes podem coexistir.</p>
+        <div class="row g-4">
+          <div class="col-lg-6">
+            <div class="cardx p-4 h-100" style="border-color:rgba(255,210,60,.35)">
+              <div class="d-flex align-items-center gap-3 mb-3"><div class="icon-circle">☕</div><div><h3 class="mb-0">Trilha Java</h3><p class="small-muted mb-0">Enterprise-grade AI engineering stack</p></div></div>
+              <div class="row g-3">
+                <div class="col-md-6"><h6 class="text-warning">Por que Java?</h6><ul class="small-muted"><li>Ecossistema maduro para aplicações corporativas.</li><li>Boa integração com microsserviços e cloud.</li><li>Segurança, observabilidade e performance.</li></ul></div>
+                <div class="col-md-6"><h6 class="text-warning">Ecossistema base</h6><div class="d-flex flex-wrap gap-2"><span class="pill">OpenJDK</span><span class="pill">Maven</span><span class="pill">Gradle</span><span class="pill">Spring Boot</span></div></div>
+              </div>
+              <hr>
+              <h6 class="text-warning">Bibliotecas e integrações</h6>
+              <div class="table-responsive"><table class="table table-dark table-sm align-middle"><thead><tr><th>Ferramenta</th><th>Uso principal</th><th>Exemplo</th></tr></thead><tbody>
+                <tr><td>Spring AI</td><td>Integração com LLMs e embeddings</td><td>ChatClient, Advisors, VectorStore</td></tr>
+                <tr><td>LangChain4j</td><td>Chains, ferramentas e agentes</td><td>Assistente com memória</td></tr>
+                <tr><td>DJL</td><td>Deep Learning em Java</td><td>Inferência local</td></tr>
+                <tr><td>Weaviate/Pinecone/Milvus</td><td>Bancos vetoriais</td><td>Busca semântica</td></tr>
+              </tbody></table></div>
+              <div class="code-wrap mt-3"><button class="btn btn-sm btn-outline-info copy-btn">Copiar</button><pre><code>// Exemplo conceitual com Spring AI
+@RestController
+class ChatController {
+  private final ChatClient chatClient;
+
+  ChatController(ChatClient.Builder builder) {
+    this.chatClient = builder.build();
+  }
+
+  @GetMapping("/chat")
+  String chat(@RequestParam String pergunta) {
+    return chatClient.prompt()
+      .user(pergunta)
+      .call()
+      .content();
+  }
+}</code></pre></div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="cardx p-4 h-100" style="border-color:rgba(24,215,255,.35)">
+              <div class="d-flex align-items-center gap-3 mb-3"><div class="icon-circle">🐍</div><div><h3 class="mb-0">Trilha Python</h3><p class="small-muted mb-0">AI, Data Science e aplicações GenAI</p></div></div>
+              <div class="row g-3">
+                <div class="col-md-6"><h6 class="text-info">Por que Python?</h6><ul class="small-muted"><li>Ecossistema amplo de IA e dados.</li><li>Prototipação rápida.</li><li>Ferramentas fortes para LLMs, RAG e agentes.</li></ul></div>
+                <div class="col-md-6"><h6 class="text-info">Ecossistema base</h6><div class="d-flex flex-wrap gap-2"><span class="pill">Python</span><span class="pill">pip</span><span class="pill">venv/conda</span><span class="pill">Jupyter</span></div></div>
+              </div>
+              <hr>
+              <h6 class="text-info">Frameworks Python para IA e GenAI</h6>
+              <div class="table-responsive"><table class="table table-dark table-sm align-middle"><thead><tr><th>Categoria</th><th>Ferramentas</th><th>Uso</th></tr></thead><tbody>
+                <tr><td>ML/DL</td><td>PyTorch, TensorFlow, JAX</td><td>Treino, fine-tuning e inferência</td></tr>
+                <tr><td>NLP/LLMs</td><td>Transformers, spaCy, NLTK</td><td>Modelos, tokenização, pipelines NLP</td></tr>
+                <tr><td>RAG</td><td>LangChain, LlamaIndex, Haystack</td><td>Busca, chains, indexação, memória</td></tr>
+                <tr><td>Agentes</td><td>AutoGen, CrewAI, Semantic Kernel</td><td>Orquestração multiagente</td></tr>
+                <tr><td>Apps</td><td>FastAPI, Streamlit, Gradio</td><td>APIs, demos e interfaces</td></tr>
+                <tr><td>Vetores</td><td>Chroma, Milvus, Qdrant, Pinecone</td><td>Busca semântica</td></tr>
+              </tbody></table></div>
+              <div class="code-wrap mt-3"><button class="btn btn-sm btn-outline-info copy-btn">Copiar</button><pre><code># Exemplo simples de chamada a um servidor LLM local compatível com OpenAI
+from openai import OpenAI
+
+client = OpenAI(
+    base_url="http://localhost:11434/v1",
+    api_key="ollama"
+)
+
+resp = client.chat.completions.create(
+    model="llama3.2:3b",
+    messages=[
+        {"role": "system", "content": "Responda em português, com objetividade."},
+        {"role": "user", "content": "Explique RAG em 3 tópicos."}
+    ],
+    temperature=0.2
+)
+
+print(resp.choices[0].message.content)</code></pre></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="demos" class="section bg-black bg-opacity-25">
+      <div class="container">
+        <div class="section-kicker">Mão na massa</div>
+        <h2 class="section-title">Ideias práticas com exemplos</h2>
+        <div class="accordion mt-4" id="demoAccordion">
+          <div class="accordion-item bg-transparent border-secondary"><h2 class="accordion-header"><button class="accordion-button" data-bs-toggle="collapse" data-bs-target="#demo1">Demo 1 — Chat com documentos usando RAG</button></h2><div id="demo1" class="accordion-collapse collapse show" data-bs-parent="#demoAccordion"><div class="accordion-body"><p>Fluxo: carregar PDFs → quebrar em chunks → gerar embeddings → salvar em banco vetorial → recuperar trechos relevantes → montar prompt → gerar resposta com fontes.</p><div class="code-wrap"><button class="btn btn-sm btn-outline-info copy-btn">Copiar</button><pre><code>from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_chroma import Chroma
+from langchain_ollama import OllamaEmbeddings, ChatOllama
+
+textos = ["Regulamento: o aluno deve cumprir a carga horária..."]
+splitter = RecursiveCharacterTextSplitter(chunk_size=800, chunk_overlap=120)
+docs = splitter.create_documents(textos)
+
+emb = OllamaEmbeddings(model="nomic-embed-text")
+db = Chroma.from_documents(docs, embedding=emb, persist_directory="./chroma")
+
+pergunta = "Qual regra vale para carga horária?"
+contexto = "\n".join([d.page_content for d in db.similarity_search(pergunta, k=3)])
+
+llm = ChatOllama(model="llama3.2:3b", temperature=0.2)
+resposta = llm.invoke(f"Responda usando apenas o contexto:\n{contexto}\n\nPergunta: {pergunta}")
+print(resposta.content)</code></pre></div></div></div></div>
+          <div class="accordion-item bg-transparent border-secondary"><h2 class="accordion-header"><button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#demo2">Demo 2 — API FastAPI para chatbot</button></h2><div id="demo2" class="accordion-collapse collapse" data-bs-parent="#demoAccordion"><div class="accordion-body"><p>Uma API permite integrar o LLM com frontend web, aplicativos, sistemas corporativos e serviços externos.</p><div class="code-wrap"><button class="btn btn-sm btn-outline-info copy-btn">Copiar</button><pre><code>from fastapi import FastAPI
+from pydantic import BaseModel
+from openai import OpenAI
+
+app = FastAPI(title="API de IA Generativa")
+client = OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")
+
+class ChatRequest(BaseModel):
+    pergunta: str
+
+@app.post("/chat")
+def chat(req: ChatRequest):
+    resp = client.chat.completions.create(
+        model="llama3.2:3b",
+        messages=[{"role":"user", "content": req.pergunta}],
+        temperature=0.3
+    )
+    return {"resposta": resp.choices[0].message.content}</code></pre></div></div></div></div>
+          <div class="accordion-item bg-transparent border-secondary"><h2 class="accordion-header"><button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#demo3">Demo 3 — Guardrail simples contra respostas sem contexto</button></h2><div id="demo3" class="accordion-collapse collapse" data-bs-parent="#demoAccordion"><div class="accordion-body"><p>Guardrails reduzem riscos quando o modelo tenta responder fora do escopo, vazar dados ou inventar informações.</p><div class="code-wrap"><button class="btn btn-sm btn-outline-info copy-btn">Copiar</button><pre><code>def montar_prompt(pergunta: str, contexto: str) -> str:
+    return f"""
+Você é um assistente técnico. Responda APENAS com base no CONTEXTO.
+Se o contexto não for suficiente, responda: "Não encontrei informação suficiente.".
+
+CONTEXTO:
+{contexto}
+
+PERGUNTA:
+{pergunta}
+"""
+
+# Estratégia adicional: bloquear perguntas fora do domínio
+PALAVRAS_DOMINIO = ["regulamento", "disciplina", "matrícula", "projeto"]
+
+def pergunta_no_dominio(pergunta: str) -> bool:
+    p = pergunta.lower()
+    return any(t in p for t in PALAVRAS_DOMINIO)</code></pre></div></div></div></div>
+          <div class="accordion-item bg-transparent border-secondary"><h2 class="accordion-header"><button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#demo4">Demo 4 — Observabilidade básica</button></h2><div id="demo4" class="accordion-collapse collapse" data-bs-parent="#demoAccordion"><div class="accordion-body"><p>Monitore tempo de resposta, quantidade de tokens, taxa de erro, custo estimado, respostas bloqueadas e satisfação do usuário.</p><div class="code-wrap"><button class="btn btn-sm btn-outline-info copy-btn">Copiar</button><pre><code>import time
+from prometheus_client import Counter, Histogram, start_http_server
+
+REQUESTS = Counter("llm_requests_total", "Total de requisições ao LLM")
+LATENCY = Histogram("llm_latency_seconds", "Latência das chamadas ao LLM")
+
+start_http_server(8001)
+
+@LATENCY.time()
+def chamar_llm(prompt: str):
+    REQUESTS.inc()
+    time.sleep(0.3)  # aqui entraria a chamada real ao modelo
+    return "Resposta gerada pelo LLM"</code></pre></div></div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="boas-praticas" class="section">
+      <div class="container">
+        <div class="row g-4">
+          <div class="col-lg-8">
+            <div class="section-kicker">Da ideia à produção</div>
+            <h2 class="section-title">Boas práticas para sistemas confiáveis de IA</h2>
+            <div class="timeline mt-4">
+              <div class="timeline-item"><h5>1. Defina o caso de uso e o domínio</h5><p class="small-muted">Evite “usar LLM para tudo”. Comece com uma tarefa clara: responder dúvidas, classificar documentos, resumir relatórios ou gerar rascunhos.</p></div>
+              <div class="timeline-item"><h5>2. Escolha a estratégia: prompt, RAG, fine-tuning ou agente</h5><p class="small-muted">Prompt engineering resolve casos simples. RAG é indicado quando a resposta depende de documentos atualizados. Fine-tuning é útil para estilo, formato e padrões recorrentes. Agentes servem para workflows com ferramentas.</p></div>
+              <div class="timeline-item"><h5>3. Avalie qualidade com exemplos reais</h5><p class="small-muted">Crie um conjunto de perguntas/respostas esperadas e avalie precisão, completude, aderência às fontes e segurança.</p></div>
+              <div class="timeline-item"><h5>4. Monitore custo, latência e falhas</h5><p class="small-muted">Prompts grandes, modelos maiores e contexto extenso aumentam custo e tempo de resposta.</p></div>
+              <div class="timeline-item"><h5>5. Proteja dados e controle permissões</h5><p class="small-muted">Use autenticação, controle de acesso, mascaramento de dados sensíveis, logs seguros e revisão humana quando necessário.</p></div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="cardx p-4 mb-3">
+              <h4 class="text-info">Checklist rápido</h4>
+              <div class="form-check"><input class="form-check-input" type="checkbox" id="c1"><label class="form-check-label" for="c1">Prompt com instruções claras</label></div>
+              <div class="form-check"><input class="form-check-input" type="checkbox" id="c2"><label class="form-check-label" for="c2">Resposta baseada em fontes</label></div>
+              <div class="form-check"><input class="form-check-input" type="checkbox" id="c3"><label class="form-check-label" for="c3">Temperatura adequada</label></div>
+              <div class="form-check"><input class="form-check-input" type="checkbox" id="c4"><label class="form-check-label" for="c4">Logs e métricas ativos</label></div>
+              <div class="form-check"><input class="form-check-input" type="checkbox" id="c5"><label class="form-check-label" for="c5">Guardrails e validações</label></div>
+            </div>
+            <div class="cardx p-4">
+              <h4 class="text-warning">Miniquiz</h4>
+              <p>Qual técnica é mais indicada para responder com base em documentos internos atualizados?</p>
+              <div class="quiz-option mb-2" data-correct="false">Apenas aumentar a temperatura</div>
+              <div class="quiz-option mb-2" data-correct="true">RAG com banco vetorial e recuperação de contexto</div>
+              <div class="quiz-option mb-2" data-correct="false">Remover a janela de contexto</div>
+              <div id="quizFeedback" class="small-muted mt-2"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section bg-black bg-opacity-25">
+      <div class="container">
+        <div class="section-kicker">Mapa mental</div>
+        <h2 class="section-title">Fundamentos que todo AI Engineer deve dominar</h2>
+        <div class="row g-3 mt-3">
+          <div class="col-md-4 col-lg-2"><div class="cardx p-3 h-100 text-center"><div class="icon-circle mb-2">🧾</div><h6>Prompt Engineering</h6><p class="small-muted small">Instruções, papéis, exemplos e restrições.</p></div></div>
+          <div class="col-md-4 col-lg-2"><div class="cardx p-3 h-100 text-center"><div class="icon-circle mb-2">📚</div><h6>Retrieval/RAG</h6><p class="small-muted small">Recuperar fontes relevantes antes de responder.</p></div></div>
+          <div class="col-md-4 col-lg-2"><div class="cardx p-3 h-100 text-center"><div class="icon-circle mb-2">🧠</div><h6>Modelos</h6><p class="small-muted small">Arquiteturas, parâmetros, quantização e inferência.</p></div></div>
+          <div class="col-md-4 col-lg-2"><div class="cardx p-3 h-100 text-center"><div class="icon-circle mb-2">📊</div><h6>Avaliação</h6><p class="small-muted small">Precisão, relevância, segurança e métricas.</p></div></div>
+          <div class="col-md-4 col-lg-2"><div class="cardx p-3 h-100 text-center"><div class="icon-circle mb-2">🚀</div><h6>Deploy</h6><p class="small-muted small">APIs, escalabilidade, cache, filas e GPUs.</p></div></div>
+          <div class="col-md-4 col-lg-2"><div class="cardx p-3 h-100 text-center"><div class="icon-circle mb-2">🛡️</div><h6>Governança</h6><p class="small-muted small">Privacidade, auditoria, permissões e compliance.</p></div></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer py-4">
+    <div class="container d-flex flex-column flex-md-row justify-content-between gap-2">
+      <div><strong>LLM Concepts Deep Dive</strong><div class="small-muted">Infográfico interativo para aulas, workshops e treinamento técnico.</div></div>
+      <div class="small-muted">Continue aprendendo. Continue construindo. &lt;/&gt;</div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const search = document.getElementById('search');
+    const cards = [...document.querySelectorAll('.concept')];
+    let currentFilter = 'all';
+
+    function applyFilters(){
+      const q = (search.value || '').toLowerCase().trim();
+      cards.forEach(card => {
+        const text = card.innerText.toLowerCase();
+        const tags = card.dataset.tags || '';
+        const matchText = !q || text.includes(q) || tags.includes(q);
+        const matchFilter = currentFilter === 'all' || tags.includes(currentFilter);
+        card.style.display = matchText && matchFilter ? '' : 'none';
+      });
+    }
+    search.addEventListener('input', applyFilters);
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.dataset.filter;
+        applyFilters();
+      });
+    });
+
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const code = btn.parentElement.querySelector('code').innerText;
+        await navigator.clipboard.writeText(code);
+        const old = btn.textContent;
+        btn.textContent = 'Copiado!';
+        setTimeout(() => btn.textContent = old, 1400);
+      });
+    });
+
+    document.querySelectorAll('.quiz-option').forEach(opt => {
+      opt.addEventListener('click', () => {
+        document.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('correct','wrong'));
+        const ok = opt.dataset.correct === 'true';
+        opt.classList.add(ok ? 'correct' : 'wrong');
+        document.getElementById('quizFeedback').textContent = ok
+          ? 'Correto! RAG permite recuperar documentos relevantes e reduzir respostas inventadas.'
+          : 'Ainda não. A melhor resposta é RAG com recuperação de contexto em uma base documental.';
+      });
+    });
+  </script>
+</body>
+</html>

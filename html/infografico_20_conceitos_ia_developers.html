@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>20 Conceitos de IA que todo Desenvolvedor deve saber</title>
+  <meta name="description" content="Infográfico interativo e responsivo com 20 conceitos essenciais de IA para desenvolvedores, com exemplos, técnicas, ferramentas e trilhas práticas.">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#f7f9ff;
+      --ink:#0f172a;
+      --muted:#64748b;
+      --card:#ffffff;
+      --line:#e2e8f0;
+      --blue:#2563eb;
+      --purple:#7c3aed;
+      --pink:#db2777;
+      --green:#16a34a;
+      --orange:#ea580c;
+      --red:#dc2626;
+      --cyan:#0891b2;
+      --dark:#0b1220;
+      --shadow: 0 18px 45px rgba(15,23,42,.08);
+      --radius: 1.15rem;
+    }
+    *{box-sizing:border-box}
+    body{font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;background:radial-gradient(circle at 10% 0%,#eef2ff 0,#f8fafc 32%,#ffffff 70%);color:var(--ink);}
+    .mono{font-family:"JetBrains Mono",monospace}
+    .hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line);background:linear-gradient(135deg,#ffffff 0%,#eef2ff 55%,#fdf2f8 100%)}
+    .hero:before{content:"";position:absolute;inset:-80px auto auto -80px;width:280px;height:280px;border-radius:50%;background:rgba(37,99,235,.16);filter:blur(8px)}
+    .hero:after{content:"";position:absolute;right:-120px;bottom:-130px;width:360px;height:360px;border-radius:50%;background:rgba(219,39,119,.12);filter:blur(8px)}
+    .hero-inner{position:relative;z-index:2;padding:56px 0 36px}
+    .kicker{display:inline-flex;gap:.5rem;align-items:center;border:1px solid rgba(37,99,235,.18);background:rgba(255,255,255,.78);padding:.5rem .8rem;border-radius:999px;color:#1d4ed8;font-weight:700;font-size:.9rem;box-shadow:0 8px 25px rgba(37,99,235,.08)}
+    .gradient-text{background:linear-gradient(90deg,#2563eb,#7c3aed,#db2777,#ea580c);-webkit-background-clip:text;background-clip:text;color:transparent}
+    h1{font-weight:900;letter-spacing:-.06em;line-height:.95;font-size:clamp(2.55rem,6.8vw,6.8rem)}
+    .hero p.lead{font-size:clamp(1.05rem,2vw,1.35rem);color:#334155;max-width:960px}
+    .nav-pills .nav-link{border-radius:999px;font-weight:700;color:#334155;background:#fff;border:1px solid var(--line);box-shadow:0 8px 22px rgba(15,23,42,.04);margin:.25rem}
+    .nav-pills .nav-link.active{background:linear-gradient(90deg,#2563eb,#7c3aed);border-color:transparent;color:white}
+    .toolbar{position:sticky;top:0;z-index:50;background:rgba(248,250,252,.88);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+    .search-input{border-radius:999px;border:1px solid var(--line);padding:.85rem 1.1rem;box-shadow:0 8px 25px rgba(15,23,42,.04)}
+    .section-title{font-weight:900;letter-spacing:-.035em;font-size:clamp(1.8rem,3vw,3rem)}
+    .concept-card{height:100%;border:1px solid var(--line);border-radius:var(--radius);background:rgba(255,255,255,.92);box-shadow:var(--shadow);transition:.2s ease;overflow:hidden;position:relative}
+    .concept-card:hover{transform:translateY(-4px);box-shadow:0 24px 60px rgba(15,23,42,.12)}
+    .concept-top{padding:1.05rem 1.05rem .35rem;display:flex;gap:.8rem;align-items:flex-start}
+    .num{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;color:white;font-weight:900;flex:0 0 auto;box-shadow:0 10px 20px rgba(15,23,42,.15)}
+    .c-blue{background:linear-gradient(135deg,#2563eb,#1d4ed8)}.c-purple{background:linear-gradient(135deg,#7c3aed,#5b21b6)}.c-green{background:linear-gradient(135deg,#22c55e,#15803d)}.c-orange{background:linear-gradient(135deg,#fb923c,#ea580c)}.c-red{background:linear-gradient(135deg,#ef4444,#b91c1c)}.c-pink{background:linear-gradient(135deg,#ec4899,#be185d)}.c-cyan{background:linear-gradient(135deg,#06b6d4,#0e7490)}
+    .concept-card h3{font-size:1.05rem;font-weight:900;margin:0;letter-spacing:-.025em}
+    .concept-body{padding:0 1.05rem 1.05rem;color:#334155;font-size:.92rem}
+    .mini-label{font-size:.72rem;text-transform:uppercase;font-weight:900;letter-spacing:.08em;color:#475569;margin-top:.85rem;margin-bottom:.25rem}
+    .example-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:.85rem;padding:.75rem;margin-top:.65rem}
+    .tool-list{display:flex;gap:.35rem;flex-wrap:wrap;margin-top:.45rem}
+    .chip{display:inline-flex;align-items:center;gap:.3rem;padding:.28rem .55rem;border-radius:999px;background:#eef2ff;color:#3730a3;border:1px solid #c7d2fe;font-size:.76rem;font-weight:700}
+    .chip.green{background:#ecfdf5;color:#166534;border-color:#bbf7d0}.chip.orange{background:#fff7ed;color:#9a3412;border-color:#fed7aa}.chip.pink{background:#fdf2f8;color:#9d174d;border-color:#fbcfe8}.chip.cyan{background:#ecfeff;color:#155e75;border-color:#a5f3fc}.chip.gray{background:#f1f5f9;color:#334155;border-color:#cbd5e1}
+    .visual{height:118px;display:grid;place-items:center;margin:.25rem 0 .7rem;border-radius:.9rem;background:linear-gradient(135deg,#f8fafc,#eef2ff);border:1px solid #e2e8f0;overflow:hidden}
+    .visual svg{max-width:100%;height:100px}
+    pre{background:#0b1220;color:#dbeafe;border-radius:1rem;padding:1rem;overflow:auto;border:1px solid rgba(255,255,255,.08);font-size:.84rem;box-shadow:0 18px 40px rgba(2,6,23,.18)}
+    code{font-family:"JetBrains Mono",monospace}
+    .dark-panel{background:linear-gradient(135deg,#0b1220,#111827 55%,#172554);color:white;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid rgba(255,255,255,.1)}
+    .dark-panel .muted{color:#cbd5e1}
+    .path-step{display:flex;gap:1rem;align-items:flex-start;padding:1rem;border-radius:1rem;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);height:100%}
+    .icon-badge{width:44px;height:44px;border-radius:14px;background:rgba(255,255,255,.12);display:grid;place-items:center;flex:0 0 auto;font-size:1.35rem}
+    .accordion-button{font-weight:800}.accordion-button:not(.collapsed){background:#eef2ff;color:#1e40af}.table thead th{font-size:.82rem;text-transform:uppercase;letter-spacing:.06em;color:#475569}.table td{vertical-align:middle}.footer{background:#0b1220;color:#dbeafe}.hide{display:none!important}
+    .progress-pill{height:10px;background:#e2e8f0;border-radius:999px;overflow:hidden}.progress-pill span{display:block;height:100%;background:linear-gradient(90deg,#2563eb,#db2777);width:0%}
+    .quiz-option{cursor:pointer;border:1px solid var(--line);border-radius:1rem;padding:.8rem;background:#fff;transition:.15s}.quiz-option:hover{border-color:#93c5fd;background:#eff6ff}.quiz-option.correct{border-color:#22c55e;background:#ecfdf5}.quiz-option.wrong{border-color:#ef4444;background:#fef2f2}
+    @media print{.toolbar,.no-print{display:none!important}.concept-card{break-inside:avoid;box-shadow:none}.hero{background:white}.container{max-width:100%!important}}
+  </style>
+</head>
+<body>
+<header class="hero" id="topo">
+  <div class="container hero-inner">
+    <span class="kicker">🚀 Guia visual interativo para engenharia de IA</span>
+    <h1 class="mt-3 mb-3"><span class="gradient-text">20 Conceitos de IA</span><br>que todo Desenvolvedor deve saber</h1>
+    <p class="lead mb-4">Um infográfico responsivo com explicações, exemplos práticos, técnicas, ferramentas e uma trilha para transformar conceitos de IA em aplicações reais com LLMs, RAG, agentes, bancos vetoriais, APIs e avaliação.</p>
+    <div class="d-flex flex-wrap gap-2">
+      <a class="btn btn-primary btn-lg rounded-pill fw-bold" href="#conceitos">Explorar conceitos</a>
+      <a class="btn btn-outline-dark btn-lg rounded-pill fw-bold" href="#exemplos">Ver exemplos práticos</a>
+      <button class="btn btn-light btn-lg rounded-pill fw-bold no-print" onclick="window.print()">Imprimir / salvar PDF</button>
+    </div>
+  </div>
+</header>
+
+<nav class="toolbar py-3 no-print">
+  <div class="container">
+    <div class="row g-2 align-items-center">
+      <div class="col-lg-5"><input id="search" class="form-control search-input" placeholder="Buscar conceito, ferramenta ou técnica... ex.: RAG, FastAPI, LoRA"></div>
+      <div class="col-lg-7">
+        <ul class="nav nav-pills justify-content-lg-end" id="filters">
+          <li class="nav-item"><button class="nav-link active" data-filter="all">Todos</button></li>
+          <li class="nav-item"><button class="nav-link" data-filter="fundamentos">Fundamentos</button></li>
+          <li class="nav-item"><button class="nav-link" data-filter="llm">LLMs</button></li>
+          <li class="nav-item"><button class="nav-link" data-filter="dados">Dados</button></li>
+          <li class="nav-item"><button class="nav-link" data-filter="apps">Apps IA</button></li>
+          <li class="nav-item"><button class="nav-link" data-filter="avaliacao">Avaliação</button></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main>
+<section class="container py-5" id="conceitos">
+  <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-end gap-3 mb-4">
+    <div>
+      <h2 class="section-title mb-2">Mapa dos 20 conceitos essenciais</h2>
+      <p class="text-secondary mb-0">Cada cartão inclui: definição, intuição, exemplo, ferramentas e uma dica prática para desenvolvedores.</p>
+    </div>
+    <div class="text-secondary"><span id="count">20</span> conceitos visíveis</div>
+  </div>
+  <div class="row g-4" id="conceptGrid"></div>
+</section>
+
+<section class="container py-5" id="exemplos">
+  <div class="row g-4 align-items-stretch">
+    <div class="col-lg-5">
+      <div class="dark-panel p-4 h-100">
+        <h2 class="fw-black section-title text-white">Da ideia à aplicação de IA</h2>
+        <p class="muted">Um fluxo prático para construir aplicações com IA generativa: defina o problema, prepare dados, crie prompts, use embeddings, adicione RAG, avalie respostas, monitore e itere.</p>
+        <div class="row g-3 mt-2">
+          <div class="col-12"><div class="path-step"><div class="icon-badge">💡</div><div><strong>1. Defina o caso de uso</strong><br><span class="muted">Ex.: chatbot de atendimento, busca semântica, resumo de documentos, geração de relatórios.</span></div></div></div>
+          <div class="col-12"><div class="path-step"><div class="icon-badge">📚</div><div><strong>2. Organize dados e contexto</strong><br><span class="muted">Colete PDFs, páginas, documentos, bancos de dados e regras de negócio.</span></div></div></div>
+          <div class="col-12"><div class="path-step"><div class="icon-badge">🧠</div><div><strong>3. Escolha modelo e arquitetura</strong><br><span class="muted">LLM via API, modelo local, RAG, agentes, tool calling ou fine-tuning.</span></div></div></div>
+          <div class="col-12"><div class="path-step"><div class="icon-badge">📊</div><div><strong>4. Avalie, monitore e melhore</strong><br><span class="muted">Meça qualidade, custo, latência, segurança, alucinações e satisfação do usuário.</span></div></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-7">
+      <h2 class="section-title mb-3">Exemplos de código e padrões</h2>
+      <div class="accordion" id="codeAccordion">
+        <div class="accordion-item">
+          <h3 class="accordion-header"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#ex1">Exemplo 1 — Tokenização e contagem aproximada de tokens</button></h3>
+          <div id="ex1" class="accordion-collapse collapse show" data-bs-parent="#codeAccordion"><div class="accordion-body">
+<pre><code># Instale: pip install tiktoken
+import tiktoken
+
+texto = "Modelos de linguagem transformam texto em tokens."
+enc = tiktoken.get_encoding("cl100k_base")
+tokens = enc.encode(texto)
+
+print(tokens)
+print("Quantidade de tokens:", len(tokens))
+print("Reconstrução:", enc.decode(tokens))</code></pre>
+<p class="mb-0 text-secondary">Use contagem de tokens para controlar custo, latência e tamanho da janela de contexto.</p>
+          </div></div>
+        </div>
+        <div class="accordion-item">
+          <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ex2">Exemplo 2 — Embeddings e busca por similaridade</button></h3>
+          <div id="ex2" class="accordion-collapse collapse" data-bs-parent="#codeAccordion"><div class="accordion-body">
+<pre><code># Exemplo conceitual com sentence-transformers
+# pip install sentence-transformers scikit-learn
+from sentence_transformers import SentenceTransformer
+from sklearn.metrics.pairwise import cosine_similarity
+
+modelo = SentenceTransformer("all-MiniLM-L6-v2")
+docs = [
+    "RAG combina busca de documentos com geração de respostas.",
+    "Fine-tuning adapta um modelo para uma tarefa específica.",
+    "Bancos vetoriais indexam embeddings para busca semântica."
+]
+pergunta = "Como recuperar documentos parecidos com uma consulta?"
+
+emb_docs = modelo.encode(docs)
+emb_q = modelo.encode([pergunta])
+scores = cosine_similarity(emb_q, emb_docs)[0]
+
+for doc, score in sorted(zip(docs, scores), key=lambda x: x[1], reverse=True):
+    print(round(score, 3), doc)</code></pre>
+          </div></div>
+        </div>
+        <div class="accordion-item">
+          <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ex3">Exemplo 3 — Pipeline RAG simplificado</button></h3>
+          <div id="ex3" class="accordion-collapse collapse" data-bs-parent="#codeAccordion"><div class="accordion-body">
+<pre><code>def responder_com_rag(pergunta):
+    # 1. Transformar pergunta em embedding
+    vetor = gerar_embedding(pergunta)
+
+    # 2. Buscar trechos semelhantes no banco vetorial
+    trechos = vector_db.similarity_search(vetor, top_k=5)
+
+    # 3. Montar prompt com contexto recuperado
+    contexto = "\n\n".join(t.texto for t in trechos)
+    prompt = f"""
+    Responda somente com base no contexto.
+    CONTEXTO:
+    {contexto}
+
+    PERGUNTA: {pergunta}
+    RESPOSTA:
+    """
+
+    # 4. Chamar LLM
+    return llm.generate(prompt)</code></pre>
+          </div></div>
+        </div>
+        <div class="accordion-item">
+          <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ex4">Exemplo 4 — API FastAPI para aplicação de IA</button></h3>
+          <div id="ex4" class="accordion-collapse collapse" data-bs-parent="#codeAccordion"><div class="accordion-body">
+<pre><code># pip install fastapi uvicorn pydantic
+from fastapi import FastAPI
+from pydantic import BaseModel
+
+app = FastAPI(title="AI Assistant API")
+
+class ChatRequest(BaseModel):
+    pergunta: str
+    contexto: str | None = None
+
+@app.post("/chat")
+def chat(req: ChatRequest):
+    prompt = f"Contexto: {req.contexto}\nPergunta: {req.pergunta}"
+    resposta = chamar_llm(prompt)
+    return {"resposta": resposta, "modelo": "llm-local-ou-api"}
+
+# Execute: uvicorn app:app --reload</code></pre>
+          </div></div>
+        </div>
+        <div class="accordion-item">
+          <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ex5">Exemplo 5 — Avaliação simples de respostas</button></h3>
+          <div id="ex5" class="accordion-collapse collapse" data-bs-parent="#codeAccordion"><div class="accordion-body">
+<pre><code>criterios = {
+    "correcao": "A resposta está tecnicamente correta?",
+    "fidelidade": "A resposta usa apenas o contexto fornecido?",
+    "clareza": "A resposta é clara e objetiva?",
+    "seguranca": "A resposta evita instruções perigosas?"
+}
+
+def avaliar(resposta, contexto):
+    notas = {}
+    for nome, pergunta in criterios.items():
+        notas[nome] = juiz_llm(pergunta, resposta, contexto)  # 0 a 5
+    return notas</code></pre>
+          </div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="container py-5" id="stack">
+  <h2 class="section-title mb-4">Ferramentas e frameworks por camada</h2>
+  <div class="table-responsive bg-white rounded-4 shadow-sm border">
+    <table class="table table-hover mb-0 align-middle">
+      <thead class="table-light"><tr><th>Camada</th><th>Objetivo</th><th>Ferramentas comuns</th><th>Quando usar</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Modelos LLM</strong></td><td>Gerar, resumir, classificar e raciocinar sobre texto</td><td>OpenAI API, Anthropic, Gemini, Ollama, vLLM, Hugging Face</td><td>Chatbots, análise de documentos, copilotos, automações</td></tr>
+        <tr><td><strong>Embeddings</strong></td><td>Converter texto/imagem em vetores para similaridade</td><td>Sentence-Transformers, OpenAI Embeddings, Cohere Embed, nomic-embed-text</td><td>Busca semântica, recomendação, deduplicação, clustering</td></tr>
+        <tr><td><strong>Bancos vetoriais</strong></td><td>Indexar vetores e recuperar vizinhos próximos</td><td>Chroma, Qdrant, Weaviate, Pinecone, Milvus, pgvector</td><td>RAG, memória semântica, recuperação de conhecimento</td></tr>
+        <tr><td><strong>Orquestração</strong></td><td>Conectar prompts, modelos, ferramentas e fluxos</td><td>LangChain, LlamaIndex, Haystack, Semantic Kernel, AutoGen, CrewAI</td><td>RAG avançado, agentes, pipelines, tool calling</td></tr>
+        <tr><td><strong>Aplicações</strong></td><td>Criar APIs e interfaces para usuários</td><td>FastAPI, Flask, Django, Streamlit, Gradio, React, Next.js</td><td>Demos, produtos, painéis, APIs corporativas</td></tr>
+        <tr><td><strong>MLOps/LLMOps</strong></td><td>Monitorar qualidade, custo, latência e segurança</td><td>Weights & Biases, MLflow, LangSmith, Prometheus, Grafana, OpenTelemetry</td><td>Produção, auditoria, melhoria contínua, observabilidade</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="container py-5" id="quiz">
+  <div class="row g-4">
+    <div class="col-lg-6">
+      <h2 class="section-title">Miniquiz de revisão</h2>
+      <p class="text-secondary">Teste rapidamente se você entendeu os conceitos mais importantes.</p>
+      <div class="progress-pill mb-3"><span id="quizProgress"></span></div>
+      <div id="quizBox" class="bg-white border rounded-4 p-4 shadow-sm"></div>
+    </div>
+    <div class="col-lg-6">
+      <h2 class="section-title">Checklist para projetos reais</h2>
+      <div class="bg-white border rounded-4 p-4 shadow-sm">
+        <div class="form-check mb-2"><input class="form-check-input" type="checkbox" id="ck1"><label class="form-check-label" for="ck1">Defini claramente a tarefa, usuário-alvo e critério de sucesso.</label></div>
+        <div class="form-check mb-2"><input class="form-check-input" type="checkbox" id="ck2"><label class="form-check-label" for="ck2">Mapeei fontes de dados confiáveis e atualizadas.</label></div>
+        <div class="form-check mb-2"><input class="form-check-input" type="checkbox" id="ck3"><label class="form-check-label" for="ck3">Escolhi entre prompt engineering, RAG, fine-tuning ou agentes.</label></div>
+        <div class="form-check mb-2"><input class="form-check-input" type="checkbox" id="ck4"><label class="form-check-label" for="ck4">Implementei logs, métricas, rastreabilidade e avaliação.</label></div>
+        <div class="form-check mb-2"><input class="form-check-input" type="checkbox" id="ck5"><label class="form-check-label" for="ck5">Planejei segurança, privacidade, custos e limites do modelo.</label></div>
+        <div class="alert alert-primary mt-3 mb-0"><strong>Dica:</strong> em produção, trate prompts, datasets, versões de modelos e métricas como artefatos versionados.</div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="footer py-4 mt-5">
+  <div class="container d-flex flex-column flex-md-row justify-content-between gap-2">
+    <div><strong>20 Conceitos de IA para Desenvolvedores</strong><br><span class="text-secondary">Infográfico HTML responsivo com Bootstrap, CSS e JavaScript.</span></div>
+    <a href="#topo" class="btn btn-outline-light rounded-pill">Voltar ao topo</a>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+const colors=['c-blue','c-purple','c-green','c-orange','c-red','c-cyan','c-pink'];
+const concepts=[
+{n:1,t:'Tokenização',cat:'fundamentos llm',d:'Converte texto em unidades menores chamadas tokens. Um token pode ser uma palavra, parte de palavra, número, símbolo ou espaço.',ex:'"Olá, mundo!" pode virar tokens como [Olá], [,], [ mundo], [!].',tools:['tiktoken','SentencePiece','Hugging Face Tokenizers','spaCy'],tip:'Antes de enviar prompts longos, conte tokens para evitar estouro da janela de contexto.',visual:'tokens'},
+{n:2,t:'Embeddings',cat:'fundamentos dados',d:'Representações vetoriais de textos, imagens ou áudio que capturam significado e permitem comparar similaridade.',ex:'“carro” e “automóvel” ficam próximos no espaço vetorial; “banana” fica mais distante.',tools:['Sentence-Transformers','OpenAI Embeddings','Cohere Embed','nomic-embed-text'],tip:'Embeddings são base para busca semântica, clustering e recomendação.',visual:'scatter'},
+{n:3,t:'Transformers',cat:'fundamentos llm',d:'Arquitetura neural que processa sequências usando atenção, permitindo paralelismo e aprendizado de dependências longas.',ex:'BERT, GPT, T5, Llama, Mistral e PaLM usam variações da arquitetura Transformer.',tools:['PyTorch','TensorFlow','Transformers','JAX'],tip:'Entender Transformers ajuda a compreender contexto, atenção e custo computacional.',visual:'transformer'},
+{n:4,t:'Attention Mechanism',cat:'fundamentos llm',d:'Mecanismo que permite ao modelo focar nos trechos mais relevantes do input ao gerar cada parte da resposta.',ex:'Em “O gato sentou no tapete”, ao prever uma ação, o modelo pode dar mais peso a “gato”.',tools:['MultiHeadAttention','FlashAttention','PyTorch','TensorFlow'],tip:'Atenção não é explicação perfeita, mas ajuda a entender dependências entre tokens.',visual:'attention'},
+{n:5,t:'Pre-training',cat:'llm dados',d:'Fase em que um modelo aprende padrões gerais a partir de grandes volumes de dados antes de ser especializado.',ex:'Um LLM aprende gramática, fatos gerais, estilos e padrões de código em trilhões de tokens.',tools:['Hugging Face','DeepSpeed','Megatron-LM','vLLM'],tip:'Pré-treinamento é caro; para a maioria dos projetos, use modelos já treinados.',visual:'books'},
+{n:6,t:'Fine-tuning',cat:'llm apps',d:'Adapta um modelo pré-treinado para uma tarefa, domínio, estilo ou formato de resposta específico.',ex:'Treinar um modelo para responder no estilo de atendimento de uma empresa.',tools:['PEFT','LoRA','QLoRA','Axolotl','Weights & Biases'],tip:'Use fine-tuning quando prompt/RAG não bastarem para estilo, formato ou tarefa recorrente.',visual:'target'},
+{n:7,t:'Few-shot Prompting',cat:'llm apps',d:'Técnica de prompt em que você fornece poucos exemplos para induzir o modelo a seguir um padrão.',ex:'Forneça 3 exemplos de classificação de sentimentos antes de pedir a classificação de uma nova frase.',tools:['Prompt templates','LangChain','LlamaIndex','OpenAI API'],tip:'Ótimo para padronizar respostas sem treinar o modelo.',visual:'prompt'},
+{n:8,t:'RAG',cat:'llm dados apps',d:'Retrieval-Augmented Generation combina recuperação de documentos externos com geração por LLM.',ex:'Um chatbot consulta PDFs de uma universidade e responde com base nos trechos encontrados.',tools:['LangChain','LlamaIndex','Haystack','Chroma','Qdrant'],tip:'Use RAG para reduzir alucinações e responder com dados privados ou atualizados.',visual:'rag'},
+{n:9,t:'Vector Databases',cat:'dados apps',d:'Bancos que armazenam embeddings e fazem busca eficiente por similaridade.',ex:'Buscar os 5 documentos semanticamente mais próximos de uma pergunta.',tools:['Chroma','Qdrant','Weaviate','Pinecone','Milvus','pgvector'],tip:'Avalie latência, filtros metadata, persistência, escalabilidade e custo.',visual:'db'},
+{n:10,t:'Model Context Protocol (MCP)',cat:'apps llm',d:'Protocolo para conectar modelos a ferramentas, fontes de dados e aplicações de forma padronizada.',ex:'Um assistente consulta arquivos, calendário, banco de dados ou API por meio de servidores MCP.',tools:['MCP servers','LangChain tools','Claude Desktop','APIs'],tip:'Pense em MCP como uma camada de integração entre LLMs e ferramentas.',visual:'mcp'},
+{n:11,t:'Context Engineering',cat:'llm apps',d:'Projeto cuidadoso do contexto enviado ao modelo: instruções, exemplos, dados, histórico, ferramentas e restrições.',ex:'Separar instruções do sistema, dados recuperados, exemplos e pergunta do usuário em blocos claros.',tools:['Guidance','PromptLayer','LangSmith','DSPy'],tip:'Bons sistemas de IA são tão bons quanto o contexto que recebem.',visual:'context'},
+{n:12,t:'AI Agents',cat:'apps llm',d:'Sistemas que planejam, executam ações, usam ferramentas e iteram para atingir objetivos.',ex:'Agente que pesquisa preços, compara hotéis, monta roteiro e envia resumo ao usuário.',tools:['AutoGen','CrewAI','LangGraph','LlamaIndex Agents'],tip:'Use agentes para tarefas multi-etapas, mas imponha limites, logs e validações.',visual:'agent'},
+{n:13,t:'Reinforcement Learning',cat:'fundamentos llm',d:'Aprendizado por tentativa e erro, em que um agente maximiza recompensas em um ambiente.',ex:'Treinar um agente para jogar, controlar robôs ou otimizar recomendações.',tools:['Stable-Baselines3','RLlib','CleanRL','Gymnasium'],tip:'Em LLMs, RLHF/RLAIF pode alinhar respostas com preferências humanas.',visual:'rl'},
+{n:14,t:'Supervised Learning',cat:'fundamentos dados',d:'Aprende uma função a partir de dados rotulados, mapeando entradas para saídas conhecidas.',ex:'Classificar e-mails como spam/não spam usando exemplos rotulados.',tools:['scikit-learn','PyTorch','TensorFlow','XGBoost'],tip:'Comece por modelos supervisionados quando tiver bons rótulos e métrica clara.',visual:'supervised'},
+{n:15,t:'Unsupervised Learning',cat:'fundamentos dados',d:'Encontra padrões em dados sem rótulos, como grupos, anomalias ou representações.',ex:'Agrupar clientes por comportamento de compra sem categorias pré-definidas.',tools:['KMeans','DBSCAN','HDBSCAN','UMAP','PCA'],tip:'Útil para explorar dados e criar hipóteses antes de treinar modelos supervisionados.',visual:'clusters'},
+{n:16,t:'Multimodal Models',cat:'llm apps',d:'Modelos que entendem e combinam diferentes modalidades: texto, imagem, áudio, vídeo e tabelas.',ex:'Enviar uma imagem de tela e perguntar: “Que erro aparece nesta interface?”.',tools:['CLIP','LLaVA','Whisper','BLIP-2','Flamingo'],tip:'Valide entradas multimodais com cuidado, principalmente em tarefas críticas.',visual:'multi'},
+{n:17,t:'Hallucination',cat:'llm avaliacao',d:'Quando o modelo gera informação plausível, mas incorreta, sem base suficiente no contexto.',ex:'Inventar uma referência bibliográfica, número de lei, API inexistente ou caminho de arquivo.',tools:['RAG','citations','fact-checking','guardrails'],tip:'Reduza com contexto confiável, instruções claras, citações, validação e fallback.',visual:'hallucination'},
+{n:18,t:'Chain-of-Thought Prompting',cat:'llm apps',d:'Técnica que incentiva o modelo a decompor problemas. Em aplicações, prefira pedir justificativas breves ou passos verificáveis.',ex:'“Resolva em etapas e apresente apenas a resposta final com uma explicação curta.”',tools:['prompting','function calling','structured outputs'],tip:'Para produção, prefira raciocínio estruturado verificável, não exposição longa de pensamento interno.',visual:'cot'},
+{n:19,t:'Safety & Alignment',cat:'avaliacao apps',d:'Conjunto de práticas para tornar modelos mais úteis, seguros, robustos e alinhados com regras humanas.',ex:'Bloquear vazamento de dados sensíveis, respostas perigosas e instruções fora da política.',tools:['guardrails','moderation','red teaming','policy tests'],tip:'Inclua testes adversariais e revisão humana em domínios sensíveis.',visual:'shield'},
+{n:20,t:'Evaluation Metrics',cat:'avaliacao dados',d:'Métricas para medir desempenho, qualidade, robustez, segurança, custo e latência de modelos e aplicações.',ex:'Accuracy, precision, recall, F1, BLEU, ROUGE, perplexity, faithfulness, latency e cost/request.',tools:['Ragas','DeepEval','TruLens','MLflow','W&B'],tip:'Avalie com dados reais, conjunto de testes fixo e métricas alinhadas ao objetivo do negócio.',visual:'metrics'}
+];
+function svg(type){
+ const common='stroke="#1e293b" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"';
+ const map={
+ tokens:`<svg viewBox="0 0 260 120"><rect x="20" y="25" width="60" height="70" rx="6" ${common}/><line x1="35" y1="45" x2="65" y2="45" ${common}/><line x1="35" y1="60" x2="70" y2="60" ${common}/><path d="M90 60h25" ${common}/><path d="M107 52l8 8-8 8" ${common}/><rect x="125" y="45" width="36" height="30" rx="5" fill="#dbeafe" stroke="#2563eb"/><text x="143" y="65" font-size="12" text-anchor="middle">101</text><rect x="168" y="45" width="42" height="30" rx="5" fill="#dbeafe" stroke="#2563eb"/><text x="189" y="65" font-size="12" text-anchor="middle">2048</text><rect x="216" y="45" width="32" height="30" rx="5" fill="#dbeafe" stroke="#2563eb"/></svg>`,
+ scatter:`<svg viewBox="0 0 260 120"><path d="M45 95V20M45 95h180" ${common}/><circle cx="85" cy="75" r="7" fill="#7c3aed"/><circle cx="105" cy="55" r="7" fill="#7c3aed"/><circle cx="122" cy="35" r="7" fill="#7c3aed"/><circle cx="175" cy="45" r="7" fill="#2563eb"/><circle cx="205" cy="30" r="7" fill="#2563eb"/><path d="M85 75 C125 30,165 60,205 30" stroke="#64748b" stroke-width="2" stroke-dasharray="6 6" fill="none"/></svg>`,
+ transformer:`<svg viewBox="0 0 260 120"><rect x="15" y="25" width="40" height="70" rx="8" ${common}/><rect x="105" y="35" width="80" height="50" rx="8" fill="#dcfce7" stroke="#16a34a"/><text x="145" y="63" font-size="14" text-anchor="middle">Transformer</text><path d="M60 60h35M188 60h35" ${common}/><path d="M88 52l8 8-8 8M216 52l8 8-8 8" ${common}/><rect x="225" y="25" width="25" height="70" rx="6" ${common}/></svg>`,
+ attention:`<svg viewBox="0 0 260 120"><text x="25" y="35" font-size="18">Q</text><text x="25" y="65" font-size="18">K</text><text x="25" y="95" font-size="18">V</text><rect x="55" y="22" width="90" height="18" fill="#ddd6fe" stroke="#7c3aed"/><rect x="55" y="52" width="90" height="18" fill="#bbf7d0" stroke="#16a34a"/><rect x="55" y="82" width="90" height="18" fill="#bfdbfe" stroke="#2563eb"/><rect x="175" y="25" width="60" height="60" fill="#ffedd5" stroke="#ea580c"/><path d="M150 31c18 0 16 15 25 20M150 61h25M150 91c18 0 16-15 25-20" stroke="#1e293b" fill="none" stroke-dasharray="5 5"/></svg>`,
+ db:`<svg viewBox="0 0 260 120"><ellipse cx="130" cy="35" rx="70" ry="22" fill="#fff" stroke="#1e293b" stroke-width="2"/><path d="M60 35v50c0 12 31 22 70 22s70-10 70-22V35" ${common}/><circle cx="100" cy="58" r="5" fill="#22c55e"/><circle cx="132" cy="70" r="5" fill="#22c55e"/><circle cx="165" cy="58" r="5" fill="#22c55e"/><circle cx="185" cy="92" r="22" fill="#dcfce7" stroke="#16a34a"/><path d="M200 108l20 12" stroke="#1e293b" stroke-width="5"/></svg>`,
+ target:`<svg viewBox="0 0 260 120"><circle cx="155" cy="60" r="45" fill="#cffafe" stroke="#0891b2" stroke-width="3"/><circle cx="155" cy="60" r="28" fill="#fff" stroke="#0891b2" stroke-width="3"/><circle cx="155" cy="60" r="10" fill="#0891b2"/><path d="M35 60h70M95 52l12 8-12 8" ${common}/><path d="M150 62l55-45" stroke="#1e293b" stroke-width="3"/><path d="M205 17l-3 25 25-6" fill="#0891b2"/></svg>`,
+ rag:`<svg viewBox="0 0 260 120"><rect x="25" y="30" width="45" height="60" rx="6" fill="#ede9fe" stroke="#7c3aed"/><path d="M80 60h35M155 60h25" ${common}/><path d="M108 52l8 8-8 8M173 52l8 8-8 8" ${common}/><ellipse cx="135" cy="40" rx="35" ry="12" fill="#e2e8f0" stroke="#475569"/><path d="M100 40v40c0 8 16 14 35 14s35-6 35-14V40" stroke="#475569" fill="none"/><rect x="185" y="35" width="55" height="50" rx="8" fill="#fff" stroke="#1e293b"/><text x="212" y="63" font-size="13" text-anchor="middle">Answer</text></svg>`,
+ prompt:`<svg viewBox="0 0 260 120"><rect x="38" y="18" width="185" height="85" rx="8" fill="#fff" stroke="#1e293b"/><text x="55" y="42" font-size="13">Q: exemplo?</text><text x="55" y="62" font-size="13">A: padrão.</text><text x="55" y="82" font-size="13">Q: novo caso?</text><text x="55" y="98" font-size="13">A:</text></svg>`,
+ mcp:`<svg viewBox="0 0 260 120"><circle cx="50" cy="60" r="28" fill="#f1f5f9" stroke="#1e293b"/><rect x="105" y="42" width="55" height="36" rx="8" fill="#ffedd5" stroke="#ea580c"/><text x="132" y="65" font-size="18" text-anchor="middle">MCP</text><path d="M80 60h25M160 60h35M160 60l35-30M160 60l35 30" ${common}/><rect x="202" y="20" width="35" height="22" rx="4" ${common}/><rect x="202" y="50" width="35" height="22" rx="4" ${common}/><rect x="202" y="80" width="35" height="22" rx="4" ${common}/></svg>`,
+ context:`<svg viewBox="0 0 260 120"><path d="M45 30h170l-65 42v30h-40V72L45 30z" fill="#eef2ff" stroke="#1e293b" stroke-width="2"/><rect x="45" y="10" width="35" height="22" rx="4" ${common}/><rect x="112" y="10" width="35" height="22" rx="4" ${common}/><rect x="180" y="10" width="35" height="22" rx="4" ${common}/></svg>`,
+ agent:`<svg viewBox="0 0 260 120"><rect x="55" y="35" width="75" height="55" rx="20" fill="#dbeafe" stroke="#1e293b" stroke-width="2"/><circle cx="78" cy="62" r="6" fill="#1e293b"/><circle cx="107" cy="62" r="6" fill="#1e293b"/><path d="M92 35V18" ${common}/><circle cx="92" cy="15" r="6" fill="#2563eb"/><rect x="165" y="25" width="55" height="75" rx="8" fill="#fff" stroke="#1e293b"/><path d="M177 45h28M177 65h28M177 85h28" ${common}/></svg>`,
+ rl:`<svg viewBox="0 0 260 120"><rect x="100" y="18" width="60" height="22" rx="6" fill="#dcfce7" stroke="#16a34a"/><rect x="22" y="50" width="80" height="22" rx="6" fill="#dbeafe" stroke="#2563eb"/><rect x="165" y="50" width="65" height="22" rx="6" fill="#ede9fe" stroke="#7c3aed"/><rect x="105" y="88" width="55" height="22" rx="6" fill="#ffedd5" stroke="#ea580c"/><path d="M130 40c-45 0-65 20-65 45M160 30c35 10 45 25 38 52M102 95c-35-15-45-35-35-55" ${common}/></svg>`,
+ supervised:`<svg viewBox="0 0 260 120"><rect x="25" y="25" width="35" height="70" rx="6" fill="#dbeafe" stroke="#2563eb"/><circle cx="42" cy="45" r="7" fill="#60a5fa"/><circle cx="42" cy="65" r="7" fill="#60a5fa"/><circle cx="42" cy="85" r="7" fill="#60a5fa"/><path d="M70 60h35M150 60h35" ${common}/><circle cx="125" cy="45" r="7" fill="#f472b6"/><circle cx="145" cy="65" r="7" fill="#f472b6"/><circle cx="125" cy="85" r="7" fill="#f472b6"/><rect x="195" y="25" width="35" height="70" rx="6" fill="#fce7f3" stroke="#db2777"/></svg>`,
+ clusters:`<svg viewBox="0 0 260 120"><circle cx="60" cy="50" r="5" fill="#2563eb"/><circle cx="80" cy="70" r="5" fill="#2563eb"/><circle cx="95" cy="42" r="5" fill="#2563eb"/><circle cx="150" cy="40" r="24" fill="none" stroke="#22c55e" stroke-dasharray="5 5"/><circle cx="150" cy="40" r="5" fill="#22c55e"/><circle cx="205" cy="78" r="24" fill="none" stroke="#f97316" stroke-dasharray="5 5"/><circle cx="205" cy="78" r="5" fill="#f97316"/></svg>`,
+ multi:`<svg viewBox="0 0 260 120"><rect x="30" y="20" width="35" height="25" rx="4" fill="#ecfeff" stroke="#0891b2"/><text x="47" y="38" font-size="18" text-anchor="middle">T</text><rect x="85" y="20" width="35" height="25" rx="4" fill="#eff6ff" stroke="#2563eb"/><rect x="140" y="20" width="35" height="25" rx="4" fill="#f8fafc" stroke="#64748b"/><rect x="195" y="20" width="35" height="25" rx="4" fill="#fef2f2" stroke="#dc2626"/><circle cx="130" cy="82" r="8" ${common}/><path d="M47 45l83 37M102 45l28 37M157 45l-27 37M212 45l-82 37" ${common}/></svg>`,
+ hallucination:`<svg viewBox="0 0 260 120"><rect x="45" y="50" width="70" height="45" rx="18" fill="#dbeafe" stroke="#1e293b"/><circle cx="67" cy="72" r="5" fill="#1e293b"/><circle cx="92" cy="72" r="5" fill="#1e293b"/><path d="M120 65h80q15 0 15 15v10q0 15-15 15h-80z" fill="#fff" stroke="#1e293b"/><text x="165" y="83" font-size="12" text-anchor="middle">fato falso</text><circle cx="218" cy="90" r="13" fill="#ef4444"/><path d="M212 84l12 12M224 84l-12 12" stroke="#fff" stroke-width="3"/></svg>`,
+ cot:`<svg viewBox="0 0 260 120"><path d="M65 35c0-18 22-25 35-13 8-18 40-18 48 0 16-9 39 1 39 20 18 3 24 25 10 38 8 18-8 35-28 30H82c-22 4-38-15-28-34-16-10-10-34 11-41z" fill="#fff" stroke="#1e293b"/><text x="128" y="49" font-size="12" text-anchor="middle">1. Entender</text><text x="128" y="68" font-size="12" text-anchor="middle">2. Dividir</text><text x="128" y="87" font-size="12" text-anchor="middle">3. Responder</text></svg>`,
+ shield:`<svg viewBox="0 0 260 120"><path d="M130 18l55 20v35c0 32-25 50-55 60-30-10-55-28-55-60V38z" fill="#dbeafe" stroke="#1e3a8a" stroke-width="3"/><path d="M107 65l15 15 35-35" stroke="#2563eb" stroke-width="6" fill="none" stroke-linecap="round"/></svg>`,
+ metrics:`<svg viewBox="0 0 260 120"><path d="M45 95V25M45 95h150" ${common}/><rect x="62" y="65" width="18" height="30" fill="#ec4899"/><rect x="92" y="55" width="18" height="40" fill="#22c55e"/><rect x="122" y="45" width="18" height="50" fill="#f97316"/><path d="M55 50l30-10 30 16 30-30 35 15" stroke="#1e293b" stroke-width="2" fill="none"/><circle cx="210" cy="62" r="30" fill="#ddd6fe" stroke="#7c3aed"/></svg>`,
+ books:`<svg viewBox="0 0 260 120"><circle cx="115" cy="55" r="38" fill="#bfdbfe" stroke="#2563eb"/><rect x="165" y="40" width="55" height="15" rx="3" fill="#fff" stroke="#1e293b"/><rect x="160" y="56" width="65" height="15" rx="3" fill="#fff" stroke="#1e293b"/><rect x="170" y="72" width="55" height="15" rx="3" fill="#fff" stroke="#1e293b"/><ellipse cx="55" cy="80" rx="25" ry="8" fill="#e2e8f0" stroke="#64748b"/><path d="M30 80v15c0 5 11 8 25 8s25-3 25-8V80" stroke="#64748b" fill="none"/></svg>`
+ };
+ return map[type]||map.tokens;
+}
+function render(){
+ const grid=document.getElementById('conceptGrid'); grid.innerHTML='';
+ const q=document.getElementById('search').value.toLowerCase();
+ const active=document.querySelector('#filters .active').dataset.filter;
+ let visible=0;
+ concepts.forEach((c,i)=>{
+   const text=(c.t+' '+c.d+' '+c.ex+' '+c.tools.join(' ')+' '+c.tip).toLowerCase();
+   const okFilter=active==='all'||c.cat.includes(active);
+   const okSearch=!q||text.includes(q);
+   if(!okFilter||!okSearch) return;
+   visible++;
+   const col=document.createElement('div'); col.className='col-sm-6 col-xl-4 col-xxl-3 concept-item';
+   col.innerHTML=`<article class="concept-card">
+    <div class="concept-top"><div class="num ${colors[i%colors.length]}">${c.n}</div><div><h3>${c.t}</h3><div class="text-secondary small mt-1">${c.cat.split(' ').map(x=>'#'+x).join(' ')}</div></div></div>
+    <div class="concept-body"><div class="visual">${svg(c.visual)}</div><p>${c.d}</p><div class="example-box"><div class="mini-label">Exemplo</div>${c.ex}</div><div class="mini-label">Ferramentas</div><div class="tool-list">${c.tools.map((t,k)=>`<span class="chip ${['','green','orange','pink','cyan','gray'][k%6]}">${t}</span>`).join('')}</div><div class="mini-label">Dica prática</div><p class="mb-0">${c.tip}</p></div>
+   </article>`;
+   grid.appendChild(col);
+ });
+ document.getElementById('count').textContent=visible;
+}
+document.getElementById('search').addEventListener('input',render);
+document.querySelectorAll('#filters .nav-link').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('#filters .nav-link').forEach(x=>x.classList.remove('active'));b.classList.add('active');render();}));
+render();
+
+const quiz=[
+ {q:'Qual técnica combina recuperação de documentos externos com geração por LLM?', a:'RAG', ops:['Fine-tuning','RAG','Tokenização','RL']},
+ {q:'Qual estrutura armazena embeddings para busca semântica?', a:'Banco vetorial', ops:['Banco relacional apenas','Banco vetorial','Tokenizer','Prompt']},
+ {q:'O que é alucinação em LLMs?', a:'Resposta plausível, mas incorreta', ops:['Aumento de precisão','Resposta plausível, mas incorreta','Treinamento supervisionado','Compressão de modelo']},
+ {q:'Quando usar few-shot prompting?', a:'Quando quero mostrar poucos exemplos no prompt', ops:['Para indexar vetores','Para mostrar poucos exemplos no prompt','Para treinar do zero','Para medir latência']}
+];
+let qi=0, score=0;
+function drawQuiz(){
+ const box=document.getElementById('quizBox'); const item=quiz[qi];
+ document.getElementById('quizProgress').style.width=((qi)/quiz.length*100)+'%';
+ box.innerHTML=`<h3 class="h5 fw-bold mb-3">${qi+1}. ${item.q}</h3><div class="d-grid gap-2">${item.ops.map(op=>`<div class="quiz-option" data-op="${op}">${op}</div>`).join('')}</div><div id="quizMsg" class="mt-3"></div>`;
+ box.querySelectorAll('.quiz-option').forEach(opt=>opt.addEventListener('click',()=>{
+   const ok=opt.dataset.op===item.a;
+   opt.classList.add(ok?'correct':'wrong'); if(ok) score++;
+   document.getElementById('quizMsg').innerHTML=`<div class="alert ${ok?'alert-success':'alert-warning'} mb-0">${ok?'Correto!':'Resposta correta: <strong>'+item.a+'</strong>'}</div>`;
+   setTimeout(()=>{qi++; if(qi<quiz.length) drawQuiz(); else finishQuiz();},900);
+ }));
+}
+function finishQuiz(){
+ document.getElementById('quizProgress').style.width='100%';
+ document.getElementById('quizBox').innerHTML=`<h3 class="h4 fw-bold">Resultado: ${score}/${quiz.length}</h3><p class="text-secondary">Revise os cartões e tente novamente para fixar os conceitos.</p><button class="btn btn-primary rounded-pill fw-bold" onclick="qi=0;score=0;drawQuiz()">Refazer miniquiz</button>`;
+}
+drawQuiz();
+</script>
+</body>
+</html>
