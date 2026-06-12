@@ -76,15 +76,14 @@ Exemplo de Aplicação de Visão Computacional usando Deep Learning
 
 Mais detahes neste [link](hospedagem_local.md)
 
-## Site da disciplina
-
-Disponível em https://topicos-computacao-aplicada.github.io/github.io
-
-Em caso de dúvidas entrar em contato com [Armando Soares Sousa](https://www.sigaa.ufpi.br/sigaa/public/docente/portal.jsf?siape=1886865) (responsável pela disciplina).
-
 ## Habilidades para o Dev moderno na era da IA Generativa
 
 - Disponível em https://github.com/topicos-computacao-aplicada/2026-1/blob/main/docs/5_skills_modern_dev.png
 - Conceitos de LLM neste [link](https://htmlpreview.github.io/?https://github.com/topicos-computacao-aplicada/2026-1/blob/main/html/infografico_llm_ai_engineering.html)
 - Conceitos, Técnicas e Ferramentas neste [link](https://htmlpreview.github.io/?https://github.com/topicos-computacao-aplicada/2026-1/blob/main/html/infografico_20_conceitos_ia_developers.html)
 
+## Site da disciplina
+
+Disponível em https://topicos-computacao-aplicada.github.io/github.io
+
+Em caso de dúvidas entrar em contato com [Armando Soares Sousa](https://www.sigaa.ufpi.br/sigaa/public/docente/portal.jsf?siape=1886865) (responsável pela disciplina).
