@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Infográfico interativo sobre a arquitetura de três camadas para aplicações de IA: LLM, RAG e MCP." />
+  <title>Arquitetura de 3 Camadas para Aplicações de IA</title>
+
+  <style>
+    :root {
+      --bg: #f7f9fc;
+      --surface: #ffffff;
+      --surface-soft: #f1f5f9;
+      --text: #172033;
+      --muted: #5e6b7d;
+      --border: #dfe6ef;
+      --shadow: 0 14px 36px rgba(24, 39, 75, 0.10);
+
+      --blue: #1769d2;
+      --blue-soft: #eaf3ff;
+      --green: #16834f;
+      --green-soft: #ebf8f0;
+      --purple: #6537b8;
+      --purple-soft: #f2ecff;
+      --orange: #c96a13;
+      --orange-soft: #fff4e8;
+
+      --radius-lg: 24px;
+      --radius-md: 16px;
+      --radius-sm: 10px;
+      --container: 1400px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(23, 105, 210, 0.08), transparent 26rem),
+        radial-gradient(circle at top right, rgba(101, 55, 184, 0.08), transparent 26rem),
+        var(--bg);
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .container {
+      width: min(calc(100% - 32px), var(--container));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255, 255, 255, 0.92);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(16px);
+    }
+
+    .topbar-inner {
+      min-height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .brand-mark {
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      color: white;
+      background: linear-gradient(135deg, var(--blue), var(--purple));
+      box-shadow: 0 10px 24px rgba(70, 71, 170, 0.25);
+    }
+
+    .nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .nav a {
+      padding: 8px 12px;
+      color: var(--muted);
+      text-decoration: none;
+      border-radius: 999px;
+      font-size: 0.94rem;
+      font-weight: 650;
+    }
+
+    .nav a:hover {
+      color: var(--blue);
+      background: var(--blue-soft);
+    }
+
+    .hero {
+      padding: 72px 0 46px;
+      text-align: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border: 1px solid #cbdcf5;
+      background: rgba(255,255,255,0.82);
+      color: var(--blue);
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 0.9rem;
+      letter-spacing: 0.02em;
+    }
+
+    h1 {
+      max-width: 1000px;
+      margin: 22px auto 14px;
+      font-size: clamp(2.2rem, 5vw, 4.6rem);
+      line-height: 1.06;
+      letter-spacing: -0.045em;
+    }
+
+    .hero-subtitle {
+      max-width: 900px;
+      margin: 0 auto;
+      font-size: clamp(1.05rem, 2vw, 1.35rem);
+      color: var(--muted);
+    }
+
+    .hero-actions {
+      margin-top: 28px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 46px;
+      padding: 0 18px;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      text-decoration: none;
+      transition: 0.2s ease;
+    }
+
+    .btn-primary {
+      color: #fff;
+      background: linear-gradient(135deg, var(--blue), #245ad6);
+      box-shadow: 0 10px 24px rgba(23, 105, 210, 0.25);
+    }
+
+    .btn-secondary {
+      color: var(--text);
+      background: var(--surface);
+      border-color: var(--border);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .summary-grid,
+    .layers-grid,
+    .examples-grid,
+    .benefits-grid {
+      display: grid;
+      gap: 22px;
+    }
+
+    .summary-grid {
+      grid-template-columns: repeat(4, 1fr);
+      margin-bottom: 34px;
+    }
+
+    .summary-card,
+    .card,
+    .layer-card,
+    .example-card,
+    .benefit-card,
+    .flow-card,
+    .comparison-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+    }
+
+    .summary-card {
+      padding: 22px;
+    }
+
+    .summary-number {
+      font-size: 2rem;
+      font-weight: 900;
+      line-height: 1;
+      color: var(--blue);
+    }
+
+    .summary-label {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    section {
+      padding: 38px 0;
+      scroll-margin-top: 86px;
+    }
+
+    .section-heading {
+      margin-bottom: 24px;
+    }
+
+    .section-kicker {
+      margin: 0 0 6px;
+      color: var(--blue);
+      font-weight: 850;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 0.78rem;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: clamp(1.7rem, 3vw, 2.7rem);
+      letter-spacing: -0.035em;
+      line-height: 1.15;
+    }
+
+    .section-description {
+      max-width: 850px;
+      margin: 10px 0 0;
+      color: var(--muted);
+    }
+
+    .layers-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .layer-card {
+      overflow: hidden;
+      position: relative;
+    }
+
+    .layer-card::before {
+      content: "";
+      display: block;
+      height: 7px;
+      background: var(--accent);
+    }
+
+    .layer-card.blue {
+      --accent: var(--blue);
+      --soft: var(--blue-soft);
+    }
+
+    .layer-card.green {
+      --accent: var(--green);
+      --soft: var(--green-soft);
+    }
+
+    .layer-card.purple {
+      --accent: var(--purple);
+      --soft: var(--purple-soft);
+    }
+
+    .layer-header {
+      padding: 26px 26px 18px;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .layer-number {
+      flex: 0 0 auto;
+      width: 52px;
+      height: 52px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 1.45rem;
+      font-weight: 900;
+    }
+
+    .layer-title {
+      margin: 0;
+      font-size: 2rem;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .layer-subtitle {
+      margin: 6px 0 0;
+      font-weight: 800;
+    }
+
+    .layer-body {
+      padding: 0 26px 28px;
+    }
+
+    .lead {
+      color: var(--muted);
+      margin-top: 0;
+    }
+
+    .visual-box {
+      margin: 22px 0;
+      padding: 24px;
+      border-radius: var(--radius-md);
+      border: 1px solid color-mix(in srgb, var(--accent) 30%, white);
+      background: linear-gradient(145deg, var(--soft), #fff);
+      text-align: center;
+    }
+
+    .visual-icon {
+      font-size: 3rem;
+      line-height: 1;
+    }
+
+    .visual-title {
+      margin-top: 10px;
+      font-size: 1.15rem;
+      font-weight: 900;
+    }
+
+    .mini-title {
+      margin: 22px 0 10px;
+      color: var(--accent);
+      font-size: 1rem;
+    }
+
+    .check-list {
+      display: grid;
+      gap: 9px;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+
+    .check-list li {
+      display: grid;
+      grid-template-columns: 22px 1fr;
+      gap: 8px;
+      align-items: start;
+    }
+
+    .check-list li::before {
+      content: "✓";
+      width: 20px;
+      height: 20px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: var(--accent);
+      border-radius: 50%;
+      font-size: 0.75rem;
+      font-weight: 900;
+      margin-top: 2px;
+    }
+
+    .value-box {
+      margin-top: 24px;
+      padding: 18px;
+      border-radius: var(--radius-md);
+      background: var(--soft);
+      border: 1px solid color-mix(in srgb, var(--accent) 20%, white);
+    }
+
+    .value-box strong {
+      color: var(--accent);
+    }
+
+    .flow-card {
+      padding: 28px;
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(9, auto);
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      overflow-x: auto;
+      padding: 12px 0 4px;
+    }
+
+    .flow-step {
+      min-width: 150px;
+      max-width: 190px;
+      padding: 18px;
+      border: 1px solid var(--border);
+      background: var(--surface-soft);
+      border-radius: 16px;
+      text-align: center;
+    }
+
+    .flow-step .emoji {
+      font-size: 2rem;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .flow-arrow {
+      font-size: 1.5rem;
+      color: var(--muted);
+      font-weight: 900;
+    }
+
+    .examples-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .example-card {
+      padding: 26px;
+    }
+
+    .example-card h3 {
+      margin: 0 0 8px;
+      font-size: 1.3rem;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 14px 0 18px;
+    }
+
+    .tag {
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: var(--surface-soft);
+      border: 1px solid var(--border);
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: var(--muted);
+    }
+
+    .conversation {
+      display: grid;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .bubble {
+      max-width: 88%;
+      padding: 13px 15px;
+      border-radius: 15px;
+      border: 1px solid var(--border);
+    }
+
+    .bubble.user {
+      justify-self: start;
+      background: #edf4ff;
+      border-bottom-left-radius: 4px;
+    }
+
+    .bubble.ai {
+      justify-self: end;
+      background: #f7f2ff;
+      border-bottom-right-radius: 4px;
+    }
+
+    .trace {
+      margin-top: 18px;
+      padding: 15px;
+      background: #fbfcfe;
+      border: 1px dashed #cbd5e1;
+      border-radius: 14px;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .comparison-card {
+      overflow: hidden;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      min-width: 760px;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      padding: 16px 18px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    th {
+      color: var(--text);
+      background: #f3f6fa;
+      font-size: 0.9rem;
+    }
+
+    td {
+      color: var(--muted);
+    }
+
+    .benefits-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .benefit-card {
+      padding: 24px;
+    }
+
+    .benefit-icon {
+      font-size: 2.2rem;
+    }
+
+    .benefit-card h3 {
+      margin: 12px 0 8px;
+    }
+
+    .architecture-notes {
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      gap: 22px;
+    }
+
+    .card {
+      padding: 28px;
+    }
+
+    .code-block {
+      padding: 18px;
+      background: #111827;
+      color: #d7e4ff;
+      border-radius: 14px;
+      overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.9rem;
+      line-height: 1.7;
+    }
+
+    details {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: #fff;
+      padding: 0 16px;
+    }
+
+    details + details {
+      margin-top: 10px;
+    }
+
+    summary {
+      padding: 15px 0;
+      cursor: pointer;
+      font-weight: 850;
+    }
+
+    details p {
+      margin: 0 0 16px;
+      color: var(--muted);
+    }
+
+    footer {
+      padding: 38px 0 46px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .notice {
+      margin-top: 18px;
+      font-size: 0.88rem;
+    }
+
+    @media (max-width: 1100px) {
+      .layers-grid,
+      .summary-grid,
+      .benefits-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .layers-grid .layer-card:last-child {
+        grid-column: 1 / -1;
+      }
+
+      .architecture-notes {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .topbar-inner {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 12px 0;
+      }
+
+      .nav {
+        width: 100%;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        padding-bottom: 4px;
+      }
+
+      .hero {
+        padding-top: 50px;
+      }
+
+      .summary-grid,
+      .layers-grid,
+      .examples-grid,
+      .benefits-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .layers-grid .layer-card:last-child {
+        grid-column: auto;
+      }
+
+      .flow {
+        grid-template-columns: 1fr;
+        justify-items: stretch;
+      }
+
+      .flow-arrow {
+        transform: rotate(90deg);
+        text-align: center;
+      }
+
+      .flow-step {
+        width: 100%;
+        max-width: none;
+      }
+
+      .layer-header,
+      .layer-body,
+      .card,
+      .example-card,
+      .flow-card {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+    }
+
+    @media print {
+      .topbar,
+      .hero-actions {
+        display: none;
+      }
+
+      body {
+        background: white;
+      }
+
+      .summary-card,
+      .card,
+      .layer-card,
+      .example-card,
+      .benefit-card,
+      .flow-card,
+      .comparison-card {
+        box-shadow: none;
+        break-inside: avoid;
+      }
+
+      section {
+        padding: 20px 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="#inicio" aria-label="Ir para o início">
+        <span class="brand-mark">AI</span>
+        <span>LLM · RAG · MCP</span>
+      </a>
+
+      <nav class="nav" aria-label="Navegação principal">
+        <a href="#camadas">Camadas</a>
+        <a href="#fluxo">Fluxo</a>
+        <a href="#exemplos">Exemplos</a>
+        <a href="#comparacao">Comparação</a>
+        <a href="#boas-praticas">Boas práticas</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="inicio">
+    <section class="hero">
+      <div class="container">
+        <span class="eyebrow">Arquitetura moderna para sistemas de IA</span>
+        <h1>Arquitetura de 3 Camadas para Aplicações de IA</h1>
+        <p class="hero-subtitle">
+          Uma visão didática de como <strong>LLMs</strong>, <strong>RAG</strong> e <strong>MCP</strong>
+          podem trabalhar em conjunto para produzir respostas mais inteligentes, contextualizadas,
+          atualizadas e capazes de executar ações no mundo real.
+        </p>
+
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#camadas">Explorar as camadas</a>
+          <button class="btn btn-secondary" type="button" onclick="window.print()">Imprimir / salvar em PDF</button>
+        </div>
+      </div>
+    </section>
+
+    <section aria-label="Resumo executivo">
+      <div class="container">
+        <div class="summary-grid">
+          <article class="summary-card">
+            <div class="summary-number">3</div>
+            <div class="summary-label">camadas complementares e independentes</div>
+          </article>
+          <article class="summary-card">
+            <div class="summary-number">LLM</div>
+            <div class="summary-label">raciocínio, linguagem e geração de conteúdo</div>
+          </article>
+          <article class="summary-card">
+            <div class="summary-number">RAG</div>
+            <div class="summary-label">recuperação de conhecimento externo e atualizado</div>
+          </article>
+          <article class="summary-card">
+            <div class="summary-number">MCP</div>
+            <div class="summary-label">integração padronizada com ferramentas e sistemas</div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="camadas">
+      <div class="container">
+        <div class="section-heading">
+          <p class="section-kicker">Visão geral</p>
+          <h2>As três camadas da arquitetura</h2>
+          <p class="section-description">
+            Cada camada resolve um problema diferente. O LLM compreende e gera linguagem; o RAG fornece
+            conhecimento externo; e o MCP conecta a IA a ferramentas capazes de consultar dados e executar ações.
+          </p>
+        </div>
+
+        <div class="layers-grid">
+          <article class="layer-card blue">
+            <div class="layer-header">
+              <div class="layer-number">1</div>
+              <div>
+                <h3 class="layer-title">LLM</h3>
+                <p class="layer-subtitle">Camada de Fundação</p>
+              </div>
+            </div>
+
+            <div class="layer-body">
+              <p class="lead">
+                O Modelo de Linguagem Grande interpreta perguntas, identifica intenções, raciocina sobre o contexto
+                recebido e produz respostas em linguagem natural.
+              </p>
+
+              <div class="visual-box">
+                <div class="visual-icon">🧠</div>
+                <div class="visual-title">Modelo de Linguagem Grande</div>
+                <p>Ex.: GPT, Claude, Gemini, Llama, Qwen e outros modelos locais ou em nuvem.</p>
+              </div>
+
+              <h4 class="mini-title">Como funciona?</h4>
+              <ul class="check-list">
+                <li>Recebe uma instrução ou pergunta em linguagem natural.</li>
+                <li>Usa padrões aprendidos durante o treinamento para interpretar a intenção.</li>
+                <li>Gera texto, código, resumos, classificações ou explicações.</li>
+                <li>Pode cometer erros quando o conhecimento interno é insuficiente ou desatualizado.</li>
+              </ul>
+
+              <h4 class="mini-title">Exemplo</h4>
+              <div class="conversation">
+                <div class="bubble user"><strong>Usuário:</strong> Explique o que é uma API.</div>
+                <div class="bubble ai"><strong>LLM:</strong> Uma API é uma interface que permite a comunicação entre sistemas...</div>
+              </div>
+
+              <div class="value-box">
+                <strong>Valor entregue:</strong> compreensão de linguagem, raciocínio geral, geração de conteúdo e interação conversacional.
+              </div>
+            </div>
+          </article>
+
+          <article class="layer-card green">
+            <div class="layer-header">
+              <div class="layer-number">2</div>
+              <div>
+                <h3 class="layer-title">RAG</h3>
+                <p class="layer-subtitle">Camada de Conhecimento</p>
+              </div>
+            </div>
+
+            <div class="layer-body">
+              <p class="lead">
+                O RAG — Retrieval-Augmented Generation — busca informações em fontes externas e fornece ao LLM
+                um contexto relevante antes da geração da resposta.
+              </p>
+
+              <div class="visual-box">
+                <div class="visual-icon">🔎 📚</div>
+                <div class="visual-title">Recuperação + Contexto Aumentado</div>
+                <p>Fontes: documentos, páginas web, manuais, banco de dados, wiki corporativa e bases vetoriais.</p>
+              </div>
+
+              <h4 class="mini-title">Fluxo do RAG</h4>
+              <ul class="check-list">
+                <li>A pergunta é transformada em uma consulta de busca.</li>
+                <li>O recuperador localiza trechos relevantes na base de conhecimento.</li>
+                <li>Os trechos recuperados são adicionados ao prompt.</li>
+                <li>O LLM responde usando o contexto fornecido.</li>
+              </ul>
+
+              <h4 class="mini-title">Exemplo</h4>
+              <div class="conversation">
+                <div class="bubble user"><strong>Usuário:</strong> Qual é a regra de matrícula no curso?</div>
+                <div class="bubble ai"><strong>RAG:</strong> Consulta o regulamento acadêmico e recupera os artigos relevantes.</div>
+                <div class="bubble ai"><strong>LLM:</strong> Segundo o regulamento, a matrícula deve ser feita...</div>
+              </div>
+
+              <div class="value-box">
+                <strong>Valor entregue:</strong> respostas fundamentadas, atualizadas, específicas do domínio e com menor risco de alucinação.
+              </div>
+            </div>
+          </article>
+
+          <article class="layer-card purple">
+            <div class="layer-header">
+              <div class="layer-number">3</div>
+              <div>
+                <h3 class="layer-title">MCP</h3>
+                <p class="layer-subtitle">Camada de Ação</p>
+              </div>
+            </div>
+
+            <div class="layer-body">
+              <p class="lead">
+                O Model Context Protocol oferece um padrão para conectar aplicações de IA a ferramentas,
+                APIs, arquivos, bancos de dados e serviços externos.
+              </p>
+
+              <div class="visual-box">
+                <div class="visual-icon">🔌 ⚙️</div>
+                <div class="visual-title">Host → Cliente MCP → Servidores MCP</div>
+                <p>Integrações com APIs, sistemas de arquivos, bancos de dados, agendas, e-mail e aplicações corporativas.</p>
+              </div>
+
+              <h4 class="mini-title">Como funciona?</h4>
+              <ul class="check-list">
+                <li>O LLM identifica que uma ferramenta é necessária.</li>
+                <li>O cliente MCP descobre e chama a ferramenta adequada.</li>
+                <li>O servidor MCP executa a operação no sistema externo.</li>
+                <li>O resultado retorna ao modelo para validação e apresentação ao usuário.</li>
+              </ul>
+
+              <h4 class="mini-title">Exemplo</h4>
+              <div class="conversation">
+                <div class="bubble user"><strong>Usuário:</strong> Gere o relatório mensal e salve no Drive.</div>
+                <div class="bubble ai"><strong>MCP:</strong> Consulta a base, gera o arquivo e envia ao armazenamento.</div>
+                <div class="bubble ai"><strong>LLM:</strong> Relatório gerado e salvo com sucesso.</div>
+              </div>
+
+              <div class="value-box">
+                <strong>Valor entregue:</strong> ações reais, automação de tarefas e integração padronizada com ferramentas externas.
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="fluxo">
+      <div class="container">
+        <div class="section-heading">
+          <p class="section-kicker">Integração</p>
+          <h2>Como as três camadas trabalham juntas</h2>
+          <p class="section-description">
+            Em uma aplicação completa, as camadas atuam em sequência e podem ser acionadas de forma condicional,
+            conforme o tipo de solicitação.
+          </p>
+        </div>
+
+        <div class="flow-card">
+          <div class="flow" aria-label="Fluxo da arquitetura">
+            <div class="flow-step"><span class="emoji">👤</span><strong>1. Solicitação</strong><br>O usuário faz uma pergunta ou pede uma ação.</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step"><span class="emoji">🧠</span><strong>2. Interpretação</strong><br>O LLM identifica intenção e dados necessários.</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step"><span class="emoji">🔎</span><strong>3. Recuperação</strong><br>O RAG busca informações relevantes.</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step"><span class="emoji">🔌</span><strong>4. Ação</strong><br>O MCP chama ferramentas e serviços.</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step"><span class="emoji">✅</span><strong>5. Resposta</strong><br>O usuário recebe resultado e confirmação.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="exemplos">
+      <div class="container">
+        <div class="section-heading">
+          <p class="section-kicker">Casos práticos</p>
+          <h2>Exemplos detalhados de uso</h2>
+          <p class="section-description">
+            Os exemplos abaixo mostram quando cada camada é utilizada e como elas se combinam em cenários reais.
+          </p>
+        </div>
+
+        <div class="examples-grid">
+          <article class="example-card">
+            <h3>1. Assistente acadêmico</h3>
+            <p>Responde dúvidas sobre matrícula, estágio, TCC e normas da instituição.</p>
+            <div class="tag-row">
+              <span class="tag">LLM</span>
+              <span class="tag">RAG</span>
+              <span class="tag">Documentos institucionais</span>
+            </div>
+            <div class="conversation">
+              <div class="bubble user"><strong>Aluno:</strong> Quantas horas complementares preciso concluir?</div>
+              <div class="bubble ai"><strong>Sistema:</strong> Recupera a resolução do curso e localiza a carga horária exigida.</div>
+              <div class="bubble ai"><strong>Resposta:</strong> O regulamento estabelece 200 horas de atividades complementares.</div>
+            </div>
+            <div class="trace">
+              <strong>Explicação:</strong> o LLM interpreta a pergunta; o RAG consulta o documento oficial; o MCP não é necessário,
+              pois nenhuma ação externa precisa ser executada.
+            </div>
+          </article>
+
+          <article class="example-card">
+            <h3>2. Relatório de vendas automatizado</h3>
+            <p>Consulta dados de vendas, produz um resumo e salva o relatório em um serviço de arquivos.</p>
+            <div class="tag-row">
+              <span class="tag">LLM</span>
+              <span class="tag">RAG</span>
+              <span class="tag">MCP</span>
+              <span class="tag">Banco de dados</span>
+            </div>
+            <div class="conversation">
+              <div class="bubble user"><strong>Gestor:</strong> Gere um relatório das vendas do primeiro trimestre.</div>
+              <div class="bubble ai"><strong>Sistema:</strong> Consulta o banco, calcula totais, identifica tendências e gera um PDF.</div>
+              <div class="bubble ai"><strong>Resposta:</strong> Relatório criado e salvo. As vendas cresceram 12% no período.</div>
+            </div>
+            <div class="trace">
+              <strong>Explicação:</strong> o MCP acessa o banco de dados e o armazenamento; o RAG fornece dados;
+              o LLM transforma números em uma explicação executiva.
+            </div>
+          </article>
+
+          <article class="example-card">
+            <h3>3. Suporte técnico corporativo</h3>
+            <p>Ajuda funcionários a resolver erros de sistemas usando manuais internos e histórico de chamados.</p>
+            <div class="tag-row">
+              <span class="tag">LLM</span>
+              <span class="tag">RAG</span>
+              <span class="tag">Base de conhecimento</span>
+            </div>
+            <div class="conversation">
+              <div class="bubble user"><strong>Usuário:</strong> O sistema apresenta o erro E-104 ao enviar uma nota.</div>
+              <div class="bubble ai"><strong>Sistema:</strong> Busca ocorrências do erro, manual do ERP e soluções anteriores.</div>
+              <div class="bubble ai"><strong>Resposta:</strong> O erro normalmente ocorre por ausência do código tributário...</div>
+            </div>
+            <div class="trace">
+              <strong>Explicação:</strong> o RAG reduz respostas genéricas ao trazer soluções específicas da empresa.
+              O MCP pode ser acrescentado para abrir automaticamente um chamado.
+            </div>
+          </article>
+
+          <article class="example-card">
+            <h3>4. Assistente de agenda</h3>
+            <p>Verifica horários livres, cria eventos e envia convites aos participantes.</p>
+            <div class="tag-row">
+              <span class="tag">LLM</span>
+              <span class="tag">MCP</span>
+              <span class="tag">Calendário</span>
+              <span class="tag">E-mail</span>
+            </div>
+            <div class="conversation">
+              <div class="bubble user"><strong>Usuário:</strong> Marque uma reunião de 30 minutos amanhã à tarde.</div>
+              <div class="bubble ai"><strong>Sistema:</strong> Consulta a agenda, identifica um horário livre e cria o evento.</div>
+              <div class="bubble ai"><strong>Resposta:</strong> Reunião agendada para amanhã, às 15h.</div>
+            </div>
+            <div class="trace">
+              <strong>Explicação:</strong> o LLM interpreta uma solicitação ambígua; o MCP consulta e altera a agenda.
+              O RAG só seria necessário se políticas ou regras adicionais precisassem ser consultadas.
+            </div>
+          </article>
+
+          <article class="example-card">
+            <h3>5. Análise de contratos</h3>
+            <p>Localiza cláusulas, resume obrigações e compara documentos com políticas internas.</p>
+            <div class="tag-row">
+              <span class="tag">LLM</span>
+              <span class="tag">RAG</span>
+              <span class="tag">Documentos jurídicos</span>
+            </div>
+            <div class="conversation">
+              <div class="bubble user"><strong>Analista:</strong> Quais são as multas previstas neste contrato?</div>
+              <div class="bubble ai"><strong>Sistema:</strong> Recupera as cláusulas de penalidade e suas referências.</div>
+              <div class="bubble ai"><strong>Resposta:</strong> Foram identificadas três multas: atraso, descumprimento e rescisão...</div>
+            </div>
+            <div class="trace">
+              <strong>Explicação:</strong> o LLM resume e organiza; o RAG mantém a resposta vinculada às cláusulas reais.
+              A aplicação deve exibir fontes e páginas para auditoria.
+            </div>
+          </article>
+
+          <article class="example-card">
+            <h3>6. Monitoramento de infraestrutura</h3>
+            <p>Analisa métricas de serviços e executa ações controladas diante de incidentes.</p>
+            <div class="tag-row">
+              <span class="tag">LLM</span>
+              <span class="tag">RAG</span>
+              <span class="tag">MCP</span>
+              <span class="tag">Observabilidade</span>
+            </div>
+            <div class="conversation">
+              <div class="bubble user"><strong>Operador:</strong> Por que a API ficou lenta e o que devo fazer?</div>
+              <div class="bubble ai"><strong>Sistema:</strong> Consulta métricas, logs, runbooks e incidentes anteriores.</div>
+              <div class="bubble ai"><strong>Resposta:</strong> A latência aumentou após saturação do pool de conexões. Recomenda-se...</div>
+            </div>
+            <div class="trace">
+              <strong>Explicação:</strong> o RAG recupera runbooks; o MCP consulta métricas e pode reiniciar um serviço,
+              desde que existam permissões, validações e confirmação humana.
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="comparacao">
+      <div class="container">
+        <div class="section-heading">
+          <p class="section-kicker">Decisão arquitetural</p>
+          <h2>Comparação entre LLM, RAG e MCP</h2>
+        </div>
+
+        <div class="comparison-card">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Aspecto</th>
+                  <th>LLM</th>
+                  <th>RAG</th>
+                  <th>MCP</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Objetivo principal</strong></td>
+                  <td>Compreender e gerar linguagem.</td>
+                  <td>Fornecer conhecimento externo.</td>
+                  <td>Executar ações e integrar ferramentas.</td>
+                </tr>
+                <tr>
+                  <td><strong>Entrada típica</strong></td>
+                  <td>Prompt, histórico e contexto.</td>
+                  <td>Consulta semântica ou textual.</td>
+                  <td>Chamada estruturada de ferramenta.</td>
+                </tr>
+                <tr>
+                  <td><strong>Saída típica</strong></td>
+                  <td>Texto, código ou decisão.</td>
+                  <td>Trechos, documentos e evidências.</td>
+                  <td>Resultado de API, arquivo ou operação.</td>
+                </tr>
+                <tr>
+                  <td><strong>Principal risco</strong></td>
+                  <td>Alucinação ou interpretação incorreta.</td>
+                  <td>Recuperação irrelevante ou desatualizada.</td>
+                  <td>Ação indevida ou acesso excessivo.</td>
+                </tr>
+                <tr>
+                  <td><strong>Controle recomendado</strong></td>
+                  <td>Prompt, validação e avaliação.</td>
+                  <td>Fontes, filtros, ranking e citações.</td>
+                  <td>Permissões, confirmação e auditoria.</td>
+                </tr>
+                <tr>
+                  <td><strong>Quando usar</strong></td>
+                  <td>Conversação, análise, explicação e geração.</td>
+                  <td>Conhecimento privado, atualizado ou especializado.</td>
+                  <td>Quando a IA precisa consultar ou alterar sistemas.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="boas-praticas">
+      <div class="container">
+        <div class="section-heading">
+          <p class="section-kicker">Projeto e governança</p>
+          <h2>Boas práticas para aplicações confiáveis</h2>
+        </div>
+
+        <div class="benefits-grid">
+          <article class="benefit-card">
+            <div class="benefit-icon">🎯</div>
+            <h3>Precisão</h3>
+            <p>Use fontes verificáveis, busca semântica, filtros por domínio e avaliação contínua das respostas.</p>
+          </article>
+          <article class="benefit-card">
+            <div class="benefit-icon">🛡️</div>
+            <h3>Segurança</h3>
+            <p>Aplique autenticação, autorização mínima, isolamento de ferramentas e confirmação para ações críticas.</p>
+          </article>
+          <article class="benefit-card">
+            <div class="benefit-icon">🧾</div>
+            <h3>Rastreabilidade</h3>
+            <p>Registre prompts, fontes consultadas, ferramentas utilizadas, parâmetros e resultados obtidos.</p>
+          </article>
+          <article class="benefit-card">
+            <div class="benefit-icon">📈</div>
+            <h3>Observabilidade</h3>
+            <p>Monitore latência, custo, taxa de erro, qualidade da recuperação, uso de ferramentas e satisfação.</p>
+          </article>
+        </div>
+
+        <div class="architecture-notes" style="margin-top:22px;">
+          <article class="card">
+            <h3>Exemplo de fluxo técnico simplificado</h3>
+            <div class="code-block" aria-label="Fluxo técnico em pseudocódigo">
+usuário → aplicação
+aplicação → LLM: interpretar intenção
+LLM → RAG: buscar contexto, quando necessário
+RAG → base de conhecimento: recuperar evidências
+LLM → MCP: selecionar ferramenta, quando necessário
+MCP → sistema externo: executar consulta ou ação
+sistema externo → MCP → LLM: devolver resultado
+LLM → aplicação → usuário: gerar resposta final
+            </div>
+          </article>
+
+          <article class="card">
+            <h3>Perguntas frequentes</h3>
+
+            <details>
+              <summary>É obrigatório usar as três camadas?</summary>
+              <p>Não. Uma aplicação simples pode usar apenas um LLM. O RAG e o MCP devem ser adicionados quando houver necessidade de conhecimento externo ou ações em sistemas.</p>
+            </details>
+
+            <details>
+              <summary>RAG é o mesmo que memória?</summary>
+              <p>Não exatamente. RAG recupera informações de uma base externa. Memória normalmente representa dados persistentes sobre conversas, preferências ou eventos anteriores.</p>
+            </details>
+
+            <details>
+              <summary>MCP substitui APIs?</summary>
+              <p>Não. O MCP organiza e padroniza como aplicações de IA descobrem e usam ferramentas. As APIs continuam sendo parte das integrações.</p>
+            </details>
+
+            <details>
+              <summary>Como reduzir riscos em ações automáticas?</summary>
+              <p>Use permissões mínimas, listas de ferramentas autorizadas, validação de parâmetros, confirmação humana e registros de auditoria.</p>
+            </details>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <strong>Arquitetura de 3 Camadas para Aplicações de IA</strong>
+      <div class="notice">Infográfico educacional em HTML, responsivo e otimizado para modo claro, impressão e dispositivos móveis.</div>
+    </div>
+  </footer>
+
+  <script>
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+      link.addEventListener('click', event => {
+        const target = document.querySelector(link.getAttribute('href'));
+        if (target) {
+          event.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
