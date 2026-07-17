@@ -86,6 +86,7 @@ Mais detahes neste [link](hospedagem_local.md)
 ## Extra
 
 - [O Eco da Inteligência Artificial](https://github.com/topicos-computacao-aplicada/2026-1/blob/main/docs/eco-ia.png)
+- [Guia básico de Engenharia de Software](https://htmlpreview.github.io/?https://github.com/topicos-computacao-aplicada/2026-1/blob/main/html/guia_engenharia_software_responsivo.html)
   
 ## Site da disciplina
 
