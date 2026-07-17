@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Guia prático e responsivo de Engenharia de Software para implementação de projetos." />
+  <title>Guia Prático de Engenharia de Software</title>
+  <style>
+    :root {
+      --bg: #f7f9fc;
+      --surface: #ffffff;
+      --surface-soft: #f0f5ff;
+      --text: #1d2a3a;
+      --muted: #5f6f82;
+      --primary: #2457c5;
+      --primary-2: #12387f;
+      --accent: #f29f05;
+      --success: #1c8c5e;
+      --danger: #c83d4d;
+      --purple: #7651c8;
+      --border: #dfe7f1;
+      --shadow: 0 10px 30px rgba(34, 61, 103, 0.10);
+      --radius: 18px;
+      --radius-sm: 12px;
+      --max: 1280px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+    }
+
+    a { color: inherit; }
+    img { max-width: 100%; display: block; }
+
+    .container {
+      width: min(100% - 32px, var(--max));
+      margin-inline: auto;
+    }
+
+    .skip-link {
+      position: absolute;
+      left: -999px;
+      top: 0;
+      background: var(--primary);
+      color: white;
+      padding: 10px 14px;
+      z-index: 9999;
+    }
+    .skip-link:focus { left: 10px; top: 10px; }
+
+    header.hero {
+      background:
+        radial-gradient(circle at top right, rgba(242,159,5,.18), transparent 28%),
+        radial-gradient(circle at left center, rgba(36,87,197,.16), transparent 28%),
+        linear-gradient(180deg, #ffffff 0%, #eef4ff 100%);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1.25fr .75fr;
+      gap: 42px;
+      align-items: center;
+      padding: 72px 0 52px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      font-weight: 800;
+      color: var(--primary);
+      background: #e9f0ff;
+      border: 1px solid #cfe0ff;
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-size: .86rem;
+      letter-spacing: .03em;
+    }
+
+    h1, h2, h3, h4 { line-height: 1.2; margin-top: 0; }
+    h1 {
+      font-size: clamp(2.35rem, 5vw, 5.2rem);
+      margin: 20px 0 18px;
+      letter-spacing: -0.045em;
+      color: #10254d;
+    }
+    h1 span { color: var(--primary); }
+
+    .hero p {
+      font-size: clamp(1rem, 1.5vw, 1.25rem);
+      color: var(--muted);
+      max-width: 780px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+      font-weight: 800;
+      border-radius: 12px;
+      padding: 12px 16px;
+      border: 1px solid transparent;
+    }
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-secondary { background: white; color: var(--primary); border-color: #cfdcf4; }
+
+    .hero-card {
+      background: rgba(255,255,255,.86);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(199,214,236,.9);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-card h2 { font-size: 1.2rem; margin-bottom: 14px; }
+    .process-mini {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    .process-mini div {
+      background: var(--surface-soft);
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid #dbe6f7;
+      font-size: .92rem;
+      font-weight: 700;
+    }
+
+    nav.sticky-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255,255,255,.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 4px 14px rgba(25, 54, 100, .06);
+    }
+    .nav-scroll {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding: 10px 0;
+      scrollbar-width: thin;
+    }
+    .nav-scroll a {
+      white-space: nowrap;
+      text-decoration: none;
+      color: var(--primary-2);
+      background: #f4f7fb;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: .88rem;
+      font-weight: 750;
+    }
+    .nav-scroll a:hover { background: #e8f0ff; }
+
+    main { padding: 44px 0 80px; }
+
+    .intro-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-bottom: 42px;
+    }
+
+    .info-card, .section-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .info-card { padding: 22px; }
+    .info-card strong { color: var(--primary); }
+
+    .flow-strip {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 10px;
+      margin: 22px 0 44px;
+    }
+    .flow-step {
+      position: relative;
+      min-height: 118px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px 12px;
+      text-align: center;
+      box-shadow: 0 8px 20px rgba(31,58,104,.08);
+    }
+    .flow-step .icon { font-size: 2rem; }
+    .flow-step b { display: block; margin-top: 8px; color: var(--primary-2); }
+    .flow-step small { color: var(--muted); }
+
+    .section-card {
+      overflow: hidden;
+      margin-bottom: 28px;
+    }
+    .section-head {
+      padding: 24px 26px;
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .section-head .num {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: rgba(255,255,255,.18);
+      font-weight: 900;
+      font-size: 1.15rem;
+    }
+    .section-head h2 { margin: 0; font-size: clamp(1.35rem, 3vw, 2.2rem); }
+    .section-head p { margin: 4px 0 0; color: rgba(255,255,255,.85); }
+
+    .blue { background: linear-gradient(135deg, #1d5dcc, #173d88); }
+    .green { background: linear-gradient(135deg, #16815c, #0d5b42); }
+    .purple { background: linear-gradient(135deg, #7651c8, #4d2d98); }
+    .orange { background: linear-gradient(135deg, #f29f05, #c97100); }
+    .red { background: linear-gradient(135deg, #d44f62, #a42339); }
+    .teal { background: linear-gradient(135deg, #1b8b99, #0f5f69); }
+
+    .section-body { padding: 26px; }
+    .section-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 22px;
+    }
+    .section-grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+    .block {
+      background: #fbfcfe;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 18px;
+    }
+    .block h3 { color: var(--primary-2); margin-bottom: 10px; font-size: 1.08rem; }
+    .block h4 { margin-bottom: 8px; color: #304a70; }
+
+    .example {
+      background: #fff9e8;
+      border-left: 4px solid var(--accent);
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-top: 12px;
+    }
+    .tip {
+      background: #ebf7f2;
+      border-left: 4px solid var(--success);
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-top: 12px;
+    }
+    .warning {
+      background: #fff0f2;
+      border-left: 4px solid var(--danger);
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-top: 12px;
+    }
+
+    ul.clean, ol.clean { padding-left: 1.15rem; margin: .5rem 0 0; }
+    ul.clean li, ol.clean li { margin: .45rem 0; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      font-size: .94rem;
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: #eef4ff; color: var(--primary-2); }
+    tr:last-child td { border-bottom: 0; }
+
+    code, pre {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    }
+    pre {
+      background: #11213d;
+      color: #eef5ff;
+      padding: 18px;
+      border-radius: 14px;
+      overflow-x: auto;
+      font-size: .88rem;
+      line-height: 1.55;
+    }
+    code.inline {
+      background: #eef2f8;
+      color: #1c3e78;
+      padding: 2px 6px;
+      border-radius: 6px;
+    }
+
+    .checklist {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px 18px;
+    }
+    .checklist label {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      background: #fbfcff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px;
+    }
+    .checklist input { margin-top: 4px; accent-color: var(--primary); }
+
+    .principle-banner {
+      margin-top: 34px;
+      background: linear-gradient(135deg, #10254d, #1d5dcc);
+      color: white;
+      border-radius: 22px;
+      padding: 28px;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+    .principle-banner strong { color: #ffd368; }
+
+    footer {
+      background: #10213f;
+      color: #d8e4f5;
+      padding: 34px 0;
+      margin-top: 60px;
+    }
+    footer p { margin: 0; text-align: center; }
+
+    .back-top {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      text-decoration: none;
+      display: grid;
+      place-items: center;
+      box-shadow: var(--shadow);
+      font-size: 1.2rem;
+    }
+
+    @media (max-width: 980px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .intro-grid { grid-template-columns: 1fr; }
+      .flow-strip { grid-template-columns: repeat(2, 1fr); }
+      .section-grid, .section-grid.three { grid-template-columns: 1fr; }
+      .checklist { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 620px) {
+      .container { width: min(100% - 20px, var(--max)); }
+      .hero-inner { padding: 48px 0 36px; }
+      .hero-actions { flex-direction: column; }
+      .btn { width: 100%; }
+      .flow-strip { grid-template-columns: 1fr; }
+      .section-body { padding: 18px; }
+      .section-head { padding: 20px; align-items: flex-start; }
+      table { display: block; overflow-x: auto; white-space: nowrap; }
+    }
+
+    @media print {
+      nav.sticky-nav, .back-top, .hero-actions { display: none; }
+      body { background: white; }
+      .section-card, .info-card { box-shadow: none; break-inside: avoid; }
+    }
+  </style>
+</head>
+<body id="topo">
+  <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+
+  <header class="hero">
+    <div class="container hero-inner">
+      <div>
+        <span class="eyebrow">🧭 Guia resumido e prático</span>
+        <h1>Engenharia de Software para <span>implementar projetos</span></h1>
+        <p>
+          Uma página completa, responsiva e orientada à prática, reunindo os principais aspectos para transformar uma ideia em um produto de software funcional, testável, colaborativo e evolutivo.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#visao-geral">Começar pelo processo</a>
+          <a class="btn btn-secondary" href="#checklist">Ver checklist final</a>
+        </div>
+      </div>
+
+      <aside class="hero-card" aria-label="Resumo do processo">
+        <h2>Fluxo essencial</h2>
+        <div class="process-mini">
+          <div>1. Entender o problema</div>
+          <div>2. Definir o MVP</div>
+          <div>3. Especificar requisitos</div>
+          <div>4. Projetar a arquitetura</div>
+          <div>5. Planejar sprints</div>
+          <div>6. Implementar</div>
+          <div>7. Testar e integrar</div>
+          <div>8. Entregar e evoluir</div>
+        </div>
+      </aside>
+    </div>
+  </header>
+
+  <nav class="sticky-nav" aria-label="Navegação principal">
+    <div class="container nav-scroll">
+      <a href="#problema">Problema</a>
+      <a href="#produto">Produto e MVP</a>
+      <a href="#requisitos">Requisitos</a>
+      <a href="#processo">Processo</a>
+      <a href="#arquitetura">Arquitetura</a>
+      <a href="#planejamento">Planejamento</a>
+      <a href="#implementacao">Implementação</a>
+      <a href="#git">Git e GitHub</a>
+      <a href="#testes">Testes</a>
+      <a href="#ci">CI/CD</a>
+      <a href="#acompanhamento">Acompanhamento</a>
+      <a href="#entrega">Entrega</a>
+      <a href="#manutencao">Manutenção</a>
+      <a href="#checklist">Checklist</a>
+    </div>
+  </nav>
+
+  <main id="conteudo" class="container">
+    <section id="visao-geral" aria-labelledby="titulo-visao">
+      <div class="intro-grid">
+        <div class="info-card">
+          <strong>Foco no valor</strong>
+          <p>O projeto deve resolver um problema real para um público claramente identificado.</p>
+        </div>
+        <div class="info-card">
+          <strong>Qualidade desde o início</strong>
+          <p>Testes, revisão, segurança e documentação devem acompanhar a implementação.</p>
+        </div>
+        <div class="info-card">
+          <strong>Melhoria contínua</strong>
+          <p>O produto evolui em ciclos curtos com entregas, feedback e retrospectivas.</p>
+        </div>
+      </div>
+
+      <h2 id="titulo-visao">Visão geral do ciclo</h2>
+      <div class="flow-strip" aria-label="Fluxo de implementação">
+        <div class="flow-step"><div class="icon">🎯</div><b>Problema</b><small>Entender a necessidade</small></div>
+        <div class="flow-step"><div class="icon">💡</div><b>Proposta</b><small>Definir objetivos</small></div>
+        <div class="flow-step"><div class="icon">📋</div><b>Requisitos</b><small>Descrever o que fazer</small></div>
+        <div class="flow-step"><div class="icon">📦</div><b>MVP</b><small>Entregar o essencial</small></div>
+        <div class="flow-step"><div class="icon">🏗️</div><b>Arquitetura</b><small>Organizar a solução</small></div>
+        <div class="flow-step"><div class="icon">✅</div><b>Qualidade</b><small>Testar e integrar</small></div>
+        <div class="flow-step"><div class="icon">🚀</div><b>Evolução</b><small>Entregar e melhorar</small></div>
+      </div>
+    </section>
+
+    <section id="problema" class="section-card">
+      <div class="section-head blue">
+        <div class="num">1</div>
+        <div><h2>Compreensão do problema</h2><p>Antes de escolher tecnologias, entenda a necessidade real.</p></div>
+      </div>
+      <div class="section-body section-grid">
+        <article class="block">
+          <h3>Perguntas essenciais</h3>
+          <ul class="clean">
+            <li>Quem enfrenta o problema?</li>
+            <li>Em qual contexto ele ocorre?</li>
+            <li>Quais são as causas e consequências?</li>
+            <li>Como saberemos que a solução melhorou a situação?</li>
+            <li>Quais limitações de prazo, orçamento e equipe existem?</li>
+          </ul>
+          <div class="example"><strong>Exemplo:</strong> alunos perdem prazos porque atividades estão espalhadas entre e-mail, portal acadêmico e grupos de mensagens.</div>
+        </article>
+        <article class="block">
+          <h3>Enunciado recomendado</h3>
+          <p><em>O público [tipo de usuário] enfrenta dificuldade para [atividade] porque [causa]. Isso provoca [consequência]. O projeto propõe [solução] para melhorar [resultado].</em></p>
+          <div class="example"><strong>Exemplo preenchido:</strong> estudantes enfrentam dificuldade para organizar prazos porque as informações estão distribuídas. Isso provoca atrasos. O projeto propõe um painel unificado de tarefas acadêmicas.</div>
+        </article>
+        <article class="block">
+          <h3>Stakeholders</h3>
+          <table>
+            <thead><tr><th>Stakeholder</th><th>Interesse</th><th>Influência</th></tr></thead>
+            <tbody>
+              <tr><td>Usuário final</td><td>Facilidade e confiabilidade</td><td>Média</td></tr>
+              <tr><td>Cliente</td><td>Valor entregue</td><td>Alta</td></tr>
+              <tr><td>Equipe técnica</td><td>Construir e manter</td><td>Alta</td></tr>
+              <tr><td>Administrador</td><td>Segurança e controle</td><td>Média</td></tr>
+            </tbody>
+          </table>
+        </article>
+        <article class="block">
+          <h3>Objetivos e escopo</h3>
+          <p><strong>Dentro do escopo:</strong> login, cadastro de tarefas, prioridades, alertas.</p>
+          <p><strong>Fora do escopo:</strong> aplicativo nativo, IA recomendadora, integração com sistemas externos.</p>
+          <div class="tip"><strong>Dica:</strong> delimitar o escopo reduz retrabalho e crescimento descontrolado do projeto.</div>
+        </article>
+      </div>
+    </section>
+
+    <section id="produto" class="section-card">
+      <div class="section-head green"><div class="num">2</div><div><h2>Definição do produto e do MVP</h2><p>Entregue o menor conjunto de funcionalidades que gere valor real.</p></div></div>
+      <div class="section-body section-grid three">
+        <article class="block">
+          <h3>Visão do produto</h3>
+          <p>Para estudantes que precisam organizar atividades, o <strong>StudyTask</strong> é uma aplicação que centraliza prazos, prioridades e alertas.</p>
+        </article>
+        <article class="block">
+          <h3>Priorização MoSCoW</h3>
+          <table>
+            <tbody>
+              <tr><td><strong>Must</strong></td><td>Login e cadastro de tarefas</td></tr>
+              <tr><td><strong>Should</strong></td><td>Filtros e ordenação</td></tr>
+              <tr><td><strong>Could</strong></td><td>Tema escuro</td></tr>
+              <tr><td><strong>Won't</strong></td><td>Integração com calendário externo</td></tr>
+            </tbody>
+          </table>
+        </article>
+        <article class="block">
+          <h3>Análise de riscos</h3>
+          <table>
+            <thead><tr><th>Risco</th><th>Resposta</th></tr></thead>
+            <tbody>
+              <tr><td>Tecnologia nova</td><td>Realizar spike</td></tr>
+              <tr><td>Atraso</td><td>Reduzir escopo</td></tr>
+              <tr><td>Perda de dados</td><td>Backup e testes</td></tr>
+            </tbody>
+          </table>
+        </article>
+      </div>
+      <div class="section-body" style="padding-top:0">
+        <div class="tip"><strong>MVP não significa baixa qualidade.</strong> Significa uma versão reduzida, mas funcional, segura e validável.</div>
+      </div>
+    </section>
+
+    <section id="requisitos" class="section-card">
+      <div class="section-head purple"><div class="num">3</div><div><h2>Requisitos e backlog</h2><p>Transforme necessidades em itens claros, priorizados e testáveis.</p></div></div>
+      <div class="section-body section-grid">
+        <article class="block">
+          <h3>História de usuário</h3>
+          <p><strong>Modelo:</strong> Como [usuário], quero [ação], para [benefício].</p>
+          <div class="example">Como estudante, quero cadastrar uma atividade para acompanhar seu prazo de entrega.</div>
+          <h4>Critérios de aceitação</h4>
+          <ul class="clean">
+            <li>Título obrigatório.</li>
+            <li>Data válida.</li>
+            <li>Associação a uma disciplina.</li>
+            <li>Confirmação após cadastro.</li>
+            <li>Exibição na lista.</li>
+          </ul>
+        </article>
+        <article class="block">
+          <h3>Tipos de requisitos</h3>
+          <p><strong>Funcionais:</strong> descrevem o que o sistema faz.</p>
+          <p><strong>Exemplo:</strong> permitir cadastro, edição e exclusão de tarefas.</p>
+          <p><strong>Não funcionais:</strong> descrevem qualidade e restrições.</p>
+          <p><strong>Exemplo:</strong> resposta em até 2 segundos; senhas criptografadas; interface responsiva.</p>
+        </article>
+        <article class="block">
+          <h3>Product Backlog</h3>
+          <table>
+            <thead><tr><th>ID</th><th>Item</th><th>Prioridade</th><th>Estimativa</th></tr></thead>
+            <tbody>
+              <tr><td>US01</td><td>Cadastrar usuário</td><td>Alta</td><td>5</td></tr>
+              <tr><td>US02</td><td>Autenticar usuário</td><td>Alta</td><td>8</td></tr>
+              <tr><td>US03</td><td>Cadastrar tarefa</td><td>Alta</td><td>5</td></tr>
+              <tr><td>US04</td><td>Filtrar tarefas</td><td>Média</td><td>3</td></tr>
+            </tbody>
+          </table>
+        </article>
+        <article class="block">
+          <h3>Definition of Ready</h3>
+          <ul class="clean">
+            <li>Descrição clara.</li>
+            <li>Critérios de aceitação definidos.</li>
+            <li>Prioridade estabelecida.</li>
+            <li>Estimativa realizada.</li>
+            <li>Dependências conhecidas.</li>
+            <li>Equipe compreende o trabalho.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="processo" class="section-card">
+      <div class="section-head orange"><div class="num">4</div><div><h2>Processo e colaboração</h2><p>Organize o trabalho em ciclos curtos e transparentes.</p></div></div>
+      <div class="section-body section-grid">
+        <article class="block">
+          <h3>Processo recomendado</h3>
+          <ol class="clean">
+            <li>Planejamento da sprint.</li>
+            <li>Reuniões rápidas de acompanhamento.</li>
+            <li>Implementação e integração frequente.</li>
+            <li>Revisão do incremento.</li>
+            <li>Retrospectiva e plano de melhoria.</li>
+          </ol>
+        </article>
+        <article class="block">
+          <h3>Papéis</h3>
+          <p><strong>Responsável pelo produto:</strong> prioriza e valida.</p>
+          <p><strong>Facilitador:</strong> remove impedimentos e organiza o processo.</p>
+          <p><strong>Equipe:</strong> projeta, implementa, testa, revisa e documenta.</p>
+        </article>
+        <article class="block">
+          <h3>Definition of Done</h3>
+          <ul class="clean">
+            <li>Código implementado e revisado.</li>
+            <li>Critérios atendidos.</li>
+            <li>Testes automatizados passando.</li>
+            <li>Pipeline aprovada.</li>
+            <li>Documentação atualizada.</li>
+            <li>Sem erros críticos conhecidos.</li>
+          </ul>
+        </article>
+        <article class="block">
+          <h3>Exemplo de reunião diária</h3>
+          <div class="example"><strong>Ana:</strong> concluiu o formulário de login; hoje criará testes; impedimento: erro na configuração do banco.</div>
+        </article>
+      </div>
+    </section>
+
+    <section id="arquitetura" class="section-card">
+      <div class="section-head blue"><div class="num">5</div><div><h2>Arquitetura e projeto</h2><p>Escolha a solução mais simples capaz de atender ao problema.</p></div></div>
+      <div class="section-body section-grid">
+        <article class="block">
+          <h3>Arquitetura simples</h3>
+          <p>Para muitos projetos acadêmicos, um monólito modular é suficiente:</p>
+          <pre>Frontend Web
+    ↓
+Backend / API
+    ↓
+Banco de Dados
+    ↘
+Serviços externos (e-mail, notificações)</pre>
+        </article>
+        <article class="block">
+          <h3>Diagramas recomendados</h3>
+          <ul class="clean">
+            <li><strong>Contexto:</strong> sistema, usuários e integrações.</li>
+            <li><strong>Contêineres:</strong> frontend, backend e banco.</li>
+            <li><strong>Componentes:</strong> módulos e responsabilidades.</li>
+            <li><strong>Implantação:</strong> onde o sistema executa.</li>
+          </ul>
+        </article>
+        <article class="block">
+          <h3>ADRs</h3>
+          <p>Registre decisões importantes, alternativas e consequências.</p>
+          <div class="example"><strong>ADR-001:</strong> usar PostgreSQL porque os dados possuem relacionamentos claros e exigem consistência.</div>
+        </article>
+        <article class="block">
+          <h3>Princípios de design</h3>
+          <ul class="clean">
+            <li>Alta coesão.</li>
+            <li>Baixo acoplamento.</li>
+            <li>Responsabilidades bem definidas.</li>
+            <li>Testabilidade.</li>
+            <li>Simplicidade antes de sofisticação.</li>
+          </ul>
+          <div class="warning"><strong>Cuidado:</strong> não adote microsserviços apenas por moda. Eles aumentam a complexidade operacional.</div>
+        </article>
+      </div>
+    </section>
+
+    <section id="planejamento" class="section-card">
+      <div class="section-head green"><div class="num">6</div><div><h2>Planejamento das iterações</h2><p>Converta o backlog em objetivos realistas para cada sprint.</p></div></div>
+      <div class="section-body section-grid">
+        <article class="block">
+          <h3>Sprint Goal</h3>
+          <div class="example">Permitir que o usuário crie uma conta, faça login e cadastre sua primeira atividade.</div>
+          <h4>Estimativas</h4>
+          <p>Pontos de história: 1, 2, 3, 5, 8, 13.</p>
+          <p>Considere esforço, complexidade, incerteza, dependências e testes.</p>
+        </article>
+        <article class="block">
+          <h3>Sprint Backlog</h3>
+          <table>
+            <thead><tr><th>Item</th><th>Tarefa</th><th>Responsável</th><th>Estado</th></tr></thead>
+            <tbody>
+              <tr><td>US01</td><td>Modelo de usuário</td><td>Ana</td><td>Concluído</td></tr>
+              <tr><td>US01</td><td>Endpoint de cadastro</td><td>João</td><td>Em andamento</td></tr>
+              <tr><td>US01</td><td>Testes</td><td>Maria</td><td>Pendente</td></tr>
+            </tbody>
+          </table>
+        </article>
+      </div>
+    </section>
+
+    <section id="implementacao" class="section-card">
+      <div class="section-head teal"><div class="num">7</div><div><h2>Implementação</h2><p>Desenvolva pequenas partes completas, testáveis e integráveis.</p></div></div>
+      <div class="section-body section-grid">
+        <article class="block">
+          <h3>Boas práticas</h3>
+          <ul class="clean">
+            <li>Nomes claros e funções pequenas.</li>
+            <li>Evitar duplicação e código morto.</li>
+            <li>Validar entradas.</li>
+            <li>Tratar erros de forma segura.</li>
+            <li>Atualizar dependências.</li>
+            <li>Documentar decisões relevantes.</li>
+          </ul>
+        </article>
+        <article class="block">
+          <h3>Configurações e segredos</h3>
+          <pre>DATABASE_URL=...
+SECRET_KEY=...
+API_TOKEN=...</pre>
+          <p>Use <code class="inline">.env</code> localmente e publique apenas <code class="inline">.env.example</code>.</p>
+        </article>
+        <article class="block">
+          <h3>Implementação vertical</h3>
+          <p>Entregue uma funcionalidade completa:</p>
+          <ul class="clean">
+            <li>interface;</li>
+            <li>validação;</li>
+            <li>regra de negócio;</li>
+            <li>persistência;</li>
+            <li>testes;</li>
+            <li>documentação.</li>
+          </ul>
+        </article>
+        <article class="block">
+          <h3>Tratamento de erros</h3>
+          <div class="example">Ao cadastrar uma tarefa com data inválida, o sistema deve rejeitar a entrada e mostrar uma mensagem clara, sem revelar detalhes internos.</div>
+        </article>
+      </div>
+    </section>
+
+    <section id="git" class="section-card">
+      <div class="section-head purple"><div class="num">8</div><div><h2>Controle de versão com Git e GitHub</h2><p>Integre trabalho, revisão e rastreabilidade.</p></div></div>
+      <div class="section-body section-grid">
+        <article class="block">
+          <h3>Regras de ouro</h3>
+          <ul class="clean">
+            <li>Não trabalhar diretamente na branch principal.</li>
+            <li>Uma branch por tarefa.</li>
+            <li>Commits pequenos e claros.</li>
+            <li>Pull request antes do merge.</li>
+            <li>Revisão de código obrigatória.</li>
+            <li>Vincular PRs e commits às issues.</li>
+          </ul>
+        </article>
+        <article class="block">
+          <h3>Convenção de commits</h3>
+          <pre>feat: adiciona cadastro de tarefas
+fix: corrige validação da data
+test: adiciona testes de login
+docs: atualiza README
+refactor: separa serviço de notificações</pre>
+        </article>
+        <article class="block">
+          <h3>Fluxo sugerido</h3>
+          <pre>main
+ ├── feature/cadastro-usuario
+ ├── feature/listar-tarefas
+ ├── fix/erro-login
+ └── docs/readme</pre>
+        </article>
+        <article class="block">
+          <h3>Checklist de pull request</h3>
+          <ul class="clean">
+            <li>Critérios atendidos.</li>
+            <li>Testes criados e passando.</li>
+            <li>Documentação atualizada.</li>
+            <li>Sem dados sensíveis.</li>
+            <li>Issue relacionada.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="testes" class="section-card">
+      <div class="section-head blue"><div class="num">9</div><div><h2>Testes e qualidade</h2><p>Valide regras, integrações e fluxos completos.</p></div></div>
+      <div class="section-body section-grid three">
+        <article class="block"><h3>Unitários</h3><p>Validam funções ou classes isoladas.</p><div class="example">Ex.: cálculo de prioridade e validação de datas.</div></article>
+        <article class="block"><h3>Integração</h3><p>Validam comunicação entre componentes.</p><div class="example">Ex.: API + banco de dados.</div></article>
+        <article class="block"><h3>Sistema</h3><p>Validam o fluxo completo.</p><div class="example">Ex.: login → cadastro de tarefa → listagem.</div></article>
+      </div>
+      <div class="section-body section-grid" style="padding-top:0">
+        <article class="block">
+          <h3>Teste de aceitação</h3>
+          <pre>Dado que o usuário está autenticado
+Quando cadastrar uma atividade válida
+Então a atividade deve ser armazenada
+E deve aparecer na lista</pre>
+        </article>
+        <article class="block">
+          <h3>TDD</h3>
+          <ol class="clean">
+            <li>Escrever um teste.</li>
+            <li>Observar a falha.</li>
+            <li>Implementar o mínimo.</li>
+            <li>Fazer o teste passar.</li>
+            <li>Refatorar.</li>
+          </ol>
+          <div class="tip">Cobertura ajuda, mas não substitui bons testes para regras críticas.</div>
+        </article>
+      </div>
+    </section>
+
+    <section id="ci" class="section-card">
+      <div class="section-head green"><div class="num">10</div><div><h2>Integração contínua e entrega</h2><p>Automatize validações sempre que o código mudar.</p></div></div>
+      <div class="section-body section-grid">
+        <article class="block">
+          <h3>Pipeline mínima</h3>
+          <ol class="clean">
+            <li>Checkout do código.</li>
+            <li>Instalação de dependências.</li>
+            <li>Lint e formatação.</li>
+            <li>Testes.</li>
+            <li>Cobertura.</li>
+            <li>Build.</li>
+            <li>Publicação do resultado.</li>
+          </ol>
+        </article>
+        <article class="block">
+          <h3>Exemplo com GitHub Actions</h3>
+          <pre>name: CI
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+      - run: npm ci
+      - run: npm run lint
+      - run: npm test
+      - run: npm run build</pre>
+        </article>
+      </div>
+    </section>
+
+    <section id="acompanhamento" class="section-card">
+      <div class="section-head orange"><div class="num">11</div><div><h2>Acompanhamento e melhoria contínua</h2><p>Use métricas e retrospectivas para aperfeiçoar o processo.</p></div></div>
+      <div class="section-body section-grid">
+        <article class="block">
+          <h3>Métricas úteis</h3>
+          <ul class="clean">
+            <li>Histórias concluídas.</li>
+            <li>Bugs encontrados.</li>
+            <li>Cobertura de testes.</li>
+            <li>Tempo de revisão.</li>
+            <li>Falhas na pipeline.</li>
+            <li>Itens reabertos.</li>
+          </ul>
+          <div class="warning">Não use métricas isoladas para comparar pessoas.</div>
+        </article>
+        <article class="block">
+          <h3>Retrospectiva</h3>
+          <table>
+            <thead><tr><th>Continuar</th><th>Parar</th><th>Começar</th></tr></thead>
+            <tbody><tr><td>Revisão de PRs</td><td>Commits muito grandes</td><td>Registrar decisões</td></tr><tr><td>Testes antes do merge</td><td>Tarefas sem dono</td><td>Revisar riscos</td></tr></tbody>
+          </table>
+        </article>
+      </div>
+    </section>
+
+    <section id="entrega" class="section-card">
+      <div class="section-head red"><div class="num">12</div><div><h2>Entrega e apresentação do produto</h2><p>Demonstre valor, qualidade e capacidade de evolução.</p></div></div>
+      <div class="section-body section-grid">
+        <article class="block">
+          <h3>Itens da entrega</h3>
+          <ul class="clean">
+            <li>Código-fonte e histórico Git.</li>
+            <li>README com instalação e execução.</li>
+            <li>Requisitos e backlog.</li>
+            <li>Arquitetura e ADRs.</li>
+            <li>Testes automatizados.</li>
+            <li>Pipeline de CI/CD.</li>
+            <li>Protótipo funcional.</li>
+            <li>Limitações e próximos passos.</li>
+          </ul>
+        </article>
+        <article class="block">
+          <h3>Roteiro da apresentação</h3>
+          <ol class="clean">
+            <li>Problema e contexto.</li>
+            <li>Proposta de valor.</li>
+            <li>MVP.</li>
+            <li>Arquitetura.</li>
+            <li>Demonstração.</li>
+            <li>Testes e qualidade.</li>
+            <li>Resultados.</li>
+            <li>Limitações.</li>
+          </ol>
+        </article>
+      </div>
+    </section>
+
+    <section id="manutencao" class="section-card">
+      <div class="section-head green"><div class="num">13</div><div><h2>Manutenção, refatoração e evolução</h2><p>O software continua mudando após a primeira entrega.</p></div></div>
+      <div class="section-body section-grid three">
+        <article class="block"><h3>Tipos de manutenção</h3><ul class="clean"><li>Corretiva: corrige defeitos.</li><li>Adaptativa: ajusta ao ambiente.</li><li>Evolutiva: adiciona funcionalidades.</li><li>Preventiva: reduz riscos futuros.</li></ul></article>
+        <article class="block"><h3>Dívida técnica</h3><ul class="clean"><li>Código duplicado.</li><li>Testes ausentes.</li><li>Dependências antigas.</li><li>Documentação incompleta.</li><li>Configurações manuais.</li></ul></article>
+        <article class="block"><h3>Code smells</h3><ul class="clean"><li>Funções grandes.</li><li>Classes com responsabilidades demais.</li><li>Nomes pouco claros.</li><li>Dependências circulares.</li><li>Mudanças espalhadas por muitos arquivos.</li></ul></article>
+      </div>
+      <div class="section-body" style="padding-top:0"><div class="tip"><strong>Refatorar:</strong> melhorar a estrutura interna sem alterar o comportamento externo. Ex.: extrair função, renomear variável, dividir classe ou remover duplicação.</div></div>
+    </section>
+
+    <section id="checklist" class="section-card">
+      <div class="section-head purple"><div class="num">14</div><div><h2>Checklist geral</h2><p>Use esta lista antes de começar, integrar e entregar.</p></div></div>
+      <div class="section-body section-grid three">
+        <article class="block"><h3>Antes do desenvolvimento</h3><div class="checklist"><label><input type="checkbox"> Problema definido</label><label><input type="checkbox"> Escopo delimitado</label><label><input type="checkbox"> MVP priorizado</label><label><input type="checkbox"> Riscos identificados</label><label><input type="checkbox"> Repositório criado</label><label><input type="checkbox"> Equipe organizada</label></div></article>
+        <article class="block"><h3>Antes do merge</h3><div class="checklist"><label><input type="checkbox"> Código executa</label><label><input type="checkbox"> Testes passam</label><label><input type="checkbox"> Pipeline aprovada</label><label><input type="checkbox"> Código revisado</label><label><input type="checkbox"> Documentação atualizada</label><label><input type="checkbox"> Sem segredos</label></div></article>
+        <article class="block"><h3>Antes da entrega</h3><div class="checklist"><label><input type="checkbox"> MVP funcional</label><label><input type="checkbox"> Fluxos críticos testados</label><label><input type="checkbox"> Instalação validada</label><label><input type="checkbox"> Apresentação preparada</label><label><input type="checkbox"> Demonstração ensaiada</label><label><input type="checkbox"> Limitações registradas</label></div></article>
+      </div>
+    </section>
+
+    <div class="principle-banner">
+      <h2>Princípio central</h2>
+      <p><strong>Desenvolver em ciclos curtos, entregar valor, aprender com feedback e melhorar continuamente.</strong></p>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container"><p>Guia Prático de Engenharia de Software — material didático em tema claro e responsivo.</p></div>
+  </footer>
+  <a class="back-top" href="#topo" aria-label="Voltar ao topo">↑</a>
+</body>
+</html>
